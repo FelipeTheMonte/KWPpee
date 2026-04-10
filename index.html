@@ -3,24 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Elo7 Tools - Publicador + Editor de Imagens</title>
+  <title>Elo7 Publisher + Editor de Imagens</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/unrar-js@0.1.2/dist/unrar.min.js"></script>
   <style>
     :root {
-      --bg: #0c0c10;
-      --s1: #14141c;
-      --s2: #1c1c28;
-      --border: #2c2c40;
-      --text: #eeeeff;
-      --muted: #7878a0;
-      --accent: #ffb830;
-      --accent2: #ff6f3c;
-      --ok: #34d399;
-      --err: #f87171;
-      --radius: 14px;
+      --bg:       #0c0c10;
+      --s1:       #14141c;
+      --s2:       #1c1c28;
+      --border:   #2c2c40;
+      --text:     #eeeeff;
+      --muted:    #7878a0;
+      --accent:   #ffb830;
+      --accent2:  #ff6f3c;
+      --ok:       #34d399;
+      --err:      #f87171;
+      --radius:   14px;
     }
     * {
       margin: 0;
@@ -32,66 +32,6 @@
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
-      display: flex;
-    }
-
-    /* SIDEBAR */
-    .sidebar {
-      width: 260px;
-      background: var(--s1);
-      border-right: 1px solid var(--border);
-      padding: 2rem 1rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      flex-shrink: 0;
-      height: 100vh;
-      position: sticky;
-      top: 0;
-    }
-    .logo-area {
-      margin-bottom: 2rem;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 1rem;
-    }
-    .logo-area h2 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.6rem;
-      background: linear-gradient(120deg, var(--accent), var(--accent2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .nav-btn {
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-      background: var(--s2);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 0.85rem 1rem;
-      font-size: 1rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s;
-      color: var(--text);
-      width: 100%;
-      font-family: 'Outfit', sans-serif;
-    }
-    .nav-btn.active {
-      background: rgba(255, 184, 48, 0.12);
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-    .nav-btn:hover:not(.active) {
-      border-color: var(--accent);
-      background: rgba(255, 184, 48, 0.05);
-    }
-
-    /* MAIN */
-    .main-content {
-      flex: 1;
-      overflow-y: auto;
-      max-height: 100vh;
     }
     header {
       display: flex;
@@ -113,6 +53,32 @@
       font-size: 0.82rem;
       letter-spacing: 0.05em;
     }
+
+    /* Abas para trocar entre as ferramentas */
+    .tool-tabs {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+      margin: 1.5rem 0 0;
+    }
+    .tool-tab {
+      background: var(--s2);
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      padding: 0.6rem 1.8rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: var(--muted);
+    }
+    .tool-tab.active {
+      background: var(--accent);
+      color: #000;
+      border-color: var(--accent);
+    }
+
+    /* Steps (somente para o Publicador) */
     .steps {
       display: flex;
       align-items: center;
@@ -157,6 +123,7 @@
       background: var(--border);
       margin: 0 0.25rem;
     }
+
     main {
       max-width: 900px;
       margin: 0 auto;
@@ -189,6 +156,7 @@
       font-family: 'Outfit', sans-serif;
       font-size: 0.93rem;
       outline: none;
+      width: 100%;
     }
     input:focus {
       border-color: var(--accent);
@@ -334,116 +302,139 @@
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
+    .api-tab {
+      background: var(--s2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.5rem 1rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: var(--muted);
+    }
+    .api-tab.active {
+      background: rgba(255,184,48,0.12);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .gbtn {
+      background: #fff;
+      color: #333;
+      border: none;
+      border-radius: 8px;
+      padding: 0.6rem 1.1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
 
-<div class="sidebar">
-  <div class="logo-area">
-    <h2>Elo7 Tools</h2>
+<header>
+  <div class="brand">
+    <h1>Elo7 Publisher</h1>
+    <span>ZIP / RAR + Editor de Imagens</span>
   </div>
-  <button class="nav-btn active" id="navPublisherBtn">📦 Publicar Arquivos</button>
-  <button class="nav-btn" id="navImageEditorBtn">🖼️ Editar Imagens</button>
+  <div id="gStatusArea"></div>
+</header>
+
+<!-- Abas de navegação entre as ferramentas -->
+<div class="tool-tabs">
+  <div class="tool-tab active" data-tool="publisher">📦 Publicar Arquivos</div>
+  <div class="tool-tab" data-tool="imageEditor">🖼️ Editar Imagens</div>
 </div>
 
-<div class="main-content">
-  <header>
-    <div class="brand">
-      <h1>Elo7 Publisher</h1>
-      <span>ZIP / RAR + Editor de Imagens</span>
-    </div>
-    <div id="gStatusArea"></div>
-  </header>
-
-  <!-- SEÇÃO 1: PUBLICADOR DE ARQUIVOS ZIP/RAR -->
-  <div id="publisherSection">
-    <nav class="steps">
-      <div class="sn active" id="sn1"><div class="sn-dot">1</div><div class="sn-label">Configuração</div></div>
-      <div class="sn-line"></div>
-      <div class="sn" id="sn2"><div class="sn-dot">2</div><div class="sn-label">Arquivos</div></div>
-      <div class="sn-line"></div>
-      <div class="sn" id="sn3"><div class="sn-dot">3</div><div class="sn-label">Processar</div></div>
-      <div class="sn-line"></div>
-      <div class="sn" id="sn4"><div class="sn-dot">4</div><div class="sn-label">Resultado</div></div>
-    </nav>
-    <main>
-      <!-- Step 1 -->
-      <div class="sc on" id="s1">
-        <div class="panel">
-          <div class="panel-title">Chaves de API (IA para tags)</div>
-          <div class="panel-sub">Configure a IA para gerar tags automaticamente.</div>
-          <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:1rem">
-            <button class="api-tab" data-provider="anthropic">🤖 Claude</button>
-            <button class="api-tab" data-provider="openai">✨ OpenAI</button>
-            <button class="api-tab" data-provider="gemini">💎 Gemini</button>
-            <button class="api-tab" data-provider="groq">⚡ Groq</button>
-            <button class="api-tab" data-provider="custom">🔧 Custom</button>
-          </div>
-          <div id="apiConfigArea"></div>
-          <hr>
-          <div class="panel-title">Google Drive (opcional)</div>
-          <input type="text" id="clientIdInput" placeholder="Client ID OAuth" style="margin-bottom:0.5rem">
-          <button class="gbtn" onclick="connectGoogle()">🔑 Conectar Google</button>
-          <span id="gBadge" class="hidden">✓ Conectado</span>
-        </div>
-        <div class="foot">
-          <button class="btn btn-primary" id="s1next" onclick="goTo(2)" disabled>Próximo →</button>
-        </div>
-      </div>
-
-      <!-- Step 2: Lista de arquivos (ZIP ou RAR) -->
-      <div class="sc" id="s2">
-        <div class="panel">
-          <div class="panel-title">📦 Arquivos ZIP / RAR (máx 10)</div>
-          <div id="filesContainer" class="files-list"></div>
-          <button class="btn btn-ghost btn-sm" onclick="addNewFileSlot()">+ Adicionar arquivo</button>
-        </div>
-        <div class="foot">
-          <button class="btn btn-ghost" onclick="goTo(1)">← Voltar</button>
-          <button class="btn btn-primary" id="s2next" onclick="goTo(3)" disabled>Processar →</button>
-        </div>
-      </div>
-
-      <!-- Step 3: Processamento -->
-      <div class="sc" id="s3">
-        <div class="panel">
-          <div class="progress"><div class="progress-fill" id="pFill"></div></div>
-          <div class="logbox" id="logBox"></div>
-          <button class="btn btn-primary" id="startProcessBtn" onclick="startBatchProcess()">▶ Iniciar Processamento</button>
-        </div>
-        <div class="foot">
-          <button class="btn btn-ghost" onclick="goTo(2)">← Voltar</button>
-        </div>
-      </div>
-
-      <!-- Step 4: Resultado -->
-      <div class="sc" id="s4">
-        <div class="panel">
-          <div id="resultsList"></div>
-          <button class="btn btn-primary" onclick="downloadGlobalZip()">⬇ Baixar TODOS os arquivos</button>
-          <button class="btn btn-ghost" onclick="resetApp()">🔄 Novo lote</button>
-        </div>
-      </div>
-    </main>
-  </div>
-
-  <!-- SEÇÃO 2: EDIÇÃO DE IMAGENS -->
-  <div id="imageEditorSection" style="display: none;">
-    <main>
+<!-- ========== FERRAMENTA 1: PUBLICADOR ========== -->
+<div id="publisherTool">
+  <nav class="steps" id="stepNav">
+    <div class="sn active" id="sn1"><div class="sn-dot">1</div><div class="sn-label">Configuração</div></div>
+    <div class="sn-line"></div>
+    <div class="sn" id="sn2"><div class="sn-dot">2</div><div class="sn-label">Arquivos</div></div>
+    <div class="sn-line"></div>
+    <div class="sn" id="sn3"><div class="sn-dot">3</div><div class="sn-label">Processar</div></div>
+    <div class="sn-line"></div>
+    <div class="sn" id="sn4"><div class="sn-dot">4</div><div class="sn-label">Resultado</div></div>
+  </nav>
+  <main>
+    <!-- Step 1 -->
+    <div class="sc on" id="s1">
       <div class="panel">
-        <div class="panel-title">🖼️ Adicionar selo "COMPRE 1 LEVE + 11 GRÁTIS"</div>
-        <div class="panel-sub">Selecione até 5 imagens. O selo será inserido no canto superior esquerdo.</div>
-        <div class="uzone" onclick="document.getElementById('editorImages').click()">
-          <div class="uzone-icon">📸</div>
-          <p>Clique para selecionar até 5 imagens (JPG/PNG)</p>
+        <div class="panel-title">Chaves de API (IA para tags)</div>
+        <div class="panel-sub">Configure a IA para gerar tags automaticamente.</div>
+        <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:1rem">
+          <button class="api-tab" data-provider="anthropic">🤖 Claude</button>
+          <button class="api-tab" data-provider="openai">✨ OpenAI</button>
+          <button class="api-tab" data-provider="gemini">💎 Gemini</button>
+          <button class="api-tab" data-provider="groq">⚡ Groq</button>
+          <button class="api-tab" data-provider="custom">🔧 Custom</button>
         </div>
-        <input type="file" id="editorImages" accept="image/jpeg,image/png,image/webp" multiple hidden>
-        <div id="editorPreviewGrid" class="image-preview-grid"></div>
-        <button class="btn btn-primary" id="processImagesBtn" onclick="processImagesWithBadge()" disabled>✨ Aplicar selo e baixar ZIP</button>
-        <div id="editorLog" class="logbox" style="margin-top:1rem; display:none;"></div>
+        <div id="apiConfigArea"></div>
+        <hr>
+        <div class="panel-title">Google Drive (opcional)</div>
+        <input type="text" id="clientIdInput" placeholder="Client ID OAuth" style="margin-bottom:0.5rem">
+        <button class="gbtn" onclick="connectGoogle()">🔑 Conectar Google</button>
+        <span id="gBadge" class="hidden">✓ Drive conectado</span>
       </div>
-    </main>
-  </div>
+      <div class="foot">
+        <button class="btn btn-primary" id="s1next" onclick="goTo(2)" disabled>Próximo →</button>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="sc" id="s2">
+      <div class="panel">
+        <div class="panel-title">📦 Arquivos ZIP / RAR (máx 10)</div>
+        <div id="filesContainer" class="files-list"></div>
+        <button class="btn btn-ghost btn-sm" onclick="addNewFileSlot()">+ Adicionar arquivo</button>
+      </div>
+      <div class="foot">
+        <button class="btn btn-ghost" onclick="goTo(1)">← Voltar</button>
+        <button class="btn btn-primary" id="s2next" onclick="goTo(3)" disabled>Processar →</button>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="sc" id="s3">
+      <div class="panel">
+        <div class="progress"><div class="progress-fill" id="pFill"></div></div>
+        <div class="logbox" id="logBox"></div>
+        <button class="btn btn-primary" id="startProcessBtn" onclick="startBatchProcess()">▶ Iniciar Processamento</button>
+      </div>
+      <div class="foot">
+        <button class="btn btn-ghost" onclick="goTo(2)">← Voltar</button>
+      </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="sc" id="s4">
+      <div class="panel">
+        <div id="resultsList"></div>
+        <button class="btn btn-primary" onclick="downloadGlobalZip()">⬇ Baixar TODOS os arquivos</button>
+        <button class="btn btn-ghost" onclick="resetApp()">🔄 Novo lote</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ========== FERRAMENTA 2: EDITOR DE IMAGENS ========== -->
+<div id="imageEditorTool" style="display: none;">
+  <main>
+    <div class="panel">
+      <div class="panel-title">🖼️ Adicionar selo "COMPRE 1 LEVE + 11 GRÁTIS"</div>
+      <div class="panel-sub">Selecione até 5 imagens. O selo será inserido no canto superior esquerdo.</div>
+      <div class="uzone" onclick="document.getElementById('editorImages').click()">
+        <div class="uzone-icon">📸</div>
+        <p>Clique para selecionar até 5 imagens (JPG/PNG/WEBP)</p>
+      </div>
+      <input type="file" id="editorImages" accept="image/jpeg,image/png,image/webp" multiple hidden>
+      <div id="editorPreviewGrid" class="image-preview-grid"></div>
+      <button class="btn btn-primary" id="processImagesBtn" onclick="processImagesWithBadge()" disabled>✨ Aplicar selo e baixar ZIP</button>
+      <div id="editorLog" class="logbox" style="margin-top:1rem; display:none;"></div>
+    </div>
+  </main>
 </div>
 
 <script>
@@ -458,8 +449,7 @@
   let fileItems = [];
   let nextId = 1;
 
-  // Editor de imagens
-  let selectedImages = []; // array de { file, previewUrl }
+  let selectedImages = [];
 
   // ======================= FUNÇÕES AUXILIARES =======================
   function saveToLocal() {
@@ -495,10 +485,8 @@
 
   function renderApiConfig() {
     const container = document.getElementById('apiConfigArea');
-    const providers = ['anthropic', 'openai', 'gemini', 'groq', 'custom'];
-    providers.forEach(p => {
-      const btn = document.querySelector(`.api-tab[data-provider="${p}"]`);
-      if (btn) btn.classList.toggle('active', p === apiProvider);
+    document.querySelectorAll('.api-tab').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.provider === apiProvider);
     });
     let html = '';
     if (apiProvider === 'anthropic') html = `<label>Chave Anthropic</label><input type="password" id="apiKeyInput" placeholder="sk-ant-..." value="${anthropicKey}">`;
@@ -577,7 +565,6 @@
     }
   }
 
-  // Navegação entre steps
   function goTo(n) {
     document.getElementById(`s${currentStep}`).classList.remove('on');
     document.getElementById(`sn${currentStep}`).classList.remove('active');
@@ -591,17 +578,17 @@
     if (n === 4) renderGlobalResults();
   }
 
-  // ======================= GERENCIAR ARQUIVOS (ZIP/RAR) =======================
+  // ======================= GERENCIAR ARQUIVOS =======================
   function renderFileList() {
     const container = document.getElementById('filesContainer');
     container.innerHTML = '';
-    fileItems.forEach((item, idx) => {
+    fileItems.forEach((item) => {
       const div = document.createElement('div');
       div.className = 'file-item';
       div.innerHTML = `
         <div><strong>#${item.number || '?'}</strong> ${item.name || '—'}<br><small>${item.file ? item.file.name : 'Nenhum arquivo'}</small></div>
         <div>
-          <input class="input-small" placeholder="Nº" value="${item.number || ''}" onchange="updateFileNumber(${item.id}, this.value)">
+          <input class="input-small" placeholder="Nº" value="${item.number || ''}" onchange="updateFileNumber(${item.id}, this.value)" style="width:70px">
           <input class="input-small" placeholder="Nome" value="${item.name || ''}" style="width:120px" onchange="updateFileName(${item.id}, this.value)">
           <button class="btn btn-ghost btn-sm" onclick="selectFileForItem(${item.id})">📁 Arquivo</button>
           <button class="btn btn-ghost btn-sm" onclick="removeFileItem(${item.id})">✖</button>
@@ -635,7 +622,7 @@
   }
   function removeFileItem(id) { fileItems = fileItems.filter(f => f.id !== id); renderFileList(); }
 
-  // ======================= EXTRAÇÃO DE ZIP E RAR =======================
+  // ======================= EXTRAÇÃO ZIP/RAR =======================
   async function extractArchive(file) {
     const ext = file.name.split('.').pop().toLowerCase();
     if (ext === 'zip') {
@@ -647,9 +634,7 @@
         files.push({ path, name: path.split('/').pop(), blob });
       }
       return files;
-    } 
-    else if (ext === 'rar') {
-      // Usar unrar-js
+    } else if (ext === 'rar') {
       const arrayBuffer = await file.arrayBuffer();
       const rarData = new Uint8Array(arrayBuffer);
       const extractor = await unrarjs.createExtractorFromData(rarData);
@@ -663,13 +648,12 @@
       }
       extractor.destroy();
       return files;
-    }
-    else {
+    } else {
       throw new Error('Formato não suportado: ' + ext);
     }
   }
 
-  // ======================= PROCESSAMENTO EM LOTE =======================
+  // ======================= PROCESSAMENTO =======================
   async function startBatchProcess() {
     const btn = document.getElementById('startProcessBtn');
     btn.disabled = true;
@@ -680,16 +664,14 @@
     for (let i = 0; i < fileItems.length; i++) {
       const item = fileItems[i];
       if (!item.file) continue;
-      log(`📦 [${item.number}] ${item.name} - extraindo arquivo...`, 'info');
+      log(`📦 [${item.number}] ${item.name} - extraindo...`, 'info');
       try {
         const extracted = await extractArchive(item.file);
         item.extractedFiles = extracted;
         log(`   ✓ ${extracted.length} arquivos extraídos`, 'ok');
-        // Gerar tags
         const tags = await generateTags(item.name);
         item.tags = tags;
         log(`   🏷️ Tags geradas`, 'ok');
-        // Upload para Drive se conectado
         if (gConnected && accessToken) {
           const folderName = `${item.number} - Arquivo Digital ${item.name}`;
           const folderId = await createDriveFolder(folderName);
@@ -807,7 +789,7 @@
   }
   function resetApp() { location.reload(); }
 
-  // ======================= EDIÇÃO DE IMAGENS (SELO) =======================
+  // ======================= EDITOR DE IMAGENS =======================
   document.getElementById('editorImages').addEventListener('change', (e) => {
     const files = Array.from(e.target.files);
     if (files.length > 5) { alert('Máximo 5 imagens'); return; }
@@ -844,7 +826,6 @@
       canvas.height = img.height;
       const ctx = canvas.getContext('2d');
       ctx.drawImage(img, 0, 0);
-      // Desenha o selo "COMPRE 1 LEVE + 11 GRÁTIS" no canto superior esquerdo
       const badgeWidth = Math.min(canvas.width * 0.28, 180);
       const badgeHeight = badgeWidth * 0.9;
       const padding = 12;
@@ -904,23 +885,25 @@
     ctx.closePath();
   }
 
-  // Alternância entre seções (menu lateral)
-  document.getElementById('navPublisherBtn').addEventListener('click', () => {
-    document.getElementById('publisherSection').style.display = 'block';
-    document.getElementById('imageEditorSection').style.display = 'none';
-    document.getElementById('navPublisherBtn').classList.add('active');
-    document.getElementById('navImageEditorBtn').classList.remove('active');
-  });
-  document.getElementById('navImageEditorBtn').addEventListener('click', () => {
-    document.getElementById('publisherSection').style.display = 'none';
-    document.getElementById('imageEditorSection').style.display = 'block';
-    document.getElementById('navImageEditorBtn').classList.add('active');
-    document.getElementById('navPublisherBtn').classList.remove('active');
+  // ======================= ALTERNÂNCIA ENTRE FERRAMENTAS =======================
+  document.querySelectorAll('.tool-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const tool = tab.dataset.tool;
+      document.querySelectorAll('.tool-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      if (tool === 'publisher') {
+        document.getElementById('publisherTool').style.display = 'block';
+        document.getElementById('imageEditorTool').style.display = 'none';
+      } else {
+        document.getElementById('publisherTool').style.display = 'none';
+        document.getElementById('imageEditorTool').style.display = 'block';
+      }
+    });
   });
 
   // Inicialização
   loadFromLocal();
-  addNewFileSlot(); // começa com um slot vazio
+  addNewFileSlot();
 </script>
 </body>
 </html>
