@@ -578,6 +578,15 @@
     if (n === 4) renderGlobalResults();
   }
 
+  // ======================= NUMERAÇÃO SEQUENCIAL AUTOMÁTICA =======================
+  function getNextNumber() {
+    // Extrai todos os números atuais (convertendo para inteiro)
+    const numbers = fileItems.map(item => parseInt(item.number, 10)).filter(n => !isNaN(n));
+    if (numbers.length === 0) return 1;
+    const maxNumber = Math.max(...numbers);
+    return maxNumber + 1;
+  }
+
   // ======================= GERENCIAR ARQUIVOS =======================
   function renderFileList() {
     const container = document.getElementById('filesContainer');
@@ -600,13 +609,43 @@
   }
 
   function addNewFileSlot() {
-    if (fileItems.length >= 10) return alert('Máximo 10 arquivos.');
-    fileItems.push({ id: nextId++, file: null, number: '', name: '', status: 'pending', extractedFiles: [], tags: '', driveFolderUrl: null });
+    if (fileItems.length >= 10) {
+      alert('Máximo de 10 arquivos atingido.');
+      return;
+    }
+    const nextNumber = getNextNumber();
+    // Formata com dois dígitos (opcional, mas amigável)
+    const formattedNumber = nextNumber.toString().padStart(2, '0');
+    fileItems.push({
+      id: nextId++,
+      file: null,
+      number: formattedNumber,
+      name: '',
+      status: 'pending',
+      extractedFiles: [],
+      tags: '',
+      driveFolderUrl: null
+    });
     renderFileList();
   }
 
-  function updateFileNumber(id, val) { const i = fileItems.find(f => f.id === id); if (i) { i.number = val.padStart(2,'0'); renderFileList(); } }
-  function updateFileName(id, val) { const i = fileItems.find(f => f.id === id); if (i) { i.name = val; renderFileList(); } }
+  function updateFileNumber(id, val) {
+    const item = fileItems.find(f => f.id === id);
+    if (item) {
+      // Permite qualquer número (pode ser maior que 99)
+      item.number = val;
+      renderFileList();
+    }
+  }
+
+  function updateFileName(id, val) {
+    const item = fileItems.find(f => f.id === id);
+    if (item) {
+      item.name = val;
+      renderFileList();
+    }
+  }
+
   function selectFileForItem(id) {
     const input = document.createElement('input');
     input.type = 'file';
@@ -620,7 +659,11 @@
     };
     input.click();
   }
-  function removeFileItem(id) { fileItems = fileItems.filter(f => f.id !== id); renderFileList(); }
+
+  function removeFileItem(id) {
+    fileItems = fileItems.filter(f => f.id !== id);
+    renderFileList();
+  }
 
   // ======================= EXTRAÇÃO ZIP/RAR =======================
   async function extractArchive(file) {
@@ -903,6 +946,7 @@
 
   // Inicialização
   loadFromLocal();
+  // Adiciona o primeiro slot vazio com número 01
   addNewFileSlot();
 </script>
 </body>
