@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Elo7 Publisher</title>
+  <title>Elo7 Publisher - Multi Arquivos</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -24,7 +24,6 @@
     *{box-sizing:border-box;margin:0;padding:0}
     body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.5}
 
-    /* ---- HEADER ---- */
     header{
       display:flex;align-items:center;justify-content:space-between;
       padding:1.4rem 2.5rem;border-bottom:1px solid var(--border);
@@ -37,7 +36,6 @@
     }
     .brand span{color:var(--muted);font-size:.82rem;letter-spacing:.05em}
 
-    /* ---- STEP NAV ---- */
     .steps{
       display:flex;align-items:center;justify-content:center;gap:0;
       padding:1.5rem 2rem;border-bottom:1px solid var(--border);
@@ -56,10 +54,8 @@
     .sn.done .sn-dot{border-color:var(--ok);background:var(--ok);color:#000}
     .sn-line{width:48px;height:2px;background:var(--border);flex-shrink:0;margin:0 .25rem}
 
-    /* ---- MAIN ---- */
-    main{max-width:740px;margin:0 auto;padding:2.5rem 1.5rem}
+    main{max-width:900px;margin:0 auto;padding:2rem 1.5rem}
 
-    /* ---- PANEL ---- */
     .panel{
       background:var(--s1);border:1px solid var(--border);
       border-radius:var(--radius);padding:1.8rem;margin-bottom:1.4rem
@@ -67,7 +63,6 @@
     .panel-title{font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:600;margin-bottom:.25rem}
     .panel-sub{color:var(--muted);font-size:.88rem;margin-bottom:1.4rem}
 
-    /* ---- FORM ---- */
     label{display:block;font-size:.75rem;font-weight:600;color:var(--muted);
       text-transform:uppercase;letter-spacing:.07em;margin-bottom:.35rem}
     input[type=text],input[type=password]{
@@ -79,7 +74,6 @@
     input[type=text]:focus,input[type=password]:focus{border-color:var(--accent)}
     .row2{display:grid;grid-template-columns:1fr 2fr;gap:1rem}
 
-    /* ---- UPLOAD ZONE ---- */
     .uzone{
       border:2px dashed var(--border);border-radius:10px;padding:1.6rem;
       text-align:center;cursor:pointer;transition:all .2s;margin-bottom:1rem
@@ -91,7 +85,6 @@
     .uzone .fname{color:var(--ok);font-weight:500;font-size:.93rem}
     .uzone .fsize{color:var(--muted);font-size:.78rem;margin-top:.15rem}
 
-    /* ---- BUTTONS ---- */
     .btn{display:inline-flex;align-items:center;gap:.45rem;padding:.65rem 1.35rem;
       border-radius:8px;border:none;cursor:pointer;font-family:'Outfit',sans-serif;
       font-size:.88rem;font-weight:600;transition:all .2s;text-decoration:none}
@@ -102,66 +95,43 @@
     .btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
     .btn-ok{background:var(--ok);color:#000}
     .btn-full{width:100%;justify-content:center}
+    .btn-sm{padding:.35rem .9rem;font-size:.8rem}
 
-    /* ---- ALERTS ---- */
     .alert{padding:.7rem 1rem;border-radius:8px;font-size:.84rem;margin-bottom:1rem;line-height:1.5}
     .alert a{color:inherit;font-weight:600}
     .alert-warn{background:rgba(255,184,48,.1);border:1px solid rgba(255,184,48,.25);color:var(--accent)}
     .alert-ok{background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.25);color:var(--ok)}
     .alert-err{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.25);color:var(--err)}
 
-    /* ---- BADGES ---- */
     .badge{display:inline-flex;align-items:center;gap:.35rem;border-radius:20px;
       padding:.22rem .7rem;font-size:.78rem;font-weight:600}
     .badge-ok{background:rgba(52,211,153,.15);border:1px solid rgba(52,211,153,.3);color:var(--ok)}
 
-    /* ---- PROGRESS ---- */
     .progress{width:100%;height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin:.5rem 0}
     .progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .3s;border-radius:3px}
 
-    /* ---- LOG ---- */
     .logbox{
       background:var(--s2);border-radius:8px;padding:.85rem 1rem;
-      max-height:180px;overflow-y:auto;font-size:.78rem;font-family:'Courier New',monospace;
+      max-height:200px;overflow-y:auto;font-size:.78rem;font-family:'Courier New',monospace;
     }
     .lentry{padding:.18rem 0;border-bottom:1px solid rgba(255,255,255,.04)}
     .lentry.ok{color:var(--ok)}.lentry.err{color:var(--err)}.lentry.info{color:var(--muted)}
 
-    /* ---- TAGS ---- */
-    .tagsbox{
-      background:var(--s2);border:1px solid var(--border);border-radius:8px;
-      padding:1rem;font-size:.88rem;line-height:1.9;min-height:70px;white-space:pre-wrap;word-break:break-word
-    }
     .tags-wrap{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.6rem}
     .tag-chip{
       background:rgba(255,184,48,.12);border:1px solid rgba(255,184,48,.25);
       color:var(--accent);border-radius:20px;padding:.2rem .65rem;font-size:.78rem;font-weight:500
     }
 
-    /* ---- MOCKUP GRID ---- */
-    .mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:.65rem;margin-top:.8rem}
-    .mthumb{border-radius:8px;overflow:hidden;border:1px solid var(--border);aspect-ratio:1;cursor:pointer}
-    .mthumb img{width:100%;height:100%;object-fit:cover;transition:transform .2s}
-    .mthumb:hover img{transform:scale(1.04)}
-
-    /* ---- DIVIDER ---- */
     hr{border:none;border-top:1px solid var(--border);margin:1.4rem 0}
-
-    /* ---- SPINNER ---- */
     .spin{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.2);
       border-top-color:currentColor;border-radius:50%;animation:sp .55s linear infinite}
     @keyframes sp{to{transform:rotate(360deg)}}
 
-    /* ---- STEP SECTIONS ---- */
     .sc{display:none}.sc.on{display:block}
-    .hidden{display:none!important}
     .foot{display:flex;justify-content:space-between;align-items:center;margin-top:1.4rem;gap:1rem}
     .foot-right{display:flex;gap:.75rem;margin-left:auto}
 
-    /* ---- COVER PREVIEW ---- */
-    #coverPrev{max-height:110px;border-radius:8px;border:1px solid var(--border);margin-bottom:1rem}
-
-    /* ---- API TABS ---- */
     .api-tab{
       flex:1;padding:.55rem .8rem;border-radius:8px;border:1px solid var(--border);
       background:var(--s2);color:var(--muted);font-family:'Outfit',sans-serif;
@@ -172,7 +142,6 @@
     }
     .api-tab:hover:not(.active){border-color:var(--accent);color:var(--text)}
 
-    /* ---- GOOGLE BTN ---- */
     .gbtn{
       display:inline-flex;align-items:center;gap:.6rem;padding:.6rem 1.1rem;
       background:#fff;color:#333;border:none;border-radius:8px;cursor:pointer;
@@ -181,11 +150,66 @@
     .gbtn:hover{background:#f1f1f1}
     .gbtn img{width:18px;height:18px}
 
-    /* ---- STEP 4 drive icon ---- */
     .drive-link{display:flex;align-items:center;gap:.6rem;font-weight:500;text-decoration:none;color:var(--ok)}
     .drive-link:hover{text-decoration:underline}
 
-    /* scrollbar */
+    .files-list {
+      background: var(--s2);
+      border-radius: 10px;
+      margin-top: 1rem;
+      border: 1px solid var(--border);
+    }
+    .file-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.9rem 1rem;
+      border-bottom: 1px solid var(--border);
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+    .file-item:last-child { border-bottom: none; }
+    .file-info {
+      flex: 2;
+      min-width: 180px;
+    }
+    .file-number {
+      font-weight: 600;
+      color: var(--accent);
+      font-size: 0.85rem;
+    }
+    .file-name {
+      font-weight: 500;
+      margin: 0 0 0.2rem 0;
+      font-size: 0.9rem;
+    }
+    .file-status {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+    .file-actions {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+    .input-small {
+      width: 70px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.4rem 0.5rem;
+      color: var(--text);
+      font-size: 0.85rem;
+      text-align: center;
+    }
+    .badge-done {
+      background: rgba(52,211,153,.15);
+      color: var(--ok);
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 500;
+    }
     ::-webkit-scrollbar{width:5px;height:5px}
     ::-webkit-scrollbar-track{background:var(--s1)}
     ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
@@ -196,42 +220,28 @@
 <header>
   <div class="brand">
     <h1>Elo7 Publisher</h1>
-    <span>Publicação de Arquivos Digitais</span>
+    <span>Multi Arquivos (até 10)</span>
   </div>
   <div id="gStatusArea"></div>
 </header>
 
 <nav class="steps" id="stepNav">
-  <div class="sn active" id="sn1">
-    <div class="sn-dot">1</div>
-    <div class="sn-label">Configuração</div>
-  </div>
+  <div class="sn active" id="sn1"><div class="sn-dot">1</div><div class="sn-label">Configuração</div></div>
   <div class="sn-line"></div>
-  <div class="sn" id="sn2">
-    <div class="sn-dot">2</div>
-    <div class="sn-label">Produto</div>
-  </div>
+  <div class="sn" id="sn2"><div class="sn-dot">2</div><div class="sn-label">Arquivos</div></div>
   <div class="sn-line"></div>
-  <div class="sn" id="sn3">
-    <div class="sn-dot">3</div>
-    <div class="sn-label">Arquivo ZIP</div>
-  </div>
+  <div class="sn" id="sn3"><div class="sn-dot">3</div><div class="sn-label">Processar</div></div>
   <div class="sn-line"></div>
-  <div class="sn" id="sn4">
-    <div class="sn-dot">4</div>
-    <div class="sn-label">Resultado</div>
-  </div>
+  <div class="sn" id="sn4"><div class="sn-dot">4</div><div class="sn-label">Resultado</div></div>
 </nav>
 
 <main>
 
-  <!-- ======== STEP 1 ======== -->
+  <!-- STEP 1: CONFIG -->
   <div class="sc on" id="s1">
     <div class="panel">
       <div class="panel-title">Chaves de API</div>
-      <div class="panel-sub">Configure as chaves necessárias. Elas ficam salvas localmente no seu navegador.</div>
-
-      <label>Provedor de IA para gerar tags</label>
+      <div class="panel-sub">Configure a IA para gerar tags (salva localmente).</div>
       <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem">
         <button class="api-tab active" id="tab-anthropic" onclick="selectProvider('anthropic')">🤖 Claude</button>
         <button class="api-tab" id="tab-openai" onclick="selectProvider('openai')">✨ OpenAI</button>
@@ -240,190 +250,76 @@
         <button class="api-tab" id="tab-custom" onclick="selectProvider('custom')">🔧 Custom</button>
       </div>
 
-      <div id="anthropic-section">
-        <label>Chave da API Anthropic</label>
-        <input type="password" id="anthropicKey" placeholder="sk-ant-..." />
-        <div class="alert alert-warn" style="margin-top:-.5rem;margin-bottom:1rem">
-          🔑 Obtenha sua chave em <a href="https://console.anthropic.com/settings/keys" target="_blank">console.anthropic.com</a>
-        </div>
-      </div>
-
-      <div id="openai-section" style="display:none">
-        <label>Chave da API OpenAI</label>
-        <input type="password" id="openaiKey" placeholder="sk-..." />
-        <div class="alert alert-warn" style="margin-top:-.5rem;margin-bottom:1rem">
-          🔑 Obtenha sua chave em <a href="https://platform.openai.com/api-keys" target="_blank">platform.openai.com/api-keys</a>
-        </div>
-      </div>
-
-      <div id="gemini-section" style="display:none">
-        <label>Chave da API Google Gemini</label>
-        <input type="password" id="geminiKey" placeholder="AIza..." />
-        <label>Modelo</label>
-        <input type="text" id="geminiModel" placeholder="gemini-2.0-flash" value="gemini-2.0-flash" />
-        <div class="alert alert-warn" style="margin-top:-.5rem;margin-bottom:1rem">
-          🔑 Obtenha sua chave em <a href="https://aistudio.google.com/app/apikey" target="_blank">aistudio.google.com</a>
-        </div>
-      </div>
-
-      <div id="groq-section" style="display:none">
-        <label>Chave da API Groq</label>
-        <input type="password" id="groqKey" placeholder="gsk_..." />
-        <label>Modelo</label>
-        <input type="text" id="groqModel" placeholder="llama-3.3-70b-versatile" value="llama-3.3-70b-versatile" />
-        <div class="alert alert-warn" style="margin-top:-.5rem;margin-bottom:1rem">
-          🔑 Obtenha sua chave em <a href="https://console.groq.com/keys" target="_blank">console.groq.com</a>
-        </div>
-      </div>
-
-      <div id="custom-section" style="display:none">
-        <div class="alert alert-warn" style="margin-bottom:1rem">
-          🔧 Compatível com qualquer API no padrão OpenAI (Ollama, Together, Perplexity, LM Studio, etc.)
-        </div>
-        <label>URL Base da API</label>
-        <input type="text" id="customBaseUrl" placeholder="https://api.example.com/v1" />
-        <label>Chave da API (opcional)</label>
-        <input type="password" id="customKey" placeholder="sk-..." />
-        <label>Modelo</label>
-        <input type="text" id="customModel" placeholder="gpt-4o-mini" />
-      </div>
+      <div id="anthropic-section"><label>Chave Anthropic</label><input type="password" id="anthropicKey" placeholder="sk-ant-..." /></div>
+      <div id="openai-section" style="display:none"><label>Chave OpenAI</label><input type="password" id="openaiKey" placeholder="sk-..." /></div>
+      <div id="gemini-section" style="display:none"><label>Chave Gemini</label><input type="password" id="geminiKey" placeholder="AIza..." /><label>Modelo</label><input type="text" id="geminiModel" placeholder="gemini-2.0-flash" value="gemini-2.0-flash" /></div>
+      <div id="groq-section" style="display:none"><label>Chave Groq</label><input type="password" id="groqKey" placeholder="gsk_..." /><label>Modelo</label><input type="text" id="groqModel" placeholder="llama-3.3-70b-versatile" value="llama-3.3-70b-versatile" /></div>
+      <div id="custom-section" style="display:none"><label>URL Base API</label><input type="text" id="customBaseUrl" placeholder="https://api.example.com/v1" /><label>Chave (opcional)</label><input type="password" id="customKey" /><label>Modelo</label><input type="text" id="customModel" placeholder="gpt-4o-mini" /></div>
 
       <hr>
-
-      <div class="panel-title" style="font-size:1.15rem;margin-bottom:.2rem">Google Drive <span style="font-size:.8rem;color:var(--muted);font-weight:400">(opcional)</span></div>
-      <p style="color:var(--muted);font-size:.85rem;margin-bottom:1rem">Se não configurar, os arquivos serão disponibilizados para download manual.</p>
-
-      <label>Google OAuth Client ID</label>
+      <div class="panel-title" style="font-size:1.15rem">Google Drive <span style="font-size:.8rem;color:var(--muted)">(opcional)</span></div>
+      <label>Client ID OAuth</label>
       <input type="text" id="clientIdInput" placeholder="xxxxx.apps.googleusercontent.com" />
-
-      <div class="alert alert-warn">
-        ⚙️ Como configurar: Acesse o <a href="https://console.cloud.google.com/" target="_blank">Google Cloud Console</a> → Crie um projeto → Ative a <strong>Google Drive API</strong> → Crie credenciais OAuth 2.0 (Aplicativo da Web) → Adicione <strong id="originShow"></strong> como origem autorizada.
-      </div>
-
       <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
-        <button class="gbtn" onclick="connectGoogle()">
-          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath fill='%234285F4' d='M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z'/%3E%3Cpath fill='%2334A853' d='M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z'/%3E%3Cpath fill='%23FBBC05' d='M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34C2.85 17.09 2 20.45 2 24c0 3.55.85 6.91 2.34 9.88l7.35-5.7z'/%3E%3Cpath fill='%23EA4335' d='M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z'/%3E%3C/svg%3E" alt="G">
-          Conectar com Google
-        </button>
-        <span id="gBadge" class="badge badge-ok hidden">✓ Google conectado</span>
+        <button class="gbtn" onclick="connectGoogle()"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath fill='%234285F4' d='M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z'/%3E%3Cpath fill='%2334A853' d='M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z'/%3E%3Cpath fill='%23FBBC05' d='M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34C2.85 17.09 2 20.45 2 24c0 3.55.85 6.91 2.34 9.88l7.35-5.7z'/%3E%3Cpath fill='%23EA4335' d='M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z'/%3E%3C/svg%3E" alt="G">Conectar</button>
+        <span id="gBadge" class="badge badge-ok hidden">✓ Drive conectado</span>
       </div>
     </div>
-
     <div class="foot">
-      <span style="font-size:.82rem;color:var(--muted)">Sem Google Drive? Você poderá baixar os arquivos manualmente.</span>
+      <span style="font-size:.82rem;color:var(--muted)">Sem Drive? Baixe os arquivos manualmente.</span>
       <div class="foot-right">
-        <button class="btn btn-ghost" onclick="skipDrive()">Pular Drive →</button>
+        <button class="btn btn-ghost" onclick="skipDriveStep()">Pular Drive →</button>
         <button class="btn btn-primary" id="s1next" onclick="goTo(2)" disabled>Próximo →</button>
       </div>
     </div>
   </div>
 
-  <!-- ======== STEP 2 ======== -->
+  <!-- STEP 2: LISTA DE ARQUIVOS (até 10) -->
   <div class="sc" id="s2">
     <div class="panel">
-      <div class="panel-title">Informações do Produto</div>
-      <div class="panel-sub">Preencha os dados para nomear a pasta no Drive e gerar as tags.</div>
-
-      <div class="row2">
-        <div>
-          <label>Nº da Pasta</label>
-          <input type="text" id="fnum" placeholder="01" maxlength="6" oninput="updatePreview()" />
-        </div>
-        <div>
-          <label>Nome do Arquivo Digital</label>
-          <input type="text" id="fname" placeholder="Ex.: Topo de Bolo Borboleta" oninput="updatePreview()" />
-        </div>
+      <div class="panel-title">📦 Arquivos ZIP (até 10)</div>
+      <div class="panel-sub">Adicione até 10 arquivos ZIP. Para cada um, defina Número e Nome do produto.</div>
+      
+      <div id="filesContainer" class="files-list"></div>
+      <div style="margin-top: 1rem; display: flex; gap: 0.8rem;">
+        <button class="btn btn-ghost btn-sm" id="addFileBtn" onclick="addNewFileSlot()">+ Adicionar arquivo</button>
+        <span id="fileCounter" style="color: var(--muted); font-size: 0.8rem; align-self: center;"></span>
       </div>
-
-      <div id="previewAlert" class="alert alert-warn hidden">
-        📁 <strong id="previewName"></strong>
-      </div>
-
-      <hr>
-
-      <label>Imagem de Capa / Preview <span style="font-weight:300;text-transform:none;letter-spacing:0">(será inserida no canto superior <strong>direito</strong> dos mockups)</span></label>
-      <div class="uzone" id="coverZone" onclick="document.getElementById('coverInput').click()">
-        <div class="uzone-icon">🖼️</div>
-        <p>Clique para selecionar a imagem de capa</p>
-        <p style="font-size:.78rem;margin-top:.25rem">PNG ou JPG recomendado</p>
-      </div>
-      <input type="file" id="coverInput" accept="image/*" hidden onchange="loadCover(event)" />
-      <img id="coverPrev" class="hidden" />
     </div>
-
     <div class="foot">
       <button class="btn btn-ghost" onclick="goTo(1)">← Voltar</button>
-      <button class="btn btn-primary" id="s2next" onclick="goTo(3)" disabled>Próximo →</button>
+      <button class="btn btn-primary" id="s2next" onclick="goTo(3)">Processar Todos →</button>
     </div>
   </div>
 
-  <!-- ======== STEP 3 ======== -->
+  <!-- STEP 3: PROCESSAMENTO -->
   <div class="sc" id="s3">
     <div class="panel">
-      <div class="panel-title">Upload do Arquivo ZIP</div>
-      <div class="panel-sub">Envie o ZIP com todos os arquivos do produto. Pastas com "mockup" no nome serão detectadas automaticamente.</div>
-
-      <div class="uzone" id="zipZone"
-        onclick="document.getElementById('zipInput').click()"
-        ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
-        <div class="uzone-icon">📦</div>
-        <p id="zipZoneLabel">Clique ou arraste o arquivo ZIP aqui</p>
-      </div>
-      <input type="file" id="zipInput" accept=".zip" hidden onchange="loadZip(event)" />
-
-      <div id="processWrap" class="hidden">
-        <button class="btn btn-primary btn-full" id="processBtn" onclick="runAll()">
-          ⚡ Processar e Publicar
-        </button>
-      </div>
-    </div>
-
-    <div class="panel hidden" id="progressPanel">
-      <div class="panel-title" style="font-size:1.1rem">Processando</div>
+      <div class="panel-title">⚙️ Processamento em Lote</div>
+      <div class="panel-sub">Os arquivos serão processados um a um, extraindo ZIP, gerando tags e enviando ao Drive (se conectado).</div>
       <div class="progress"><div class="progress-fill" id="pFill" style="width:0%"></div></div>
       <p id="pLabel" style="font-size:.82rem;color:var(--muted);margin-bottom:.75rem"></p>
       <div class="logbox" id="logBox"></div>
+      <div style="margin-top: 1rem;">
+        <button class="btn btn-primary btn-full" id="startProcessBtn" onclick="startBatchProcess()">▶ Iniciar Processamento</button>
+      </div>
     </div>
-
     <div class="foot">
       <button class="btn btn-ghost" onclick="goTo(2)">← Voltar</button>
     </div>
   </div>
 
-  <!-- ======== STEP 4 ======== -->
+  <!-- STEP 4: RESULTADO GLOBAL -->
   <div class="sc" id="s4">
     <div class="panel">
-      <div class="panel-title">🎉 Concluído!</div>
-      <div class="panel-sub" id="s4sub">Arquivos processados com sucesso.</div>
-
-      <div id="driveBanner" class="alert alert-ok hidden">
-        ☁️ Pasta criada no Google Drive: <a id="driveUrl" href="#" target="_blank" class="drive-link">Abrir no Drive →</a>
-      </div>
-
+      <div class="panel-title">🎉 Processamento Finalizado</div>
+      <div class="panel-sub" id="s4sub">Todos os arquivos foram processados.</div>
+      <div id="driveBanner" class="alert alert-ok hidden">☁️ Pastas criadas no Drive. Confira os links abaixo.</div>
+      <div id="resultsList"></div>
       <hr>
-
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem">
-        <strong style="font-size:.95rem">20 Tags para o Elo7 <span id="tagCount" style="font-size:.8rem;font-weight:400;color:var(--muted)"></span></strong>
-        <div style="display:flex;gap:.5rem">
-          <button class="btn btn-ghost" id="regenBtn" style="padding:.35rem .75rem;font-size:.78rem" onclick="regenTags()">🔄 Regenerar</button>
-          <button class="btn btn-ghost" style="padding:.35rem .75rem;font-size:.78rem" onclick="copyTags()">📋 Copiar</button>
-        </div>
-      </div>
-      <div class="tagsbox" id="tagsRaw" style="display:none"></div>
-      <div class="tags-wrap" id="tagsChips"></div>
-
-      <hr>
-
-      <div id="mockupSec">
-        <strong style="font-size:.95rem">Mockups Editados</strong>
-        <div class="mgrid" id="mockupGrid"></div>
-      </div>
-
-      <hr>
-
       <div style="display:flex;gap:.75rem;flex-wrap:wrap">
-        <button class="btn btn-primary" onclick="downloadZip()">⬇ Baixar tudo em ZIP</button>
-        <button class="btn btn-ghost" onclick="resetApp()">🔄 Novo produto</button>
+        <button class="btn btn-primary" onclick="downloadGlobalZip()">⬇ Baixar TODOS em ZIP</button>
+        <button class="btn btn-ghost" onclick="resetApp()">🔄 Novo lote</button>
       </div>
     </div>
   </div>
@@ -431,673 +327,361 @@
 </main>
 
 <script>
-/* ============================================================
-   BADGE IMAGE (COMPRE 1 LEVE + 11 GRÁTIS) — embedded
-   ============================================================ */
-const BADGE_B64 = 'data:image/jpeg;base64,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';
+// ==================== ESTADO GLOBAL ====================
+let currentStep = 1;
+let apiProvider = 'anthropic';
+let anthropicKey = '', openaiKey = '', geminiKey = '', geminiModel = 'gemini-2.0-flash', groqKey = '', groqModel = 'llama-3.3-70b-versatile';
+let customKey = '', customBaseUrl = '', customModel = '';
+let clientId = '', accessToken = null, gConnected = false;
 
-/* ============================================================
-   STATE
-   ============================================================ */
-const S = {
-  step: 1,
-  apiProvider: 'anthropic',  // 'anthropic' | 'openai' | 'gemini' | 'groq' | 'custom'
-  anthropicKey: '',
-  openaiKey: '',
-  geminiKey: '',
-  geminiModel: 'gemini-2.0-flash',
-  groqKey: '',
-  groqModel: 'llama-3.3-70b-versatile',
-  customKey: '',
-  customBaseUrl: '',
-  customModel: '',
-  clientId: '',
-  accessToken: null,
-  gConnected: false,
-  folderNumber: '',
-  productName: '',
-  coverDataUrl: null,
-  coverFile: null,
-  zipFile: null,
-  extracted: [],   // {path, name, blob, isImage, isMockup}
-  mockups: [],     // {name, path, blob, url, origPath}
-  tags: '',
-  driveFolderId: null,
-  driveFolderUrl: null,
-};
+// Lista de arquivos: cada item { id, file, number, name, status, tags, extractedFiles, driveFolderUrl, folderId, zipBlob }
+let fileItems = [];
+let nextId = 1;
+let batchProcessing = false;
 
-/* ---- INIT ---- */
-document.getElementById('originShow').textContent = window.location.origin || 'file://';
-const saved = k => localStorage.getItem('elo7_' + k) || '';
-document.getElementById('anthropicKey').value = saved('ak');
-document.getElementById('openaiKey').value = saved('oaik');
-document.getElementById('geminiKey').value = saved('gak');
-document.getElementById('geminiModel').value = saved('gmod') || 'gemini-2.0-flash';
-document.getElementById('groqKey').value = saved('grqk');
-document.getElementById('groqModel').value = saved('grqmod') || 'llama-3.3-70b-versatile';
-document.getElementById('customKey').value = saved('cusk');
-document.getElementById('customBaseUrl').value = saved('cusburl');
-document.getElementById('customModel').value = saved('cusmod');
-document.getElementById('clientIdInput').value = saved('cid');
-const savedProvider = saved('provider') || 'anthropic';
-selectProvider(savedProvider);
-if (saved('ak') || saved('oaik') || saved('gak') || saved('grqk') || saved('cusburl')) checkStep1Ready();
-
-document.getElementById('anthropicKey').addEventListener('input', e => {
-  localStorage.setItem('elo7_ak', e.target.value.trim());
-  checkStep1Ready();
-});
-document.getElementById('openaiKey').addEventListener('input', e => {
-  localStorage.setItem('elo7_oaik', e.target.value.trim());
-  checkStep1Ready();
-});
-document.getElementById('geminiKey').addEventListener('input', e => {
-  localStorage.setItem('elo7_gak', e.target.value.trim());
-  checkStep1Ready();
-});
-document.getElementById('geminiModel').addEventListener('input', e => {
-  localStorage.setItem('elo7_gmod', e.target.value.trim());
-});
-document.getElementById('groqKey').addEventListener('input', e => {
-  localStorage.setItem('elo7_grqk', e.target.value.trim());
-  checkStep1Ready();
-});
-document.getElementById('groqModel').addEventListener('input', e => {
-  localStorage.setItem('elo7_grqmod', e.target.value.trim());
-});
-document.getElementById('customKey').addEventListener('input', e => {
-  localStorage.setItem('elo7_cusk', e.target.value.trim());
-});
-document.getElementById('customBaseUrl').addEventListener('input', e => {
-  localStorage.setItem('elo7_cusburl', e.target.value.trim());
-  checkStep1Ready();
-});
-document.getElementById('customModel').addEventListener('input', e => {
-  localStorage.setItem('elo7_cusmod', e.target.value.trim());
-});
-document.getElementById('clientIdInput').addEventListener('input', e => {
-  localStorage.setItem('elo7_cid', e.target.value.trim());
-});
-
-function selectProvider(p) {
-  S.apiProvider = p;
-  localStorage.setItem('elo7_provider', p);
-  ['anthropic','openai','gemini','groq','custom'].forEach(id => {
-    document.getElementById('tab-' + id).classList.toggle('active', id === p);
-    document.getElementById(id + '-section').style.display = id === p ? '' : 'none';
-  });
+// ==================== LOAD/SAVE LOCAL ====================
+function loadSaved() {
+  const get = k => localStorage.getItem('elo7_'+k) || '';
+  document.getElementById('anthropicKey').value = get('ak');
+  document.getElementById('openaiKey').value = get('oaik');
+  document.getElementById('geminiKey').value = get('gak');
+  document.getElementById('geminiModel').value = get('gmod') || 'gemini-2.0-flash';
+  document.getElementById('groqKey').value = get('grqk');
+  document.getElementById('groqModel').value = get('grqmod') || 'llama-3.3-70b-versatile';
+  document.getElementById('customKey').value = get('cusk');
+  document.getElementById('customBaseUrl').value = get('cusburl');
+  document.getElementById('customModel').value = get('cusmod');
+  document.getElementById('clientIdInput').value = get('cid');
+  const savedProvider = get('provider') || 'anthropic';
+  selectProvider(savedProvider);
+  updateApiKeysFromInputs();
   checkStep1Ready();
 }
-
+function updateApiKeysFromInputs() {
+  anthropicKey = document.getElementById('anthropicKey').value.trim();
+  openaiKey = document.getElementById('openaiKey').value.trim();
+  geminiKey = document.getElementById('geminiKey').value.trim();
+  geminiModel = document.getElementById('geminiModel').value.trim() || 'gemini-2.0-flash';
+  groqKey = document.getElementById('groqKey').value.trim();
+  groqModel = document.getElementById('groqModel').value.trim() || 'llama-3.3-70b-versatile';
+  customKey = document.getElementById('customKey').value.trim();
+  customBaseUrl = document.getElementById('customBaseUrl').value.trim().replace(/\/$/, '');
+  customModel = document.getElementById('customModel').value.trim();
+  clientId = document.getElementById('clientIdInput').value.trim();
+  localStorage.setItem('elo7_ak', anthropicKey);
+  localStorage.setItem('elo7_oaik', openaiKey);
+  localStorage.setItem('elo7_gak', geminiKey);
+  localStorage.setItem('elo7_gmod', geminiModel);
+  localStorage.setItem('elo7_grqk', groqKey);
+  localStorage.setItem('elo7_grqmod', groqModel);
+  localStorage.setItem('elo7_cusk', customKey);
+  localStorage.setItem('elo7_cusburl', customBaseUrl);
+  localStorage.setItem('elo7_cusmod', customModel);
+  localStorage.setItem('elo7_cid', clientId);
+  localStorage.setItem('elo7_provider', apiProvider);
+}
 function checkStep1Ready() {
   let ok = false;
-  if (S.apiProvider === 'anthropic') ok = !!document.getElementById('anthropicKey').value.trim();
-  else if (S.apiProvider === 'openai') ok = !!document.getElementById('openaiKey').value.trim();
-  else if (S.apiProvider === 'gemini') ok = !!document.getElementById('geminiKey').value.trim();
-  else if (S.apiProvider === 'groq') ok = !!document.getElementById('groqKey').value.trim();
-  else if (S.apiProvider === 'custom') ok = !!document.getElementById('customBaseUrl').value.trim() && !!document.getElementById('customModel').value.trim();
+  if (apiProvider === 'anthropic') ok = !!anthropicKey;
+  else if (apiProvider === 'openai') ok = !!openaiKey;
+  else if (apiProvider === 'gemini') ok = !!geminiKey;
+  else if (apiProvider === 'groq') ok = !!groqKey;
+  else if (apiProvider === 'custom') ok = !!customBaseUrl && !!customModel;
   document.getElementById('s1next').disabled = !ok;
 }
 
-/* ============================================================
-   NAVIGATION
-   ============================================================ */
-function goTo(n) {
-  const prev = S.step;
-  document.getElementById('s' + prev).classList.remove('on');
-  document.getElementById('sn' + prev).classList.remove('active');
-  document.getElementById('sn' + prev).classList.add('done');
-  S.step = n;
-  document.getElementById('s' + n).classList.add('on');
-  document.getElementById('sn' + n).classList.remove('done');
-  document.getElementById('sn' + n).classList.add('active');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+function selectProvider(p) {
+  apiProvider = p;
+  localStorage.setItem('elo7_provider', p);
+  ['anthropic','openai','gemini','groq','custom'].forEach(id => {
+    document.getElementById('tab-'+id).classList.toggle('active', id===p);
+    document.getElementById(id+'-section').style.display = id===p ? '' : 'none';
+  });
+  updateApiKeysFromInputs();
+  checkStep1Ready();
 }
 
-function skipDrive() {
-  S.gConnected = false;
-  S.accessToken = null;
-  goTo(2);
-}
+function skipDriveStep() { gConnected = false; accessToken = null; goTo(2); }
 
-/* ============================================================
-   GOOGLE DRIVE AUTH
-   ============================================================ */
 function connectGoogle() {
   const cid = document.getElementById('clientIdInput').value.trim();
-  if (!cid) { alert('Informe o Client ID do Google.'); return; }
-  S.clientId = cid;
+  if (!cid) { alert('Informe o Client ID'); return; }
+  clientId = cid;
   localStorage.setItem('elo7_cid', cid);
-
-  const load = () => {
+  const loadAuth = () => {
     const client = google.accounts.oauth2.initTokenClient({
       client_id: cid,
       scope: 'https://www.googleapis.com/auth/drive.file',
-      callback: r => {
-        if (r.access_token) {
-          S.accessToken = r.access_token;
-          S.gConnected = true;
-          document.getElementById('gBadge').classList.remove('hidden');
-          document.getElementById('gStatusArea').innerHTML =
-            '<span class="badge badge-ok">✓ Drive conectado</span>';
-          checkStep1Ready();
-        }
-      }
+      callback: r => { if (r.access_token) { accessToken = r.access_token; gConnected = true; document.getElementById('gBadge').classList.remove('hidden'); document.getElementById('gStatusArea').innerHTML = '<span class="badge badge-ok">✓ Drive conectado</span>'; checkStep1Ready(); } }
     });
     client.requestAccessToken();
   };
-
-  if (window.google?.accounts?.oauth2) { load(); return; }
-  const sc = document.createElement('script');
-  sc.src = 'https://accounts.google.com/gsi/client';
-  sc.onload = load;
-  document.head.appendChild(sc);
+  if (window.google?.accounts?.oauth2) loadAuth();
+  else { const sc = document.createElement('script'); sc.src = 'https://accounts.google.com/gsi/client'; sc.onload = loadAuth; document.head.appendChild(sc); }
 }
 
-/* ============================================================
-   STEP 2 — PRODUCT INFO
-   ============================================================ */
-function updatePreview() {
-  const n = document.getElementById('fnum').value.trim();
-  const nm = document.getElementById('fname').value.trim();
-  const alert = document.getElementById('previewAlert');
-  if (n && nm) {
-    const padded = n.padStart(2, '0');
-    S.folderNumber = padded;
-    S.productName = nm;
-    document.getElementById('previewName').textContent = `${padded} - Arquivo Digital ${nm}`;
-    alert.classList.remove('hidden');
-    document.getElementById('s2next').disabled = false;
-  } else {
-    alert.classList.add('hidden');
-    document.getElementById('s2next').disabled = true;
-  }
+// ==================== STEP 2: GERENCIAR ARQUIVOS ====================
+function renderFileList() {
+  const container = document.getElementById('filesContainer');
+  if (!container) return;
+  container.innerHTML = '';
+  fileItems.forEach((item, idx) => {
+    const div = document.createElement('div');
+    div.className = 'file-item';
+    div.innerHTML = `
+      <div class="file-info">
+        <div class="file-number">#${item.number || '---'}</div>
+        <div class="file-name">${item.name || '—'}</div>
+        <div class="file-status">${item.file ? item.file.name : 'Nenhum arquivo selecionado'}</div>
+      </div>
+      <div class="file-actions">
+        <input type="text" class="input-small" placeholder="Nº" value="${item.number || ''}" onchange="updateFileNumber(${item.id}, this.value)">
+        <input type="text" class="input-small" placeholder="Nome" value="${item.name || ''}" style="width:130px" onchange="updateFileName(${item.id}, this.value)">
+        <button class="btn btn-ghost btn-sm" onclick="selectFileForItem(${item.id})">📁 ZIP</button>
+        ${item.status === 'done' ? '<span class="badge-done">✓ Processado</span>' : ''}
+        <button class="btn btn-ghost btn-sm" onclick="removeFileItem(${item.id})" style="color:var(--err)">✖</button>
+      </div>
+    `;
+    container.appendChild(div);
+  });
+  document.getElementById('fileCounter').innerText = `${fileItems.length} / 10 arquivos`;
+  document.getElementById('addFileBtn').disabled = fileItems.length >= 10;
+  const allOk = fileItems.length > 0 && fileItems.every(f => f.file && f.number && f.name);
+  document.getElementById('s2next').disabled = !allOk;
 }
-
-function loadCover(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-  S.coverFile = file;
-  const reader = new FileReader();
-  reader.onload = ev => {
-    S.coverDataUrl = ev.target.result;
-    const img = document.getElementById('coverPrev');
-    img.src = ev.target.result;
-    img.classList.remove('hidden');
-    const z = document.getElementById('coverZone');
-    z.innerHTML = `<div class="uzone-icon">✅</div><p class="fname">${file.name}</p>`;
-    z.classList.add('filled');
+function addNewFileSlot() {
+  if (fileItems.length >= 10) return alert('Máximo 10 arquivos.');
+  fileItems.push({ id: nextId++, file: null, number: '', name: '', status: 'pending', tags: '', extractedFiles: [], driveFolderUrl: null, folderId: null, zipBlob: null });
+  renderFileList();
+}
+function updateFileNumber(id, val) { const item = fileItems.find(i => i.id === id); if (item) { item.number = val.padStart(2, '0'); renderFileList(); } }
+function updateFileName(id, val) { const item = fileItems.find(i => i.id === id); if (item) { item.name = val; renderFileList(); } }
+function selectFileForItem(id) {
+  const input = document.createElement('input'); input.type = 'file'; input.accept = '.zip';
+  input.onchange = e => {
+    const file = e.target.files[0];
+    if (file) { const item = fileItems.find(i => i.id === id); if (item) { item.file = file; item.zipBlob = file; item.status = 'pending'; renderFileList(); } }
   };
-  reader.readAsDataURL(file);
+  input.click();
 }
+function removeFileItem(id) { fileItems = fileItems.filter(i => i.id !== id); renderFileList(); }
 
-/* ============================================================
-   STEP 3 — ZIP + DRAG DROP
-   ============================================================ */
-function onDragOver(e) { e.preventDefault(); document.getElementById('zipZone').classList.add('drag'); }
-function onDragLeave() { document.getElementById('zipZone').classList.remove('drag'); }
-function onDrop(e) {
-  e.preventDefault();
-  document.getElementById('zipZone').classList.remove('drag');
-  const f = e.dataTransfer.files[0];
-  if (f?.name.toLowerCase().endsWith('.zip')) setZip(f);
-}
-function loadZip(e) { if (e.target.files[0]) setZip(e.target.files[0]); }
-function setZip(file) {
-  S.zipFile = file;
-  const z = document.getElementById('zipZone');
-  const mb = (file.size / 1024 / 1024).toFixed(2);
-  z.innerHTML = `<div class="uzone-icon">✅</div><p class="fname">${file.name}</p><p class="fsize">${mb} MB</p>`;
-  z.classList.add('filled');
-  document.getElementById('processWrap').classList.remove('hidden');
-}
-
-/* ============================================================
-   MAIN PIPELINE
-   ============================================================ */
-async function runAll() {
-  const btn = document.getElementById('processBtn');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spin"></span> Processando...';
-  document.getElementById('progressPanel').classList.remove('hidden');
-  S.anthropicKey = document.getElementById('anthropicKey').value.trim();
-  S.openaiKey = document.getElementById('openaiKey').value.trim();
-  S.geminiKey = document.getElementById('geminiKey').value.trim();
-  S.geminiModel = document.getElementById('geminiModel').value.trim() || 'gemini-2.0-flash';
-  S.groqKey = document.getElementById('groqKey').value.trim();
-  S.groqModel = document.getElementById('groqModel').value.trim() || 'llama-3.3-70b-versatile';
-  S.customKey = document.getElementById('customKey').value.trim();
-  S.customBaseUrl = document.getElementById('customBaseUrl').value.trim().replace(/\/$/, '');
-  S.customModel = document.getElementById('customModel').value.trim();
-
-  try {
-    // 1. Extract ZIP
-    log('📦 Extraindo ZIP...', 'info');
-    setP(5, 'Extraindo ZIP...');
-    await extractZip();
-    log(`✓ ${S.extracted.length} arquivos extraídos`, 'ok');
-
-    // 2. Process mockups
-    const mockFiles = S.extracted.filter(f => f.isMockup && f.isImage);
-    log(`🖼️ Mockups encontrados: ${mockFiles.length}`, 'info');
-    setP(20, 'Processando mockups...');
-    if (mockFiles.length) {
-      await processMockups(mockFiles);
-      log(`✓ ${S.mockups.length} mockups editados`, 'ok');
-    } else {
-      log('ℹ️ Nenhuma pasta "mockup" encontrada no ZIP', 'info');
+// ==================== PROCESSAMENTO EM LOTE ====================
+async function startBatchProcess() {
+  if (batchProcessing) return;
+  const pending = fileItems.filter(f => f.status !== 'done');
+  if (pending.length === 0) { alert('Todos os arquivos já foram processados!'); return; }
+  batchProcessing = true;
+  document.getElementById('startProcessBtn').disabled = true;
+  document.getElementById('startProcessBtn').innerHTML = '<span class="spin"></span> Processando...';
+  clearLog();
+  log('🚀 Iniciando processamento em lote...', 'info');
+  let processedCount = 0;
+  for (let i = 0; i < fileItems.length; i++) {
+    const item = fileItems[i];
+    if (item.status === 'done') continue;
+    log(`\n📦 [${item.number}] ${item.name} - Processando...`, 'info');
+    setProgress((i / fileItems.length) * 100, `Processando ${item.number} - ${item.name}`);
+    try {
+      await processSingleItem(item);
+      item.status = 'done';
+      renderFileList();
+      log(`✅ [${item.number}] Finalizado com sucesso!`, 'ok');
+      processedCount++;
+    } catch (err) {
+      log(`❌ [${item.number}] Erro: ${err.message}`, 'err');
+      item.status = 'error';
+      renderFileList();
     }
-
-    // 3. Generate tags
-    setP(45, 'Gerando tags com IA...');
-    const providerLabels = { anthropic:'Claude', openai:'ChatGPT', gemini:'Gemini', groq:'Groq', custom:'API Custom' };
-    log(`🏷️ Gerando 20 tags com ${providerLabels[S.apiProvider] || S.apiProvider}...`, 'info');
-    S.tags = await generateTags();
-    log('✓ Tags geradas!', 'ok');
-
-    // 4. Google Drive
-    if (S.gConnected && S.accessToken) {
-      setP(60, 'Criando pasta no Google Drive...');
-      log('☁️ Enviando para o Google Drive...', 'info');
-      await uploadToDrive();
-    } else {
-      log('ℹ️ Drive não configurado — use o download manual', 'info');
-    }
-
-    setP(100, 'Concluído! 🎉');
-    log('🎉 Tudo pronto!', 'ok');
-    setTimeout(() => { renderResults(); goTo(4); }, 700);
-
-  } catch (err) {
-    log('❌ Erro: ' + err.message, 'err');
-    console.error(err);
-    btn.disabled = false;
-    btn.innerHTML = '⚡ Tentar Novamente';
   }
+  setProgress(100, 'Concluído!');
+  log(`🎉 Processamento finalizado. ${processedCount} arquivos concluídos.`, 'ok');
+  batchProcessing = false;
+  document.getElementById('startProcessBtn').disabled = false;
+  document.getElementById('startProcessBtn').innerHTML = '▶ Iniciar Processamento';
+  renderGlobalResults();
+  goTo(4);
 }
 
-/* ---- EXTRACT ZIP ---- */
-async function extractZip() {
-  const zip = await JSZip.loadAsync(S.zipFile);
-  S.extracted = [];
+async function processSingleItem(item) {
+  // 1. Extrair ZIP
+  const zip = await JSZip.loadAsync(item.file);
+  const extracted = [];
   const tasks = [];
   zip.forEach((path, entry) => {
     if (entry.dir) return;
     tasks.push(entry.async('blob').then(blob => {
-      const lp = path.toLowerCase();
-      const isImage = /\.(jpe?g|png|webp|gif|bmp)$/i.test(path);
-      const isMockup = lp.split('/').some(seg => seg.includes('mockup'));
-      const name = path.split('/').pop();
-      S.extracted.push({ path, name, blob, isImage, isMockup });
+      extracted.push({ path, name: path.split('/').pop(), blob });
     }));
   });
   await Promise.all(tasks);
-}
+  item.extractedFiles = extracted;
+  log(`  ✓ Extraído: ${extracted.length} arquivos`, 'ok');
 
-/* ---- PROCESS MOCKUPS ---- */
-async function processMockups(files) {
-  S.mockups = [];
-  // Always load the embedded badge
-  const badgeImg = await loadImg(BADGE_B64);
-  // Load cover image only if provided
-  const coverImg = S.coverDataUrl ? await loadImg(S.coverDataUrl) : null;
+  // 2. Gerar tags com IA
+  const tags = await generateTagsForProduct(item.name);
+  item.tags = tags;
+  log(`  🏷️ Tags geradas (${tags.split(',').length})`, 'ok');
 
-  for (const f of files) {
-    try {
-      const ou = URL.createObjectURL(f.blob);
-      const mImg = await loadImg(ou);
-      URL.revokeObjectURL(ou);
-
-      const c = document.createElement('canvas');
-      c.width = mImg.width; c.height = mImg.height;
-      const ctx = c.getContext('2d');
-      ctx.drawImage(mImg, 0, 0);
-
-      const pad = Math.max(Math.round(c.width * 0.025), 8);
-
-      // === BADGE: top-LEFT corner (COMPRE 1 LEVE + 11 GRÁTIS) ===
-      const bSz = Math.min(c.width * 0.22, c.height * 0.22);
-      const bX = pad;
-      const bY = pad;
-      ctx.save();
-      ctx.shadowColor = 'rgba(0,0,0,0.4)';
-      ctx.shadowBlur = 14;
-      ctx.shadowOffsetX = 2;
-      ctx.shadowOffsetY = 2;
-      ctx.drawImage(badgeImg, bX, bY, bSz, bSz);
-      ctx.restore();
-
-      // === COVER: top-RIGHT corner (only if provided) ===
-      if (coverImg) {
-        const cSz = Math.min(c.width * 0.22, c.height * 0.22);
-        const cX = c.width - cSz - pad;
-        const cY = pad;
-        ctx.save();
-        ctx.shadowColor = 'rgba(0,0,0,0.35)';
-        ctx.shadowBlur = 12;
-        ctx.shadowOffsetX = 2;
-        ctx.shadowOffsetY = 2;
-        ctx.fillStyle = '#fff';
-        roundRect(ctx, cX - 4, cY - 4, cSz + 8, cSz + 8, 6);
-        ctx.fill();
-        ctx.restore();
-        ctx.drawImage(coverImg, cX, cY, cSz, cSz);
-      }
-
-      const blob = await canvasToBlob(c, 'image/jpeg', 0.93);
-      const url = URL.createObjectURL(blob);
-      S.mockups.push({ name: f.name, path: f.path, blob, url, origPath: f.path });
-      log('  ✓ ' + f.name, 'ok');
-    } catch (e) { log('  ✗ ' + f.name + ': ' + e.message, 'err'); }
+  // 3. Upload para Drive se conectado
+  if (gConnected && accessToken) {
+    const folderName = `${item.number} - Arquivo Digital ${item.name}`;
+    const rootId = await createDriveFolder(folderName, null);
+    item.folderId = rootId;
+    item.driveFolderUrl = `https://drive.google.com/drive/folders/${rootId}`;
+    log(`  ☁️ Pasta criada: ${folderName}`, 'ok');
+    
+    // Subir todos os arquivos extraídos
+    for (const f of extracted) {
+      await uploadFileToDrive(f.blob, f.name, rootId);
+    }
+    // Subir arquivo de tags
+    const tagsBlob = new Blob([tags.replace(/, /g, '\n')], { type: 'text/plain' });
+    await uploadFileToDrive(tagsBlob, 'tags_elo7.txt', rootId);
+    log(`  ☁️ ${extracted.length+1} arquivos enviados`, 'ok');
+  } else {
+    log(`  ℹ️ Google Drive não conectado, apenas armazenado localmente`, 'info');
   }
 }
 
-function roundRect(ctx, x, y, w, h, r) {
-  ctx.beginPath();
-  ctx.moveTo(x + r, y);
-  ctx.lineTo(x + w - r, y);
-  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
-  ctx.lineTo(x + w, y + h - r);
-  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-  ctx.lineTo(x + r, y + h);
-  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
-  ctx.lineTo(x, y + r);
-  ctx.quadraticCurveTo(x, y, x + r, y);
-  ctx.closePath();
+async function generateTagsForProduct(productName) {
+  const prompt = `Crie exatamente 20 tags para um arquivo digital chamado "${productName}" para venda na plataforma Elo7.
+As tags devem incluir: nome do produto, variações de busca, usos, temas e sinônimos.
+Retorne APENAS as 20 tags separadas por vírgula, sem numeração, sem explicação. Em português brasileiro.`;
+  const provider = apiProvider;
+  try {
+    if (provider === 'anthropic') return await callAnthropic(prompt);
+    if (provider === 'openai') return await callOpenAI(prompt);
+    if (provider === 'gemini') return await callGemini(prompt);
+    if (provider === 'groq') return await callGroq(prompt);
+    if (provider === 'custom') return await callCustom(prompt);
+    return '';
+  } catch(e) { throw new Error(`Falha na IA: ${e.message}`); }
 }
-
-function loadImg(src) {
-  return new Promise((res, rej) => {
-    const i = new Image();
-    i.crossOrigin = 'anonymous';
-    i.onload = () => res(i);
-    i.onerror = rej;
-    i.src = src;
-  });
-}
-
-function canvasToBlob(c, type, q) {
-  return new Promise(r => c.toBlob(r, type, q));
-}
-
-/* ---- GENERATE TAGS ---- */
-const TAG_PROMPT = (name) =>
-  `Crie exatamente 20 tags para um arquivo digital chamado "${name}" para venda na plataforma Elo7.\nAs tags devem incluir: nome do produto, variações de busca, usos, temas e sinônimos que compradores digitariam.\nRetorne APENAS as 20 tags separadas por vírgula, sem numeração, sem explicação, sem ponto final. Em português brasileiro.\nExemplo de formato: arquivo digital borboleta, topo de bolo borboleta, kit festa borboleta`;
-
-async function generateTags() {
-  if (S.apiProvider === 'openai') return generateTagsOpenAI();
-  if (S.apiProvider === 'gemini') return generateTagsGemini();
-  if (S.apiProvider === 'groq') return generateTagsGroq();
-  if (S.apiProvider === 'custom') return generateTagsCustom();
-  return generateTagsAnthropic();
-}
-
-async function generateTagsAnthropic() {
-  const r = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': S.anthropicKey,
-      'anthropic-version': '2023-06-01',
-      'anthropic-dangerous-direct-browser-access': 'true'
-    },
-    body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 600,
-      messages: [{ role: 'user', content: TAG_PROMPT(S.productName) }]
-    })
-  });
-  const d = await r.json();
-  if (d.error) throw new Error(d.error.message);
+async function callAnthropic(prompt) {
+  const r = await fetch('https://api.anthropic.com/v1/messages', { method:'POST', headers:{ 'Content-Type':'application/json', 'x-api-key':anthropicKey, 'anthropic-version':'2023-06-01' }, body:JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:600, messages:[{ role:'user', content:prompt }] }) });
+  const d = await r.json(); if(d.error) throw new Error(d.error.message);
   return d.content?.[0]?.text?.trim() || '';
 }
-
-async function generateTagsOpenAI() {
-  const r = await fetch('https://api.openai.com/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${S.openaiKey}`
-    },
-    body: JSON.stringify({
-      model: 'gpt-4o-mini',
-      max_tokens: 600,
-      messages: [{ role: 'user', content: TAG_PROMPT(S.productName) }]
-    })
-  });
-  const d = await r.json();
-  if (d.error) throw new Error(d.error.message);
+async function callOpenAI(prompt) {
+  const r = await fetch('https://api.openai.com/v1/chat/completions', { method:'POST', headers:{ 'Content-Type':'application/json', 'Authorization':`Bearer ${openaiKey}` }, body:JSON.stringify({ model:'gpt-4o-mini', max_tokens:600, messages:[{ role:'user', content:prompt }] }) });
+  const d = await r.json(); if(d.error) throw new Error(d.error.message);
   return d.choices?.[0]?.message?.content?.trim() || '';
 }
-
-async function generateTagsGemini() {
-  const model = S.geminiModel || 'gemini-2.0-flash';
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${S.geminiKey}`;
-  const r = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      contents: [{ parts: [{ text: TAG_PROMPT(S.productName) }] }]
-    })
-  });
-  const d = await r.json();
-  if (d.error) throw new Error(d.error.message || JSON.stringify(d.error));
+async function callGemini(prompt) {
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent?key=${geminiKey}`;
+  const r = await fetch(url, { method:'POST', headers:{ 'Content-Type':'application/json' }, body:JSON.stringify({ contents:[{ parts:[{ text:prompt }] }] }) });
+  const d = await r.json(); if(d.error) throw new Error(d.error.message);
   return d.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || '';
 }
-
-async function generateTagsGroq() {
-  const r = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${S.groqKey}`
-    },
-    body: JSON.stringify({
-      model: S.groqModel || 'llama-3.3-70b-versatile',
-      max_tokens: 600,
-      messages: [{ role: 'user', content: TAG_PROMPT(S.productName) }]
-    })
-  });
-  const d = await r.json();
-  if (d.error) throw new Error(d.error.message || JSON.stringify(d.error));
+async function callGroq(prompt) {
+  const r = await fetch('https://api.groq.com/openai/v1/chat/completions', { method:'POST', headers:{ 'Content-Type':'application/json', 'Authorization':`Bearer ${groqKey}` }, body:JSON.stringify({ model:groqModel, max_tokens:600, messages:[{ role:'user', content:prompt }] }) });
+  const d = await r.json(); if(d.error) throw new Error(d.error.message);
+  return d.choices?.[0]?.message?.content?.trim() || '';
+}
+async function callCustom(prompt) {
+  const r = await fetch(customBaseUrl+'/chat/completions', { method:'POST', headers:{ 'Content-Type':'application/json', ...(customKey?{'Authorization':`Bearer ${customKey}`}:{}) }, body:JSON.stringify({ model:customModel, max_tokens:600, messages:[{ role:'user', content:prompt }] }) });
+  const d = await r.json(); if(d.error) throw new Error(d.error.message);
   return d.choices?.[0]?.message?.content?.trim() || '';
 }
 
-async function generateTagsCustom() {
-  const r = await fetch(S.customBaseUrl + '/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      ...(S.customKey ? { 'Authorization': `Bearer ${S.customKey}` } : {})
-    },
-    body: JSON.stringify({
-      model: S.customModel,
-      max_tokens: 600,
-      messages: [{ role: 'user', content: TAG_PROMPT(S.productName) }]
-    })
-  });
-  const d = await r.json();
-  if (d.error) throw new Error(d.error.message || JSON.stringify(d.error));
-  return d.choices?.[0]?.message?.content?.trim() || '';
-}
-
-/* ---- GOOGLE DRIVE UPLOAD ---- */
-async function uploadToDrive() {
-  const folderName = `${S.folderNumber} - Arquivo Digital ${S.productName}`;
-  const rootId = await mkFolder(folderName, null);
-  S.driveFolderId = rootId;
-  S.driveFolderUrl = `https://drive.google.com/drive/folders/${rootId}`;
-  log(`✓ Pasta: ${folderName}`, 'ok');
-
-  // Build folder map
-  const fm = { '': rootId };
-  const subdirs = new Set();
-  for (const f of S.extracted) {
-    const parts = f.path.split('/');
-    for (let i = 1; i < parts.length; i++) subdirs.add(parts.slice(0, i).join('/'));
-  }
-  for (const d of [...subdirs].sort()) {
-    const parts = d.split('/');
-    const parentPath = parts.slice(0, -1).join('/');
-    const pid = fm[parentPath] ?? rootId;
-    fm[d] = await mkFolder(parts[parts.length - 1], pid);
-    log('  📁 ' + d, 'info');
-  }
-
-  // Upload files
-  let done = 0;
-  for (const f of S.extracted) {
-    const parts = f.path.split('/');
-    const parentPath = parts.slice(0, -1).join('/');
-    const pid = fm[parentPath] ?? rootId;
-    const pm = S.mockups.find(m => m.origPath === f.path);
-    await uploadFile(pm ? pm.blob : f.blob, f.name, pid);
-    done++;
-    setP(60 + (done / S.extracted.length) * 37, `Enviando: ${f.name}`);
-    log('  ↑ ' + f.name, 'info');
-  }
-
-  // Upload tags as txt
-  const tagsBlob = new Blob([S.tags.replace(/, /g, '\n')], { type: 'text/plain' });
-  await uploadFile(tagsBlob, 'tags_elo7.txt', rootId);
-  log('  ↑ tags_elo7.txt', 'ok');
-}
-
-async function mkFolder(name, parentId) {
+async function createDriveFolder(name, parentId) {
   const body = { name, mimeType: 'application/vnd.google-apps.folder' };
   if (parentId) body.parents = [parentId];
-  const r = await fetch('https://www.googleapis.com/drive/v3/files', {
-    method: 'POST',
-    headers: { 'Authorization': `Bearer ${S.accessToken}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify(body)
-  });
-  const d = await r.json();
-  if (!d.id) throw new Error('Falha ao criar pasta: ' + JSON.stringify(d));
+  const r = await fetch('https://www.googleapis.com/drive/v3/files', { method:'POST', headers:{ 'Authorization':`Bearer ${accessToken}`, 'Content-Type':'application/json' }, body:JSON.stringify(body) });
+  const d = await r.json(); if (!d.id) throw new Error('Falha criar pasta');
   return d.id;
 }
-
-async function uploadFile(blob, name, parentId) {
+async function uploadFileToDrive(blob, name, parentId) {
   const meta = { name, parents: [parentId] };
   const form = new FormData();
-  form.append('metadata', new Blob([JSON.stringify(meta)], { type: 'application/json' }));
+  form.append('metadata', new Blob([JSON.stringify(meta)], { type:'application/json' }));
   form.append('file', blob, name);
-  await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
-    method: 'POST',
-    headers: { 'Authorization': `Bearer ${S.accessToken}` },
-    body: form
+  await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', { method:'POST', headers:{ 'Authorization':`Bearer ${accessToken}` }, body:form });
+}
+
+function renderGlobalResults() {
+  const resultsDiv = document.getElementById('resultsList');
+  resultsDiv.innerHTML = '';
+  const doneItems = fileItems.filter(i => i.status === 'done');
+  if (doneItems.length === 0) { resultsDiv.innerHTML = '<p style="color:var(--muted)">Nenhum arquivo processado.</p>'; return; }
+  doneItems.forEach(item => {
+    const card = document.createElement('div');
+    card.style.background = 'var(--s2)'; card.style.borderRadius = '10px'; card.style.padding = '1rem'; card.style.marginBottom = '1rem';
+    card.innerHTML = `
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
+        <div><strong style="color:var(--accent)">${item.number}</strong> - ${item.name}</div>
+        ${item.driveFolderUrl ? `<a href="${item.driveFolderUrl}" target="_blank" style="color:var(--ok)">📁 Abrir no Drive</a>` : '<span class="badge">💾 Local</span>'}
+      </div>
+      <div class="tags-wrap" style="margin-top:0.8rem" id="tags-${item.id}"></div>
+      <div style="margin-top:0.8rem"><button class="btn btn-ghost btn-sm" onclick="downloadSingleZip(${item.id})">⬇ Baixar ZIP deste produto</button></div>
+    `;
+    resultsDiv.appendChild(card);
+    const chipsDiv = card.querySelector(`.tags-wrap`);
+    const tagList = item.tags.split(',').map(t=>t.trim()).filter(Boolean);
+    tagList.forEach(t => { const chip = document.createElement('span'); chip.className='tag-chip'; chip.textContent=t; chipsDiv.appendChild(chip); });
   });
+  if (gConnected && doneItems.some(i=>i.driveFolderUrl)) document.getElementById('driveBanner').classList.remove('hidden');
+  else document.getElementById('driveBanner').classList.add('hidden');
+  document.getElementById('s4sub').innerHTML = `${doneItems.length} produto(s) processado(s).`;
 }
-
-/* ---- RENDER RESULTS ---- */
-function renderResults() {
-  document.getElementById('s4sub').textContent =
-    `Pasta: ${S.folderNumber} - Arquivo Digital ${S.productName}`;
-
-  // Drive
-  if (S.driveFolderUrl) {
-    document.getElementById('driveBanner').classList.remove('hidden');
-    document.getElementById('driveUrl').href = S.driveFolderUrl;
-    document.getElementById('driveUrl').textContent = S.driveFolderUrl;
-  }
-
-  // Tags
-  const raw = document.getElementById('tagsRaw');
-  raw.textContent = S.tags;
-  const chips = document.getElementById('tagsChips');
-  chips.innerHTML = '';
-  const tagList = S.tags.split(',').map(t => t.trim()).filter(Boolean);
-  document.getElementById('tagCount').textContent = `(${tagList.length})`;
-  tagList.forEach(t => {
-    const el = document.createElement('span');
-    el.className = 'tag-chip';
-    el.textContent = t;
-    chips.appendChild(el);
-  });
-
-  // Mockups
-  const grid = document.getElementById('mockupGrid');
-  grid.innerHTML = '';
-  if (S.mockups.length === 0) {
-    document.getElementById('mockupSec').innerHTML =
-      '<p style="color:var(--muted);font-size:.88rem">Nenhum mockup processado.</p>';
-  } else {
-    S.mockups.forEach(m => {
-      const wrap = document.createElement('div');
-      wrap.className = 'mthumb';
-      wrap.title = m.name;
-      const img = document.createElement('img');
-      img.src = m.url; img.alt = m.name;
-      wrap.onclick = () => {
-        const a = document.createElement('a');
-        a.href = m.url; a.download = m.name; a.click();
-      };
-      wrap.appendChild(img);
-      grid.appendChild(wrap);
-    });
-  }
-}
-
-async function regenTags() {
-  const btn = document.getElementById('regenBtn');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spin"></span>';
-  try {
-    S.tags = await generateTags();
-    renderResults();
-  } catch (err) {
-    alert('Erro ao regenerar tags: ' + err.message);
-  } finally {
-    btn.disabled = false;
-    btn.innerHTML = '🔄 Regenerar';
-  }
-}
-
-function copyTags() {
-  const text = document.getElementById('tagsRaw').textContent || S.tags;
-  navigator.clipboard.writeText(text).then(() => {
-    const btn = event.target;
-    btn.textContent = '✓ Copiado!';
-    setTimeout(() => btn.innerHTML = '📋 Copiar', 1800);
-  });
-}
-
-async function downloadZip() {
-  const btn = event.target;
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spin"></span> Preparando...';
+async function downloadSingleZip(itemId) {
+  const item = fileItems.find(i => i.id === itemId);
+  if (!item || item.status !== 'done') return;
   const zip = new JSZip();
-  const folder = zip.folder(`${S.folderNumber} - Arquivo Digital ${S.productName}`);
-  for (const f of S.extracted) {
-    const pm = S.mockups.find(m => m.origPath === f.path);
-    folder.file(f.path, pm ? pm.blob : f.blob);
-  }
-  folder.file('tags_elo7.txt', S.tags.replace(/, /g, '\n'));
-  const blob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE' });
+  const folder = zip.folder(`${item.number} - Arquivo Digital ${item.name}`);
+  for (const f of item.extractedFiles) folder.file(f.path, f.blob);
+  folder.file('tags_elo7.txt', item.tags.replace(/, /g, '\n'));
+  const blob = await zip.generateAsync({ type:'blob', compression:'DEFLATE' });
   const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `${S.folderNumber} - Arquivo Digital ${S.productName}.zip`;
-  a.click();
+  const a = document.createElement('a'); a.href = url; a.download = `${item.number} - Arquivo Digital ${item.name}.zip`; a.click();
   URL.revokeObjectURL(url);
-  btn.disabled = false;
-  btn.innerHTML = '⬇ Baixar tudo em ZIP';
 }
-
+async function downloadGlobalZip() {
+  const zip = new JSZip();
+  for (const item of fileItems.filter(i=>i.status==='done')) {
+    const folder = zip.folder(`${item.number} - Arquivo Digital ${item.name}`);
+    for (const f of item.extractedFiles) folder.file(f.path, f.blob);
+    folder.file('tags_elo7.txt', item.tags.replace(/, /g, '\n'));
+  }
+  const blob = await zip.generateAsync({ type:'blob', compression:'DEFLATE' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = `todos_produtos_elo7.zip`; a.click();
+  URL.revokeObjectURL(url);
+}
 function resetApp() { location.reload(); }
 
-/* ---- HELPERS ---- */
-function setP(pct, label) {
-  document.getElementById('pFill').style.width = pct + '%';
-  document.getElementById('pLabel').textContent = label;
+// Helpers UI
+function goTo(n) {
+  document.getElementById(`s${currentStep}`).classList.remove('on');
+  document.getElementById(`sn${currentStep}`).classList.remove('active');
+  if (currentStep !== 4) document.getElementById(`sn${currentStep}`).classList.add('done');
+  currentStep = n;
+  document.getElementById(`s${n}`).classList.add('on');
+  document.getElementById(`sn${n}`).classList.remove('done');
+  document.getElementById(`sn${n}`).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (n === 2) renderFileList();
+  if (n === 4) renderGlobalResults();
 }
-function log(msg, type = 'info') {
-  const box = document.getElementById('logBox');
-  const e = document.createElement('div');
-  e.className = 'lentry ' + type;
-  e.textContent = msg;
-  box.appendChild(e);
-  box.scrollTop = box.scrollHeight;
-}
+function setProgress(pct, label) { document.getElementById('pFill').style.width = pct+'%'; document.getElementById('pLabel').textContent = label; }
+function clearLog() { document.getElementById('logBox').innerHTML = ''; }
+function log(msg, type='info') { const box = document.getElementById('logBox'); const e = document.createElement('div'); e.className = 'lentry '+type; e.textContent = msg; box.appendChild(e); box.scrollTop = box.scrollHeight; }
+
+// Event listeners dos inputs
+document.getElementById('anthropicKey').addEventListener('input', () => { updateApiKeysFromInputs(); checkStep1Ready(); });
+document.getElementById('openaiKey').addEventListener('input', () => { updateApiKeysFromInputs(); checkStep1Ready(); });
+document.getElementById('geminiKey').addEventListener('input', () => { updateApiKeysFromInputs(); checkStep1Ready(); });
+document.getElementById('geminiModel').addEventListener('input', () => updateApiKeysFromInputs());
+document.getElementById('groqKey').addEventListener('input', () => { updateApiKeysFromInputs(); checkStep1Ready(); });
+document.getElementById('groqModel').addEventListener('input', () => updateApiKeysFromInputs());
+document.getElementById('customKey').addEventListener('input', () => updateApiKeysFromInputs());
+document.getElementById('customBaseUrl').addEventListener('input', () => { updateApiKeysFromInputs(); checkStep1Ready(); });
+document.getElementById('customModel').addEventListener('input', () => { updateApiKeysFromInputs(); checkStep1Ready(); });
+document.getElementById('clientIdInput').addEventListener('input', () => updateApiKeysFromInputs());
+
+loadSaved();
+addNewFileSlot(); // começa com 1 slot vazio
 </script>
 </body>
 </html>
