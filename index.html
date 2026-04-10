@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Elo7 Publisher + Editor de Imagens</title>
+  <title>Elo7 Publisher</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -52,30 +52,6 @@
       font-size: 0.82rem;
       letter-spacing: 0.05em;
     }
-
-    .tool-tabs {
-      display: flex;
-      gap: 0.5rem;
-      justify-content: center;
-      margin: 1.5rem 0 0;
-    }
-    .tool-tab {
-      background: var(--s2);
-      border: 1px solid var(--border);
-      border-radius: 30px;
-      padding: 0.6rem 1.8rem;
-      font-size: 0.9rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s;
-      color: var(--muted);
-    }
-    .tool-tab.active {
-      background: var(--accent);
-      color: #000;
-      border-color: var(--accent);
-    }
-
     .steps {
       display: flex;
       align-items: center;
@@ -120,7 +96,6 @@
       background: var(--border);
       margin: 0 0.25rem;
     }
-
     main {
       max-width: 900px;
       margin: 0 auto;
@@ -144,7 +119,16 @@
       font-size: 0.88rem;
       margin-bottom: 1.4rem;
     }
-    input, .input-small {
+    label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 0.35rem;
+    }
+    input {
       background: var(--s2);
       border: 1px solid var(--border);
       border-radius: 8px;
@@ -157,6 +141,11 @@
     }
     input:focus {
       border-color: var(--accent);
+    }
+    .row2 {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 1rem;
     }
     .btn {
       display: inline-flex;
@@ -179,6 +168,11 @@
       opacity: 0.9;
       transform: translateY(-1px);
     }
+    .btn-primary:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+      transform: none;
+    }
     .btn-ghost {
       background: transparent;
       border: 1px solid var(--border);
@@ -188,9 +182,9 @@
       border-color: var(--accent);
       color: var(--accent);
     }
-    .btn-sm {
-      padding: 0.35rem 0.9rem;
-      font-size: 0.8rem;
+    .btn-full {
+      width: 100%;
+      justify-content: center;
     }
     .uzone {
       border: 2px dashed var(--border);
@@ -205,51 +199,46 @@
       border-color: var(--accent);
       background: rgba(255, 184, 48, 0.04);
     }
-    .files-list {
-      background: var(--s2);
-      border-radius: 10px;
-      margin-top: 1rem;
-      border: 1px solid var(--border);
+    .uzone.filled {
+      border-color: var(--ok);
+      background: rgba(52, 211, 153, 0.04);
     }
-    .file-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.9rem 1rem;
-      border-bottom: 1px solid var(--border);
-      gap: 0.8rem;
-      flex-wrap: wrap;
+    .uzone-icon {
+      font-size: 1.8rem;
+      margin-bottom: 0.4rem;
     }
-    .file-item:last-child {
-      border-bottom: none;
+    .uzone p {
+      color: var(--muted);
+      font-size: 0.88rem;
     }
-    .image-preview-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-      gap: 1rem;
-      margin-top: 1rem;
+    .uzone .fname {
+      color: var(--ok);
+      font-weight: 500;
     }
-    .preview-card {
-      background: var(--s2);
+    .alert {
+      padding: 0.7rem 1rem;
       border-radius: 8px;
-      padding: 0.5rem;
-      text-align: center;
-      border: 1px solid var(--border);
+      font-size: 0.84rem;
+      margin-bottom: 1rem;
     }
-    .preview-card img {
-      width: 100%;
-      aspect-ratio: 1;
-      object-fit: cover;
-      border-radius: 6px;
+    .alert-warn {
+      background: rgba(255, 184, 48, 0.1);
+      border: 1px solid rgba(255, 184, 48, 0.25);
+      color: var(--accent);
     }
-    .logbox {
-      background: var(--s2);
-      border-radius: 8px;
-      padding: 0.85rem 1rem;
-      max-height: 200px;
-      overflow-y: auto;
+    .alert-ok {
+      background: rgba(52, 211, 153, 0.1);
+      border: 1px solid rgba(52, 211, 153, 0.25);
+      color: var(--ok);
+    }
+    .badge-ok {
+      background: rgba(52, 211, 153, 0.15);
+      border: 1px solid rgba(52, 211, 153, 0.3);
+      color: var(--ok);
+      padding: 0.22rem 0.7rem;
+      border-radius: 20px;
       font-size: 0.78rem;
-      font-family: monospace;
+      font-weight: 600;
     }
     .progress {
       width: 100%;
@@ -263,6 +252,41 @@
       height: 100%;
       background: linear-gradient(90deg, var(--accent), var(--accent2));
       transition: width 0.3s;
+    }
+    .logbox {
+      background: var(--s2);
+      border-radius: 8px;
+      padding: 0.85rem 1rem;
+      max-height: 200px;
+      overflow-y: auto;
+      font-size: 0.78rem;
+      font-family: monospace;
+    }
+    .lentry {
+      padding: 0.18rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+    .lentry.ok { color: var(--ok); }
+    .lentry.err { color: var(--err); }
+    .lentry.info { color: var(--muted); }
+    .tags-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.6rem;
+    }
+    .tag-chip {
+      background: rgba(255, 184, 48, 0.12);
+      border: 1px solid rgba(255, 184, 48, 0.25);
+      color: var(--accent);
+      border-radius: 20px;
+      padding: 0.2rem 0.65rem;
+      font-size: 0.78rem;
+      font-weight: 500;
+    }
+    hr {
+      margin: 1rem 0;
+      border-color: var(--border);
     }
     .hidden {
       display: none !important;
@@ -279,9 +303,8 @@
       align-items: center;
       margin-top: 1.4rem;
     }
-    hr {
-      margin: 1rem 0;
-      border-color: var(--border);
+    .foot-right {
+      margin-left: auto;
     }
     .spin {
       display: inline-block;
@@ -296,75 +319,48 @@
       to { transform: rotate(360deg); }
     }
     .api-tab {
-      background: var(--s2);
-      border: 1px solid var(--border);
+      flex: 1;
+      padding: 0.55rem 0.8rem;
       border-radius: 8px;
-      padding: 0.5rem 1rem;
+      border: 1px solid var(--border);
+      background: var(--s2);
+      color: var(--muted);
+      font-family: 'Outfit', sans-serif;
       font-size: 0.85rem;
       font-weight: 500;
       cursor: pointer;
       transition: all 0.2s;
-      color: var(--muted);
+      text-align: center;
     }
     .api-tab.active {
-      background: rgba(255,184,48,0.12);
-      border-color: var(--accent);
+      background: rgba(255, 184, 48, 0.12);
+      border-color: rgba(255, 184, 48, 0.4);
       color: var(--accent);
     }
     .gbtn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.6rem 1.1rem;
       background: #fff;
       color: #333;
       border: none;
       border-radius: 8px;
-      padding: 0.6rem 1.1rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
       cursor: pointer;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 500;
     }
-    .badge-ok {
-      background: rgba(52,211,153,.15);
+    .gbtn:hover {
+      background: #f1f1f1;
+    }
+    .drive-link {
       color: var(--ok);
-      padding: 0.2rem 0.7rem;
-      border-radius: 20px;
-      font-size: 0.75rem;
+      font-weight: 600;
+      text-decoration: none;
     }
-    .editor-controls {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      margin: 1rem 0;
-      align-items: center;
-    }
-    .editor-controls label {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.85rem;
-    }
-    select, input[type="range"] {
-      background: var(--s2);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 0.3rem 0.5rem;
-      color: var(--text);
-    }
-    .tags-editor {
-      background: var(--s2);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 1rem;
-      width: 100%;
-      font-family: monospace;
-      font-size: 0.85rem;
-      color: var(--text);
-      resize: vertical;
-      margin: 0.5rem 0;
-    }
-    .save-hint {
-      font-size: 0.7rem;
-      color: var(--muted);
-      text-align: right;
+    .drive-link:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
@@ -373,175 +369,186 @@
 <header>
   <div class="brand">
     <h1>Elo7 Publisher</h1>
-    <span>ZIP + Editor de Imagens</span>
+    <span>Publicação de Arquivos ZIP</span>
   </div>
   <div id="gStatusArea"></div>
 </header>
 
-<div class="tool-tabs">
-  <div class="tool-tab active" data-tool="publisher">📦 Publicar Arquivos</div>
-  <div class="tool-tab" data-tool="imageEditor">🖼️ Editar Imagens</div>
-</div>
+<nav class="steps" id="stepNav">
+  <div class="sn active" id="sn1"><div class="sn-dot">1</div><div class="sn-label">Configuração</div></div>
+  <div class="sn-line"></div>
+  <div class="sn" id="sn2"><div class="sn-dot">2</div><div class="sn-label">Produto</div></div>
+  <div class="sn-line"></div>
+  <div class="sn" id="sn3"><div class="sn-dot">3</div><div class="sn-label">Arquivo ZIP</div></div>
+  <div class="sn-line"></div>
+  <div class="sn" id="sn4"><div class="sn-dot">4</div><div class="sn-label">Resultado</div></div>
+</nav>
 
-<!-- PUBLICADOR -->
-<div id="publisherTool">
-  <nav class="steps">
-    <div class="sn active" id="sn1"><div class="sn-dot">1</div><div class="sn-label">Configuração</div></div>
-    <div class="sn-line"></div>
-    <div class="sn" id="sn2"><div class="sn-dot">2</div><div class="sn-label">Arquivos</div></div>
-    <div class="sn-line"></div>
-    <div class="sn" id="sn3"><div class="sn-dot">3</div><div class="sn-label">Processar</div></div>
-    <div class="sn-line"></div>
-    <div class="sn" id="sn4"><div class="sn-dot">4</div><div class="sn-label">Resultado</div></div>
-  </nav>
-  <main>
-    <!-- Step 1 -->
-    <div class="sc on" id="s1">
-      <div class="panel">
-        <div class="panel-title">Chaves de API (IA para tags)</div>
-        <div class="panel-sub">Configure a IA para gerar tags automaticamente.</div>
-        <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:1rem">
-          <button class="api-tab" data-provider="anthropic">🤖 Claude</button>
-          <button class="api-tab" data-provider="openai">✨ OpenAI</button>
-          <button class="api-tab" data-provider="gemini">💎 Gemini</button>
-          <button class="api-tab" data-provider="groq">⚡ Groq</button>
-          <button class="api-tab" data-provider="custom">🔧 Custom</button>
-        </div>
-        <div id="apiConfigArea"></div>
-        <hr>
-        <div class="panel-title">Google Drive (opcional)</div>
-        <input type="text" id="clientIdInput" placeholder="Client ID OAuth" style="margin-bottom:0.5rem">
-        <button class="gbtn" onclick="connectGoogle()">🔑 Conectar Google</button>
-        <span id="gBadge" class="hidden">✓ Drive conectado</span>
+<main>
+  <!-- STEP 1 -->
+  <div class="sc on" id="s1">
+    <div class="panel">
+      <div class="panel-title">Chaves de API</div>
+      <div class="panel-sub">Configure as chaves necessárias. Elas ficam salvas localmente no seu navegador.</div>
+      <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem">
+        <button class="api-tab active" data-provider="anthropic">🤖 Claude</button>
+        <button class="api-tab" data-provider="openai">✨ OpenAI</button>
+        <button class="api-tab" data-provider="gemini">💎 Gemini</button>
+        <button class="api-tab" data-provider="groq">⚡ Groq</button>
+        <button class="api-tab" data-provider="custom">🔧 Custom</button>
       </div>
-      <div class="foot">
+      <div id="apiConfigArea"></div>
+      <hr>
+      <div class="panel-title">Google Drive <span style="font-size:.8rem;color:var(--muted)">(opcional)</span></div>
+      <label>Client ID OAuth</label>
+      <input type="text" id="clientIdInput" placeholder="xxxxx.apps.googleusercontent.com" />
+      <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
+        <button class="gbtn" onclick="connectGoogle()">🔑 Conectar Google</button>
+        <span id="gBadge" class="badge-ok hidden">✓ Drive conectado</span>
+      </div>
+    </div>
+    <div class="foot">
+      <span style="font-size:.82rem;color:var(--muted)">Sem Google Drive? Você poderá baixar os arquivos manualmente.</span>
+      <div class="foot-right">
+        <button class="btn btn-ghost" onclick="skipDrive()">Pular Drive →</button>
         <button class="btn btn-primary" id="s1next" onclick="goTo(2)" disabled>Próximo →</button>
       </div>
     </div>
+  </div>
 
-    <!-- Step 2 -->
-    <div class="sc" id="s2">
-      <div class="panel">
-        <div class="panel-title">📦 Arquivos ZIP (máx 10)</div>
-        <div id="filesContainer" class="files-list"></div>
-        <button class="btn btn-ghost btn-sm" onclick="addNewFileSlot()">+ Adicionar arquivo</button>
-      </div>
-      <div class="foot">
-        <button class="btn btn-ghost" onclick="goTo(1)">← Voltar</button>
-        <button class="btn btn-primary" id="s2next" onclick="goTo(3)" disabled>Processar →</button>
-      </div>
-    </div>
-
-    <!-- Step 3 -->
-    <div class="sc" id="s3">
-      <div class="panel">
-        <div class="progress"><div class="progress-fill" id="pFill"></div></div>
-        <div id="progressStatus" style="font-size:0.85rem; margin:0.5rem 0; color:var(--accent)"></div>
-        <div class="logbox" id="logBox"></div>
-        <button class="btn btn-primary" id="startProcessBtn" onclick="startBatchProcess()">▶ Iniciar Processamento</button>
-      </div>
-      <div class="foot">
-        <button class="btn btn-ghost" onclick="goTo(2)">← Voltar</button>
-      </div>
-    </div>
-
-    <!-- Step 4 -->
-    <div class="sc" id="s4">
-      <div class="panel">
-        <div id="resultsList"></div>
-        <button class="btn btn-primary" onclick="downloadGlobalZip()">⬇ Baixar TODOS os arquivos</button>
-        <button class="btn btn-ghost" onclick="resetApp()">🔄 Novo lote</button>
-      </div>
-    </div>
-  </main>
-</div>
-
-<!-- EDITOR DE IMAGENS -->
-<div id="imageEditorTool" style="display: none;">
-  <main>
+  <!-- STEP 2 -->
+  <div class="sc" id="s2">
     <div class="panel">
-      <div class="panel-title">🖼️ Adicionar selo "COMPRE 1 LEVE + 11 GRÁTIS"</div>
-      <div class="panel-sub">Selecione até 5 imagens. Configure posição e tamanho do selo.</div>
-      <div class="editor-controls">
-        <label>📍 Posição:
-          <select id="badgePosition">
-            <option value="top-left">Canto superior esquerdo</option>
-            <option value="top-right">Canto superior direito</option>
-            <option value="bottom-left">Canto inferior esquerdo</option>
-            <option value="bottom-right">Canto inferior direito</option>
-          </select>
-        </label>
-        <label>🔍 Tamanho:
-          <input type="range" id="badgeSize" min="10" max="40" value="22" step="1">
-          <span id="badgeSizeValue">22%</span>
-        </label>
+      <div class="panel-title">Informações do Produto</div>
+      <div class="panel-sub">Preencha os dados para nomear a pasta no Drive e gerar as tags.</div>
+      <div class="row2">
+        <div>
+          <label>Nº da Pasta</label>
+          <input type="text" id="fnum" placeholder="01" maxlength="6" oninput="updatePreview()" />
+        </div>
+        <div>
+          <label>Nome do Arquivo Digital</label>
+          <input type="text" id="fname" placeholder="Ex.: Topo de Bolo Borboleta" oninput="updatePreview()" />
+        </div>
       </div>
-      <div class="uzone" onclick="document.getElementById('editorImages').click()">
-        <div class="uzone-icon">📸</div>
-        <p>Clique para selecionar até 5 imagens (JPG/PNG/WEBP)</p>
+      <div id="previewAlert" class="alert alert-warn hidden">
+        📁 <strong id="previewName"></strong>
       </div>
-      <input type="file" id="editorImages" accept="image/jpeg,image/png,image/webp" multiple hidden>
-      <div id="editorPreviewGrid" class="image-preview-grid"></div>
-      <button class="btn btn-primary" id="processImagesBtn" onclick="processImagesWithBadge()" disabled>✨ Aplicar selo e baixar ZIP</button>
-      <div id="editorLog" class="logbox" style="margin-top:1rem; display:none;"></div>
     </div>
-  </main>
-</div>
+    <div class="foot">
+      <button class="btn btn-ghost" onclick="goTo(1)">← Voltar</button>
+      <button class="btn btn-primary" id="s2next" onclick="goTo(3)" disabled>Próximo →</button>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="sc" id="s3">
+    <div class="panel">
+      <div class="panel-title">Upload do Arquivo ZIP</div>
+      <div class="panel-sub">Envie o ZIP com todos os arquivos do produto.</div>
+      <div class="uzone" id="zipZone" onclick="document.getElementById('zipInput').click()" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
+        <div class="uzone-icon">📦</div>
+        <p id="zipZoneLabel">Clique ou arraste o arquivo ZIP aqui</p>
+      </div>
+      <input type="file" id="zipInput" accept=".zip" hidden onchange="loadZip(event)" />
+      <div id="processWrap" class="hidden">
+        <button class="btn btn-primary btn-full" id="processBtn" onclick="runAll()">⚡ Processar e Publicar</button>
+      </div>
+    </div>
+    <div class="panel hidden" id="progressPanel">
+      <div class="panel-title">Processando</div>
+      <div class="progress"><div class="progress-fill" id="pFill" style="width:0%"></div></div>
+      <p id="pLabel" style="font-size:.82rem;color:var(--muted);margin-bottom:.75rem"></p>
+      <div class="logbox" id="logBox"></div>
+    </div>
+    <div class="foot">
+      <button class="btn btn-ghost" onclick="goTo(2)">← Voltar</button>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="sc" id="s4">
+    <div class="panel">
+      <div class="panel-title">🎉 Concluído!</div>
+      <div class="panel-sub" id="s4sub">Arquivos processados com sucesso.</div>
+      <div id="driveBanner" class="alert alert-ok hidden">
+        ☁️ Pasta criada no Google Drive: <a id="driveUrl" href="#" target="_blank" class="drive-link">Abrir no Drive →</a>
+      </div>
+      <hr>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem">
+        <strong style="font-size:.95rem">20 Tags para o Elo7 <span id="tagCount" style="font-size:.8rem;font-weight:400;color:var(--muted)"></span></strong>
+        <div style="display:flex;gap:.5rem">
+          <button class="btn btn-ghost" id="regenBtn" style="padding:.35rem .75rem;font-size:.78rem" onclick="regenTags()">🔄 Regenerar</button>
+          <button class="btn btn-ghost" style="padding:.35rem .75rem;font-size:.78rem" onclick="copyTags()">📋 Copiar</button>
+        </div>
+      </div>
+      <div class="tags-wrap" id="tagsChips"></div>
+      <hr>
+      <div style="display:flex;gap:.75rem;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="downloadZip()">⬇ Baixar tudo em ZIP</button>
+        <button class="btn btn-ghost" onclick="resetApp()">🔄 Novo produto</button>
+      </div>
+    </div>
+  </div>
+</main>
 
 <script>
-  // ======================= ESTADO GLOBAL =======================
-  let currentStep = 1;
+  // ======================= ESTADO =======================
+  let step = 1;
   let apiProvider = 'anthropic';
   let anthropicKey = '', openaiKey = '', geminiKey = '', geminiModel = 'gemini-2.0-flash';
   let groqKey = '', groqModel = 'llama-3.3-70b-versatile';
   let customKey = '', customBaseUrl = '', customModel = '';
-  let accessToken = null, gConnected = false, clientId = '';
+  let clientId = '', accessToken = null, gConnected = false;
+  let folderNumber = '', productName = '';
+  let zipFile = null, extracted = [], tags = '', driveFolderUrl = null;
 
-  let fileItems = [];      // cada item: { id, file, number, name, status, extractedFiles, tags, driveFolderUrl }
-  let nextId = 1;
-  let selectedImages = [];
-
-  // ======================= SALVAMENTO DE ESTADO (apenas metadados) =======================
-  function saveMetadata() {
-    const toSave = fileItems.map(item => ({
-      id: item.id,
-      number: item.number,
-      name: item.name,
-      status: item.status,
-      tags: item.tags,
-      driveFolderUrl: item.driveFolderUrl,
-      // não salvar blobs
-    }));
-    localStorage.setItem('elo7_fileItems', JSON.stringify(toSave));
-    localStorage.setItem('elo7_nextId', nextId);
+  // ======================= FUNÇÕES DE UI =======================
+  function goTo(n) {
+    document.getElementById(`s${step}`).classList.remove('on');
+    document.getElementById(`sn${step}`).classList.remove('active');
+    if (step !== 4) document.getElementById(`sn${step}`).classList.add('done');
+    step = n;
+    document.getElementById(`s${n}`).classList.add('on');
+    document.getElementById(`sn${n}`).classList.remove('done');
+    document.getElementById(`sn${n}`).classList.add('active');
+    window.scrollTo({ top: 0 });
   }
-
-  function loadMetadata() {
-    const saved = localStorage.getItem('elo7_fileItems');
-    if (saved) {
-      const parsed = JSON.parse(saved);
-      fileItems = parsed.map(item => ({
-        ...item,
-        file: null,           // precisa ser re-selecionado
-        extractedFiles: [],   // perde os blobs
-        status: 'pending'     // força reprocessamento se necessário
-      }));
-      nextId = parseInt(localStorage.getItem('elo7_nextId')) || (fileItems.length ? Math.max(...fileItems.map(i=>i.id)) + 1 : 1);
+  function skipDrive() { gConnected = false; goTo(2); }
+  function updatePreview() {
+    const n = document.getElementById('fnum').value.trim();
+    const nm = document.getElementById('fname').value.trim();
+    if (n && nm) {
+      folderNumber = n.padStart(2, '0');
+      productName = nm;
+      document.getElementById('previewName').textContent = `${folderNumber} - Arquivo Digital ${productName}`;
+      document.getElementById('previewAlert').classList.remove('hidden');
+      document.getElementById('s2next').disabled = false;
     } else {
-      fileItems = [];
-      nextId = 1;
+      document.getElementById('previewAlert').classList.add('hidden');
+      document.getElementById('s2next').disabled = true;
     }
-    renderFileList();
+  }
+  function onDragOver(e) { e.preventDefault(); document.getElementById('zipZone').classList.add('drag'); }
+  function onDragLeave() { document.getElementById('zipZone').classList.remove('drag'); }
+  function onDrop(e) {
+    e.preventDefault();
+    document.getElementById('zipZone').classList.remove('drag');
+    const f = e.dataTransfer.files[0];
+    if (f && f.name.toLowerCase().endsWith('.zip')) setZip(f);
+  }
+  function loadZip(e) { if (e.target.files[0]) setZip(e.target.files[0]); }
+  function setZip(file) {
+    zipFile = file;
+    const z = document.getElementById('zipZone');
+    const mb = (file.size / 1024 / 1024).toFixed(2);
+    z.innerHTML = `<div class="uzone-icon">✅</div><p class="fname">${file.name}</p><p class="fsize">${mb} MB</p>`;
+    z.classList.add('filled');
+    document.getElementById('processWrap').classList.remove('hidden');
   }
 
-  // Chamar sempre que modificar metadados (number, name, tags)
-  function persistAndRender() {
-    renderFileList();
-    saveMetadata();
-  }
-
-  // ======================= CONFIGURAÇÃO DA API =======================
-  function saveToLocal() {
+  // ======================= API CONFIG =======================
+  function saveApiToLocal() {
     localStorage.setItem('elo7_provider', apiProvider);
     localStorage.setItem('elo7_ak', anthropicKey);
     localStorage.setItem('elo7_oaik', openaiKey);
@@ -554,8 +561,7 @@
     localStorage.setItem('elo7_cusmod', customModel);
     localStorage.setItem('elo7_cid', clientId);
   }
-
-  function loadFromLocal() {
+  function loadApiFromLocal() {
     apiProvider = localStorage.getItem('elo7_provider') || 'anthropic';
     anthropicKey = localStorage.getItem('elo7_ak') || '';
     openaiKey = localStorage.getItem('elo7_oaik') || '';
@@ -571,7 +577,6 @@
     renderApiConfig();
     checkStep1Ready();
   }
-
   function renderApiConfig() {
     const container = document.getElementById('apiConfigArea');
     document.querySelectorAll('.api-tab').forEach(btn => {
@@ -590,22 +595,21 @@
         else if (apiProvider === 'openai') openaiKey = e.target.value;
         else if (apiProvider === 'gemini') geminiKey = e.target.value;
         else if (apiProvider === 'groq') groqKey = e.target.value;
-        saveToLocal();
+        saveApiToLocal();
         checkStep1Ready();
       });
       if (apiProvider === 'gemini') {
-        document.getElementById('geminiModelInput')?.addEventListener('input', (e) => { geminiModel = e.target.value; saveToLocal(); });
+        document.getElementById('geminiModelInput')?.addEventListener('input', (e) => { geminiModel = e.target.value; saveApiToLocal(); });
       }
       if (apiProvider === 'groq') {
-        document.getElementById('groqModelInput')?.addEventListener('input', (e) => { groqModel = e.target.value; saveToLocal(); });
+        document.getElementById('groqModelInput')?.addEventListener('input', (e) => { groqModel = e.target.value; saveApiToLocal(); });
       }
     } else if (apiProvider === 'custom') {
-      document.getElementById('customBaseUrlInput')?.addEventListener('input', (e) => { customBaseUrl = e.target.value; saveToLocal(); checkStep1Ready(); });
-      document.getElementById('customKeyInput')?.addEventListener('input', (e) => { customKey = e.target.value; saveToLocal(); });
-      document.getElementById('customModelInput')?.addEventListener('input', (e) => { customModel = e.target.value; saveToLocal(); checkStep1Ready(); });
+      document.getElementById('customBaseUrlInput')?.addEventListener('input', (e) => { customBaseUrl = e.target.value; saveApiToLocal(); checkStep1Ready(); });
+      document.getElementById('customKeyInput')?.addEventListener('input', (e) => { customKey = e.target.value; saveApiToLocal(); });
+      document.getElementById('customModelInput')?.addEventListener('input', (e) => { customModel = e.target.value; saveApiToLocal(); checkStep1Ready(); });
     }
   }
-
   function checkStep1Ready() {
     let ok = false;
     if (apiProvider === 'anthropic') ok = !!anthropicKey;
@@ -615,21 +619,21 @@
     else if (apiProvider === 'custom') ok = !!(customBaseUrl && customModel);
     document.getElementById('s1next').disabled = !ok;
   }
-
   document.querySelectorAll('.api-tab').forEach(btn => {
     btn.addEventListener('click', () => {
       apiProvider = btn.dataset.provider;
-      saveToLocal();
+      saveApiToLocal();
       renderApiConfig();
       checkStep1Ready();
     });
   });
 
+  // ======================= GOOGLE DRIVE =======================
   function connectGoogle() {
     const cid = document.getElementById('clientIdInput').value.trim();
-    if (!cid) { alert('Insira o Client ID'); return; }
+    if (!cid) { alert('Informe o Client ID'); return; }
     clientId = cid;
-    saveToLocal();
+    saveApiToLocal();
     const loadAuth = () => {
       const client = google.accounts.oauth2.initTokenClient({
         client_id: cid,
@@ -639,7 +643,7 @@
             accessToken = r.access_token;
             gConnected = true;
             document.getElementById('gBadge').classList.remove('hidden');
-            document.getElementById('gBadge').textContent = '✓ Drive conectado';
+            document.getElementById('gStatusArea').innerHTML = '<span class="badge-ok">✓ Drive conectado</span>';
           }
         }
       });
@@ -654,206 +658,67 @@
     }
   }
 
-  function goTo(n) {
-    document.getElementById(`s${currentStep}`).classList.remove('on');
-    document.getElementById(`sn${currentStep}`).classList.remove('active');
-    if (currentStep !== 4) document.getElementById(`sn${currentStep}`).classList.add('done');
-    currentStep = n;
-    document.getElementById(`s${n}`).classList.add('on');
-    document.getElementById(`sn${n}`).classList.remove('done');
-    document.getElementById(`sn${n}`).classList.add('active');
-    window.scrollTo({ top: 0 });
-    if (n === 2) renderFileList();
-    if (n === 4) renderGlobalResults();
-  }
-
-  // ======================= GERENCIAR ARQUIVOS (ZIP apenas) =======================
-  function getNextNumber() {
-    const numbers = fileItems.map(item => parseInt(item.number, 10)).filter(n => !isNaN(n));
-    if (numbers.length === 0) return 1;
-    return Math.max(...numbers) + 1;
-  }
-
-  function renderFileList() {
-    const container = document.getElementById('filesContainer');
-    container.innerHTML = '';
-    fileItems.forEach((item) => {
-      const div = document.createElement('div');
-      div.className = 'file-item';
-      div.innerHTML = `
-        <div><strong>#${item.number || '?'}</strong> ${item.name || '—'}<br><small>${item.file ? item.file.name : 'Nenhum arquivo'}</small></div>
-        <div>
-          <input class="input-small" placeholder="Nº" value="${item.number || ''}" onchange="updateFileNumber(${item.id}, this.value)" style="width:70px">
-          <input class="input-small" placeholder="Nome" value="${item.name || ''}" style="width:120px" onchange="updateFileName(${item.id}, this.value)">
-          <button class="btn btn-ghost btn-sm" onclick="selectFileForItem(${item.id})">📁 ZIP</button>
-          <button class="btn btn-ghost btn-sm" onclick="removeFileItem(${item.id})">✖</button>
-        </div>
-      `;
-      container.appendChild(div);
-    });
-    const allFilled = fileItems.length > 0 && fileItems.every(f => f.file && f.number && f.name);
-    document.getElementById('s2next').disabled = !allFilled;
-    saveMetadata();
-  }
-
-  function addNewFileSlot() {
-    if (fileItems.length >= 10) {
-      alert('Máximo de 10 arquivos atingido.');
-      return;
-    }
-    const nextNumber = getNextNumber();
-    const formattedNumber = nextNumber.toString().padStart(2, '0');
-    fileItems.push({
-      id: nextId++,
-      file: null,
-      number: formattedNumber,
-      name: '',
-      status: 'pending',
-      extractedFiles: [],
-      tags: '',
-      driveFolderUrl: null
-    });
-    renderFileList();
-  }
-
-  function updateFileNumber(id, val) {
-    const item = fileItems.find(f => f.id === id);
-    if (item) {
-      item.number = val;
-      renderFileList();
-    }
-  }
-
-  function updateFileName(id, val) {
-    const item = fileItems.find(f => f.id === id);
-    if (item) {
-      item.name = val;
-      renderFileList();
-    }
-  }
-
-  function selectFileForItem(id) {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = '.zip';
-    input.onchange = e => {
-      const file = e.target.files[0];
-      if (file) {
-        const i = fileItems.find(f => f.id === id);
-        if (i) {
-          i.file = file;
-          i.status = 'pending';
-          i.extractedFiles = [];
-          i.tags = '';
-          renderFileList();
-        }
-      }
-    };
-    input.click();
-  }
-
-  function removeFileItem(id) {
-    fileItems = fileItems.filter(f => f.id !== id);
-    renderFileList();
-  }
-
-  // ======================= EXTRAÇÃO ZIP =======================
-  async function extractZip(file) {
-    const zip = await JSZip.loadAsync(file);
-    const files = [];
-    for (const [path, entry] of Object.entries(zip.files)) {
-      if (entry.dir) continue;
-      const blob = await entry.async('blob');
-      files.push({ path, name: path.split('/').pop(), blob });
-    }
-    return files;
-  }
-
-  // ======================= PROCESSAMENTO EM LOTE (CORRIGIDO) =======================
-  async function startBatchProcess() {
-    const btn = document.getElementById('startProcessBtn');
+  // ======================= PROCESSAMENTO PRINCIPAL =======================
+  async function runAll() {
+    const btn = document.getElementById('processBtn');
     btn.disabled = true;
     btn.innerHTML = '<span class="spin"></span> Processando...';
-    const logBox = document.getElementById('logBox');
-    logBox.innerHTML = '';
-    const progressStatus = document.getElementById('progressStatus');
+    document.getElementById('progressPanel').classList.remove('hidden');
     function log(msg, type='info') {
+      const box = document.getElementById('logBox');
       const e = document.createElement('div');
       e.className = `lentry ${type}`;
       e.textContent = msg;
-      logBox.appendChild(e);
-      e.scrollIntoView();
+      box.appendChild(e);
+      box.scrollTop = box.scrollHeight;
     }
-
-    const pendingItems = fileItems.filter(i => i.file && i.status !== 'done');
-    if (pendingItems.length === 0) {
-      log('✅ Todos os arquivos já foram processados!', 'ok');
-      btn.disabled = false;
-      btn.innerHTML = '▶ Iniciar Processamento';
-      goTo(4);
-      return;
+    function setP(pct, label) {
+      document.getElementById('pFill').style.width = pct + '%';
+      document.getElementById('pLabel').textContent = label;
     }
-
-    let processed = 0;
-    const total = pendingItems.length;
-
-    for (let idx = 0; idx < pendingItems.length; idx++) {
-      const item = pendingItems[idx];
-      progressStatus.textContent = `📄 Processando ${processed+1} de ${total}: ${item.number} - ${item.name}`;
-      log(`📦 [${item.number}] ${item.name} - extraindo ZIP...`, 'info');
-      try {
-        // Extrair
-        const extracted = await extractZip(item.file);
-        item.extractedFiles = extracted;
-        log(`   ✓ ${extracted.length} arquivos extraídos`, 'ok');
-
-        // Gerar tags
-        log(`   🤖 Gerando tags com IA...`, 'info');
-        const tags = await generateTags(item.name);
-        item.tags = tags;
-        log(`   🏷️ Tags geradas: ${tags.substring(0, 60)}...`, 'ok');
-
-        // Upload para Drive se conectado
-        if (gConnected && accessToken) {
-          log(`   ☁️ Enviando para o Google Drive...`, 'info');
-          const folderName = `${item.number} - Arquivo Digital ${item.name}`;
-          const folderId = await createDriveFolder(folderName);
-          item.driveFolderUrl = `https://drive.google.com/drive/folders/${folderId}`;
-          for (const f of extracted) {
-            await uploadFileToDrive(f.blob, f.name, folderId);
-          }
-          await uploadFileToDrive(new Blob([tags], {type:'text/plain'}), 'tags_elo7.txt', folderId);
-          log(`   ✅ Drive atualizado`, 'ok');
-        } else {
-          log(`   💾 Drive não conectado – apenas local`, 'info');
-        }
-
-        item.status = 'done';
-        saveMetadata();
-        processed++;
-        const percent = (processed / total) * 100;
-        document.getElementById('pFill').style.width = `${percent}%`;
-      } catch (err) {
-        log(`   ❌ ERRO: ${err.message}`, 'err');
-        item.status = 'error';
+    try {
+      // 1. Extrair ZIP
+      log('📦 Extraindo ZIP...', 'info');
+      setP(5, 'Extraindo ZIP...');
+      const zip = await JSZip.loadAsync(zipFile);
+      extracted = [];
+      for (const [path, entry] of Object.entries(zip.files)) {
+        if (entry.dir) continue;
+        const blob = await entry.async('blob');
+        extracted.push({ path, name: path.split('/').pop(), blob });
       }
-    }
+      log(`✓ ${extracted.length} arquivos extraídos`, 'ok');
 
-    progressStatus.textContent = '✅ Processamento finalizado!';
-    log('🎉 Todos os arquivos foram processados!', 'ok');
-    btn.disabled = false;
-    btn.innerHTML = '▶ Iniciar Processamento';
-    goTo(4);
+      // 2. Gerar tags
+      setP(45, 'Gerando tags com IA...');
+      const providerLabels = { anthropic:'Claude', openai:'ChatGPT', gemini:'Gemini', groq:'Groq', custom:'API Custom' };
+      log(`🏷️ Gerando 20 tags com ${providerLabels[apiProvider] || apiProvider}...`, 'info');
+      tags = await generateTags();
+      log('✓ Tags geradas!', 'ok');
+
+      // 3. Google Drive
+      if (gConnected && accessToken) {
+        setP(60, 'Criando pasta no Google Drive...');
+        log('☁️ Enviando para o Google Drive...', 'info');
+        await uploadToDrive();
+      } else {
+        log('ℹ️ Drive não configurado — use o download manual', 'info');
+      }
+
+      setP(100, 'Concluído! 🎉');
+      log('🎉 Tudo pronto!', 'ok');
+      setTimeout(() => { renderResults(); goTo(4); }, 700);
+    } catch (err) {
+      log('❌ Erro: ' + err.message, 'err');
+      console.error(err);
+      btn.disabled = false;
+      btn.innerHTML = '⚡ Tentar Novamente';
+    }
   }
 
-  async function generateTags(productName) {
+  async function generateTags() {
     const prompt = `Crie exatamente 20 tags para um arquivo digital chamado "${productName}" para venda no Elo7. Retorne apenas as tags separadas por vírgula, em português.`;
-    const call = async (url, options) => {
-      const r = await fetch(url, options);
-      const d = await r.json();
-      if (d.error) throw new Error(d.error.message);
-      return d;
-    };
+    const call = async (url, options) => { const r = await fetch(url, options); const d = await r.json(); if (d.error) throw new Error(d.error.message); return d; };
     try {
       if (apiProvider === 'anthropic') {
         const res = await call('https://api.anthropic.com/v1/messages', {
@@ -873,11 +738,7 @@
       }
       if (apiProvider === 'gemini') {
         const url = `https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent?key=${geminiKey}`;
-        const res = await call(url, {
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
-          body:JSON.stringify({ contents:[{ parts:[{ text:prompt }] }] })
-        });
+        const res = await call(url, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ contents:[{ parts:[{ text:prompt }] }] }) });
         return res.candidates[0].content.parts[0].text.trim();
       }
       if (apiProvider === 'groq') {
@@ -897,12 +758,20 @@
         return res.choices[0].message.content.trim();
       }
       return '';
-    } catch(e) {
-      console.error(e);
-      return 'tag1, tag2, tag3, erro ao gerar';
-    }
+    } catch(e) { throw new Error(`Falha na IA: ${e.message}`); }
   }
 
+  async function uploadToDrive() {
+    const folderName = `${folderNumber} - Arquivo Digital ${productName}`;
+    const rootId = await createDriveFolder(folderName);
+    driveFolderUrl = `https://drive.google.com/drive/folders/${rootId}`;
+    // Upload de todos os arquivos extraídos
+    for (const f of extracted) {
+      await uploadFileToDrive(f.blob, f.name, rootId);
+    }
+    const tagsBlob = new Blob([tags.replace(/, /g, '\n')], { type: 'text/plain' });
+    await uploadFileToDrive(tagsBlob, 'tags_elo7.txt', rootId);
+  }
   async function createDriveFolder(name) {
     const res = await fetch('https://www.googleapis.com/drive/v3/files', {
       method:'POST',
@@ -910,10 +779,9 @@
       body:JSON.stringify({ name, mimeType:'application/vnd.google-apps.folder' })
     });
     const data = await res.json();
-    if (!data.id) throw new Error('Falha ao criar pasta no Drive');
+    if (!data.id) throw new Error('Falha ao criar pasta');
     return data.id;
   }
-
   async function uploadFileToDrive(blob, name, parentId) {
     const form = new FormData();
     form.append('metadata', new Blob([JSON.stringify({ name, parents:[parentId] })], {type:'application/json'}));
@@ -925,224 +793,65 @@
     });
   }
 
-  // ======================= RESULTADOS COM EDIÇÃO DE TAGS =======================
-  function renderGlobalResults() {
-    const div = document.getElementById('resultsList');
-    div.innerHTML = '';
-    for (const item of fileItems.filter(f => f.status === 'done')) {
-      const card = document.createElement('div');
-      card.style.background = 'var(--s2)';
-      card.style.padding = '1rem';
-      card.style.borderRadius = '8px';
-      card.style.marginBottom = '1rem';
-      card.innerHTML = `
-        <strong>${item.number} - ${item.name}</strong><br>
-        ${item.driveFolderUrl ? `<a href="${item.driveFolderUrl}" target="_blank">📁 Pasta no Drive</a>` : '💾 Apenas local'}
-        <button class="btn btn-ghost btn-sm" onclick="downloadSingleZip(${item.id})">⬇ Baixar arquivos</button>
-        <div style="margin-top: 0.8rem;">
-          <label>✏️ Tags (edite e pressione Ctrl+S para salvar):</label>
-          <textarea class="tags-editor" id="tags-${item.id}" rows="3" placeholder="Tags separadas por vírgula...">${item.tags || ''}</textarea>
-          <div class="save-hint">💾 Ctrl+S salva as alterações localmente${item.driveFolderUrl ? ' e no Drive' : ''}</div>
-        </div>
-      `;
-      div.appendChild(card);
-      const textarea = card.querySelector(`.tags-editor`);
-      textarea.addEventListener('keydown', async (e) => {
-        if ((e.ctrlKey || e.metaKey) && e.key === 's') {
-          e.preventDefault();
-          const newTags = textarea.value.trim();
-          item.tags = newTags;
-          saveMetadata();
-          if (gConnected && accessToken && item.driveFolderUrl) {
-            const folderId = item.driveFolderUrl.split('/').pop();
-            // Deletar arquivo antigo de tags se existir
-            const searchUrl = `https://www.googleapis.com/drive/v3/files?q='${folderId}'+in+parents+and+name='tags_elo7.txt'&fields=files(id)`;
-            const searchRes = await fetch(searchUrl, { headers:{'Authorization':`Bearer ${accessToken}`} });
-            const searchData = await searchRes.json();
-            if (searchData.files && searchData.files.length) {
-              await fetch(`https://www.googleapis.com/drive/v3/files/${searchData.files[0].id}`, { method:'DELETE', headers:{'Authorization':`Bearer ${accessToken}`} });
-            }
-            await uploadFileToDrive(new Blob([newTags], {type:'text/plain'}), 'tags_elo7.txt', folderId);
-            alert('Tags salvas localmente e no Google Drive!');
-          } else {
-            alert('Tags salvas localmente!');
-          }
-        }
-      });
+  function renderResults() {
+    document.getElementById('s4sub').textContent = `Pasta: ${folderNumber} - Arquivo Digital ${productName}`;
+    if (driveFolderUrl) {
+      const banner = document.getElementById('driveBanner');
+      banner.classList.remove('hidden');
+      document.getElementById('driveUrl').href = driveFolderUrl;
+      document.getElementById('driveUrl').textContent = driveFolderUrl;
     }
+    const chipsDiv = document.getElementById('tagsChips');
+    chipsDiv.innerHTML = '';
+    const tagList = tags.split(',').map(t => t.trim()).filter(Boolean);
+    document.getElementById('tagCount').textContent = `(${tagList.length})`;
+    tagList.forEach(t => {
+      const chip = document.createElement('span');
+      chip.className = 'tag-chip';
+      chip.textContent = t;
+      chipsDiv.appendChild(chip);
+    });
   }
-
-  async function downloadSingleZip(itemId) {
-    const item = fileItems.find(f => f.id === itemId);
-    if (!item || !item.extractedFiles.length) {
-      alert('Nenhum arquivo extraído para este produto. Processe novamente.');
-      return;
-    }
-    const zip = new JSZip();
-    const folder = zip.folder(`${item.number} - Arquivo Digital ${item.name}`);
-    for (const f of item.extractedFiles) folder.file(f.path, f.blob);
-    folder.file('tags_elo7.txt', item.tags);
-    const blob = await zip.generateAsync({ type: 'blob' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = `${item.number} - ${item.name}.zip`;
-    a.click();
-    URL.revokeObjectURL(blob);
-  }
-
-  async function downloadGlobalZip() {
-    const zip = new JSZip();
-    for (const item of fileItems.filter(f => f.status === 'done' && f.extractedFiles.length)) {
-      const folder = zip.folder(`${item.number} - Arquivo Digital ${item.name}`);
-      for (const f of item.extractedFiles) folder.file(f.path, f.blob);
-      folder.file('tags_elo7.txt', item.tags);
-    }
-    const blob = await zip.generateAsync({ type: 'blob' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = 'todos_produtos.zip';
-    a.click();
-    URL.revokeObjectURL(blob);
-  }
-
-  function resetApp() {
-    localStorage.clear();
-    location.reload();
-  }
-
-  // ======================= EDITOR DE IMAGENS =======================
-  document.getElementById('editorImages').addEventListener('change', (e) => {
-    const files = Array.from(e.target.files);
-    if (files.length > 5) { alert('Máximo 5 imagens'); return; }
-    selectedImages = files.map(file => ({ file, previewUrl: URL.createObjectURL(file) }));
-    const container = document.getElementById('editorPreviewGrid');
-    container.innerHTML = '';
-    for (const img of selectedImages) {
-      const card = document.createElement('div');
-      card.className = 'preview-card';
-      const image = document.createElement('img');
-      image.src = img.previewUrl;
-      card.appendChild(image);
-      container.appendChild(card);
-    }
-    document.getElementById('processImagesBtn').disabled = selectedImages.length === 0;
-  });
-
-  const sizeSlider = document.getElementById('badgeSize');
-  const sizeValue = document.getElementById('badgeSizeValue');
-  sizeSlider.addEventListener('input', () => {
-    sizeValue.textContent = sizeSlider.value + '%';
-  });
-
-  async function processImagesWithBadge() {
-    if (selectedImages.length === 0) return;
-    const btn = document.getElementById('processImagesBtn');
+  async function regenTags() {
+    const btn = document.getElementById('regenBtn');
     btn.disabled = true;
-    btn.innerHTML = '<span class="spin"></span> Aplicando selo...';
-    const logDiv = document.getElementById('editorLog');
-    logDiv.style.display = 'block';
-    logDiv.innerHTML = '';
-    function log(msg) { const p = document.createElement('div'); p.textContent = msg; logDiv.appendChild(p); }
-    const position = document.getElementById('badgePosition').value;
-    const sizePercent = parseInt(sizeSlider.value, 10);
+    btn.innerHTML = '<span class="spin"></span>';
+    try {
+      tags = await generateTags();
+      renderResults();
+    } catch (err) { alert('Erro: ' + err.message); }
+    finally { btn.disabled = false; btn.innerHTML = '🔄 Regenerar'; }
+  }
+  function copyTags() {
+    navigator.clipboard.writeText(tags).then(() => {
+      const btn = event.target;
+      btn.textContent = '✓ Copiado!';
+      setTimeout(() => btn.innerHTML = '📋 Copiar', 1800);
+    });
+  }
+  async function downloadZip() {
+    const btn = event.target;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spin"></span> Preparando...';
     const zip = new JSZip();
-    for (let idx = 0; idx < selectedImages.length; idx++) {
-      const { file, previewUrl } = selectedImages[idx];
-      log(`🖌️ Processando: ${file.name}`);
-      const img = await loadImage(previewUrl);
-      const canvas = document.createElement('canvas');
-      canvas.width = img.width;
-      canvas.height = img.height;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0);
-      const minDim = Math.min(canvas.width, canvas.height);
-      const badgeWidth = minDim * (sizePercent / 100);
-      const badgeHeight = badgeWidth * 0.9;
-      const padding = Math.max(10, badgeWidth * 0.08);
-      let x, y;
-      switch(position) {
-        case 'top-left': x = padding; y = padding; break;
-        case 'top-right': x = canvas.width - badgeWidth - padding; y = padding; break;
-        case 'bottom-left': x = padding; y = canvas.height - badgeHeight - padding; break;
-        case 'bottom-right': x = canvas.width - badgeWidth - padding; y = canvas.height - badgeHeight - padding; break;
-        default: x = padding; y = padding;
-      }
-      ctx.save();
-      ctx.shadowBlur = 8;
-      ctx.shadowColor = 'rgba(0,0,0,0.4)';
-      ctx.fillStyle = '#e63946';
-      ctx.shadowOffsetX = 2;
-      ctx.shadowOffsetY = 2;
-      roundRect(ctx, x, y, badgeWidth, badgeHeight, 12);
-      ctx.fill();
-      ctx.fillStyle = '#fff';
-      ctx.font = `bold ${Math.floor(badgeWidth * 0.18)}px "Outfit", sans-serif`;
-      ctx.textAlign = 'center';
-      ctx.fillText("COMPRE 1", x + badgeWidth/2, y + badgeHeight * 0.3);
-      ctx.font = `bold ${Math.floor(badgeWidth * 0.22)}px "Outfit", sans-serif`;
-      ctx.fillText("LEVE +11", x + badgeWidth/2, y + badgeHeight * 0.6);
-      ctx.font = `${Math.floor(badgeWidth * 0.14)}px "Outfit", sans-serif`;
-      ctx.fillText("GRÁTIS", x + badgeWidth/2, y + badgeHeight * 0.85);
-      ctx.restore();
-      const blob = await new Promise(res => canvas.toBlob(res, 'image/jpeg', 0.92));
-      const ext = file.name.split('.').pop();
-      const newName = file.name.replace(/\.[^.]+$/, '_com_selo.') + ext;
-      zip.file(newName, blob);
-      log(`✅ ${newName} adicionado`);
-    }
-    const zipBlob = await zip.generateAsync({ type: 'blob' });
+    const folder = zip.folder(`${folderNumber} - Arquivo Digital ${productName}`);
+    for (const f of extracted) folder.file(f.path, f.blob);
+    folder.file('tags_elo7.txt', tags.replace(/, /g, '\n'));
+    const blob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE' });
+    const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
-    a.href = URL.createObjectURL(zipBlob);
-    a.download = `imagens_com_selo.zip`;
+    a.href = url;
+    a.download = `${folderNumber} - Arquivo Digital ${productName}.zip`;
     a.click();
-    URL.revokeObjectURL(zipBlob);
+    URL.revokeObjectURL(url);
     btn.disabled = false;
-    btn.innerHTML = '✨ Aplicar selo e baixar ZIP';
-    log('🎉 ZIP gerado com sucesso!');
+    btn.innerHTML = '⬇ Baixar tudo em ZIP';
   }
-
-  function loadImage(src) {
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.onload = () => resolve(img);
-      img.onerror = reject;
-      img.src = src;
-    });
-  }
-  function roundRect(ctx, x, y, w, h, r) {
-    ctx.beginPath();
-    ctx.moveTo(x + r, y);
-    ctx.lineTo(x + w - r, y);
-    ctx.quadraticCurveTo(x + w, y, x + w, y + r);
-    ctx.lineTo(x + w, y + h - r);
-    ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-    ctx.lineTo(x + r, y + h);
-    ctx.quadraticCurveTo(x, y + h, x, y + h - r);
-    ctx.lineTo(x, y + r);
-    ctx.quadraticCurveTo(x, y, x + r, y);
-    ctx.closePath();
-  }
-
-  // ======================= ALTERNÂNCIA ENTRE FERRAMENTAS =======================
-  document.querySelectorAll('.tool-tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      const tool = tab.dataset.tool;
-      document.querySelectorAll('.tool-tab').forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      if (tool === 'publisher') {
-        document.getElementById('publisherTool').style.display = 'block';
-        document.getElementById('imageEditorTool').style.display = 'none';
-      } else {
-        document.getElementById('publisherTool').style.display = 'none';
-        document.getElementById('imageEditorTool').style.display = 'block';
-      }
-    });
-  });
+  function resetApp() { location.reload(); }
 
   // Inicialização
-  loadFromLocal();
-  loadMetadata();
-  if (fileItems.length === 0) addNewFileSlot();
+  loadApiFromLocal();
+  document.getElementById('clientIdInput').addEventListener('input', (e) => { clientId = e.target.value; saveApiToLocal(); });
 </script>
 </body>
 </html>
