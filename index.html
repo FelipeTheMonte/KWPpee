@@ -3,10 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Elo7 Publisher</title>
+  <title>Elo7 Publisher - ZIP e RAR</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <!-- JSZip para ZIP, unrar-js para RAR -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/unrar-js@0.1.2/dist/unrar.min.js"></script>
   <style>
     :root {
       --bg:       #0c0c10;
@@ -369,7 +371,7 @@
 <header>
   <div class="brand">
     <h1>Elo7 Publisher</h1>
-    <span>Publicação de Arquivos ZIP</span>
+    <span>ZIP / RAR + Editor de Imagens</span>
   </div>
   <div id="gStatusArea"></div>
 </header>
@@ -379,7 +381,7 @@
   <div class="sn-line"></div>
   <div class="sn" id="sn2"><div class="sn-dot">2</div><div class="sn-label">Produto</div></div>
   <div class="sn-line"></div>
-  <div class="sn" id="sn3"><div class="sn-dot">3</div><div class="sn-label">Arquivo ZIP</div></div>
+  <div class="sn" id="sn3"><div class="sn-dot">3</div><div class="sn-label">Arquivo</div></div>
   <div class="sn-line"></div>
   <div class="sn" id="sn4"><div class="sn-dot">4</div><div class="sn-label">Resultado</div></div>
 </nav>
@@ -444,13 +446,13 @@
   <!-- STEP 3 -->
   <div class="sc" id="s3">
     <div class="panel">
-      <div class="panel-title">Upload do Arquivo ZIP</div>
-      <div class="panel-sub">Envie o ZIP com todos os arquivos do produto.</div>
-      <div class="uzone" id="zipZone" onclick="document.getElementById('zipInput').click()" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
+      <div class="panel-title">Upload do Arquivo (ZIP ou RAR)</div>
+      <div class="panel-sub">Envie o arquivo com todos os arquivos do produto. Formatos aceitos: .zip e .rar</div>
+      <div class="uzone" id="zipZone" onclick="document.getElementById('archiveInput').click()" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
         <div class="uzone-icon">📦</div>
-        <p id="zipZoneLabel">Clique ou arraste o arquivo ZIP aqui</p>
+        <p id="zipZoneLabel">Clique ou arraste o arquivo ZIP/RAR aqui</p>
       </div>
-      <input type="file" id="zipInput" accept=".zip" hidden onchange="loadZip(event)" />
+      <input type="file" id="archiveInput" accept=".zip,.rar" hidden onchange="loadArchive(event)" />
       <div id="processWrap" class="hidden">
         <button class="btn btn-primary btn-full" id="processBtn" onclick="runAll()">⚡ Processar e Publicar</button>
       </div>
@@ -501,7 +503,7 @@
   let customKey = '', customBaseUrl = '', customModel = '';
   let clientId = '', accessToken = null, gConnected = false;
   let folderNumber = '', productName = '';
-  let zipFile = null, extracted = [], tags = '', driveFolderUrl = null;
+  let archiveFile = null, extracted = [], tags = '', driveFolderUrl = null;
 
   // ======================= FUNÇÕES DE UI =======================
   function goTo(n) {
@@ -535,16 +537,55 @@
     e.preventDefault();
     document.getElementById('zipZone').classList.remove('drag');
     const f = e.dataTransfer.files[0];
-    if (f && f.name.toLowerCase().endsWith('.zip')) setZip(f);
+    if (f && (f.name.toLowerCase().endsWith('.zip') || f.name.toLowerCase().endsWith('.rar'))) setArchive(f);
+    else alert('Por favor, arraste um arquivo .zip ou .rar');
   }
-  function loadZip(e) { if (e.target.files[0]) setZip(e.target.files[0]); }
-  function setZip(file) {
-    zipFile = file;
+  function loadArchive(e) { if (e.target.files[0]) setArchive(e.target.files[0]); }
+  function setArchive(file) {
+    archiveFile = file;
     const z = document.getElementById('zipZone');
     const mb = (file.size / 1024 / 1024).toFixed(2);
     z.innerHTML = `<div class="uzone-icon">✅</div><p class="fname">${file.name}</p><p class="fsize">${mb} MB</p>`;
     z.classList.add('filled');
     document.getElementById('processWrap').classList.remove('hidden');
+  }
+
+  // ======================= EXTRAÇÃO DE ZIP E RAR =======================
+  async function extractArchive(file) {
+    const ext = file.name.split('.').pop().toLowerCase();
+    if (ext === 'zip') {
+      // Usa JSZip
+      const zip = await JSZip.loadAsync(file);
+      const files = [];
+      for (const [path, entry] of Object.entries(zip.files)) {
+        if (entry.dir) continue;
+        const blob = await entry.async('blob');
+        files.push({ path, name: path.split('/').pop(), blob });
+      }
+      return files;
+    } else if (ext === 'rar') {
+      // Usa unrar-js
+      try {
+        const arrayBuffer = await file.arrayBuffer();
+        const rarData = new Uint8Array(arrayBuffer);
+        const extractor = await unrarjs.createExtractorFromData(rarData);
+        const list = extractor.getFileList();
+        const files = [];
+        for (const item of list) {
+          if (item.directory) continue;
+          const data = extractor.extract(item);
+          const blob = new Blob([data], { type: 'application/octet-stream' });
+          files.push({ path: item.name, name: item.name.split('/').pop(), blob });
+        }
+        extractor.destroy();
+        return files;
+      } catch (err) {
+        console.error('Erro ao extrair RAR:', err);
+        throw new Error('Não foi possível extrair o arquivo RAR. Verifique se não está corrompido ou protegido por senha. Tente converter para ZIP e enviar novamente.');
+      }
+    } else {
+      throw new Error('Formato não suportado. Use .zip ou .rar');
+    }
   }
 
   // ======================= API CONFIG =======================
@@ -677,16 +718,10 @@
       document.getElementById('pLabel').textContent = label;
     }
     try {
-      // 1. Extrair ZIP
-      log('📦 Extraindo ZIP...', 'info');
-      setP(5, 'Extraindo ZIP...');
-      const zip = await JSZip.loadAsync(zipFile);
-      extracted = [];
-      for (const [path, entry] of Object.entries(zip.files)) {
-        if (entry.dir) continue;
-        const blob = await entry.async('blob');
-        extracted.push({ path, name: path.split('/').pop(), blob });
-      }
+      // 1. Extrair arquivo (ZIP ou RAR)
+      log('📦 Extraindo arquivo...', 'info');
+      setP(5, 'Extraindo arquivo...');
+      extracted = await extractArchive(archiveFile);
       log(`✓ ${extracted.length} arquivos extraídos`, 'ok');
 
       // 2. Gerar tags
@@ -765,7 +800,6 @@
     const folderName = `${folderNumber} - Arquivo Digital ${productName}`;
     const rootId = await createDriveFolder(folderName);
     driveFolderUrl = `https://drive.google.com/drive/folders/${rootId}`;
-    // Upload de todos os arquivos extraídos
     for (const f of extracted) {
       await uploadFileToDrive(f.blob, f.name, rootId);
     }
