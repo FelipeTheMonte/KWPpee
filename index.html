@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Elo7 Publisher Multi - ZIP/RAR</title>
+  <title>Elo7 Publisher Multi - Até 10 arquivos (ZIP/RAR)</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -187,6 +187,8 @@
       border-radius: 10px;
       margin-top: 1rem;
       border: 1px solid var(--border);
+      max-height: 400px;
+      overflow-y: auto;
     }
     .file-item {
       display: flex;
@@ -353,6 +355,12 @@
       border-radius: 8px;
       margin-bottom: 1rem;
     }
+    .upload-buttons {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
   </style>
 </head>
 <body>
@@ -376,7 +384,7 @@
 </nav>
 
 <main>
-  <!-- STEP 1: Configuração (API + Google) -->
+  <!-- STEP 1: Configuração -->
   <div class="sc on" id="s1">
     <div class="panel">
       <div class="panel-title">Chaves de API</div>
@@ -411,12 +419,12 @@
   <div class="sc" id="s2">
     <div class="panel">
       <div class="panel-title">📦 Arquivos (ZIP ou RAR) - Máx 10</div>
-      <div class="panel-sub">Para cada produto, defina número, nome e selecione o arquivo.</div>
-      <div id="filesContainer" class="files-list"></div>
-      <div style="margin-top: 1rem;">
-        <button class="btn btn-ghost btn-sm" onclick="addNewFileSlot()">+ Adicionar arquivo</button>
-        <span id="fileCounter" style="margin-left: 1rem; color: var(--muted); font-size: 0.8rem;"></span>
+      <div class="panel-sub">Adicione arquivos individualmente ou vários de uma vez.</div>
+      <div class="upload-buttons">
+        <button class="btn btn-ghost btn-sm" onclick="addNewFileSlot()">+ Adicionar slot vazio</button>
+        <button class="btn btn-ghost btn-sm" onclick="selectMultipleFiles()">📁 Selecionar múltiplos arquivos</button>
       </div>
+      <div id="filesContainer" class="files-list"></div>
     </div>
     <div class="foot">
       <button class="btn btn-ghost" onclick="goTo(1)">← Voltar</button>
@@ -424,7 +432,7 @@
     </div>
   </div>
 
-  <!-- STEP 3: Processamento em lote -->
+  <!-- STEP 3: Processamento -->
   <div class="sc" id="s3">
     <div class="panel">
       <div class="progress"><div class="progress-fill" id="pFill"></div></div>
@@ -501,7 +509,6 @@
       `;
       container.appendChild(div);
     });
-    document.getElementById('fileCounter').innerText = `${fileItems.length} / 10 arquivos`;
     const allValid = fileItems.length > 0 && fileItems.every(f => f.file && f.number && f.name);
     document.getElementById('s2next').disabled = !allValid;
     saveItemsMetadata();
@@ -555,6 +562,42 @@
   function removeFileItem(id) {
     fileItems = fileItems.filter(f => f.id !== id);
     renderFileList();
+  }
+
+  // Selecionar múltiplos arquivos de uma vez
+  function selectMultipleFiles() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.zip,.rar';
+    input.multiple = true;
+    input.onchange = e => {
+      const files = Array.from(e.target.files);
+      if (files.length === 0) return;
+      const currentCount = fileItems.length;
+      const totalNeeded = files.length;
+      const availableSlots = 10 - currentCount;
+      if (totalNeeded > availableSlots) {
+        alert(`Você selecionou ${totalNeeded} arquivos, mas só há ${availableSlots} slots disponíveis (máximo 10). Os primeiros ${availableSlots} serão adicionados.`);
+      }
+      const toAdd = files.slice(0, availableSlots);
+      let nextNumber = getNextNumber();
+      for (const file of toAdd) {
+        const formattedNumber = nextNumber.toString().padStart(2, '0');
+        fileItems.push({
+          id: nextId++,
+          number: formattedNumber,
+          name: file.name.replace(/\.(zip|rar)$/i, ''), // nome baseado no arquivo
+          file: file,
+          extractedFiles: [],
+          tags: '',
+          driveFolderUrl: null,
+          status: 'pending'
+        });
+        nextNumber++;
+      }
+      renderFileList();
+    };
+    input.click();
   }
 
   // Salvar metadados (não salva blobs)
@@ -877,7 +920,6 @@
         <div style="margin-top: 0.8rem;">
           <label>✏️ Tags geradas:</label>
           <div class="tags-wrap" id="tags-${item.id}"></div>
-          <div class="save-hint" style="font-size:0.7rem; color:var(--muted)">Para editar, use o botão "Regenerar" abaixo.</div>
         </div>
       `;
       div.appendChild(card);
