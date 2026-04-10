@@ -381,7 +381,7 @@
   <div class="sc on" id="s1">
     <div class="panel">
       <div class="panel-title">Chaves de API</div>
-      <div class="panel-sub">Configure a IA para gerar tags automaticamente.</div>
+      <div class="panel-sub">Configure a IA para gerar tags automaticamente. As informações são salvas no navegador.</div>
       <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem">
         <button class="api-tab active" data-provider="anthropic">🤖 Claude</button>
         <button class="api-tab" data-provider="openai">✨ OpenAI</button>
@@ -394,9 +394,12 @@
       <div class="panel-title">Google Drive <span style="font-size:.8rem;color:var(--muted)">(opcional)</span></div>
       <label>Client ID OAuth</label>
       <input type="text" id="clientIdInput" placeholder="xxxxx.apps.googleusercontent.com" />
-      <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
+      <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap; margin-top:0.5rem">
         <button class="gbtn" onclick="connectGoogle()">🔑 Conectar Google</button>
         <span id="gBadge" class="badge-ok hidden">✓ Drive conectado</span>
+      </div>
+      <div class="alert-warn" style="margin-top: 1rem; font-size:0.75rem">
+        💡 As configurações (chaves e Client ID) são salvas automaticamente. O login do Google também persiste entre sessões.
       </div>
     </div>
     <div class="foot">
@@ -456,7 +459,7 @@
   let customKey = '', customBaseUrl = '', customModel = '';
   let clientId = '', accessToken = null, gConnected = false;
 
-  let fileItems = [];     // cada item: { id, number, name, file, extractedFiles, tags, driveFolderUrl, status }
+  let fileItems = [];
   let nextId = 1;
 
   // ======================= FUNÇÕES DE UI =======================
@@ -556,7 +559,7 @@
     renderFileList();
   }
 
-  // Salvar metadados (número, nome, tags, driveFolderUrl, status) - não salva blobs
+  // Salvar metadados (número, nome, tags, driveFolderUrl, status)
   function saveItemsMetadata() {
     const toSave = fileItems.map(item => ({
       id: item.id,
@@ -577,13 +580,13 @@
         ...item,
         file: null,         // arquivo precisa ser reselecionado após recarregar
         extractedFiles: [],
-        status: 'pending'   // força reprocessamento
+        status: 'pending'
       }));
       nextId = parseInt(localStorage.getItem('elo7_nextId')) || (fileItems.length ? Math.max(...fileItems.map(i=>i.id)) + 1 : 1);
     } else {
       fileItems = [];
       nextId = 1;
-      addNewFileSlot(); // cria um slot inicial
+      addNewFileSlot();
     }
     renderFileList();
   }
@@ -600,7 +603,7 @@
     return files;
   }
 
-  // ======================= CONFIGURAÇÃO DA API =======================
+  // ======================= PERSISTÊNCIA DAS CONFIGURAÇÕES =======================
   function saveApiToLocal() {
     localStorage.setItem('elo7_provider', apiProvider);
     localStorage.setItem('elo7_ak', anthropicKey);
@@ -616,6 +619,7 @@
     localStorage.setItem('elo7_accessToken', accessToken || '');
     localStorage.setItem('elo7_gConnected', gConnected ? 'true' : 'false');
   }
+
   function loadApiFromLocal() {
     apiProvider = localStorage.getItem('elo7_provider') || 'anthropic';
     anthropicKey = localStorage.getItem('elo7_ak') || '';
@@ -641,6 +645,7 @@
     renderApiConfig();
     checkStep1Ready();
   }
+
   function renderApiConfig() {
     const container = document.getElementById('apiConfigArea');
     document.querySelectorAll('.api-tab').forEach(btn => {
@@ -674,6 +679,7 @@
       document.getElementById('customModelInput')?.addEventListener('input', (e) => { customModel = e.target.value; saveApiToLocal(); checkStep1Ready(); });
     }
   }
+
   function checkStep1Ready() {
     let ok = false;
     if (apiProvider === 'anthropic') ok = !!anthropicKey;
@@ -683,6 +689,7 @@
     else if (apiProvider === 'custom') ok = !!(customBaseUrl && customModel);
     document.getElementById('s1next').disabled = !ok;
   }
+
   document.querySelectorAll('.api-tab').forEach(btn => {
     btn.addEventListener('click', () => {
       apiProvider = btn.dataset.provider;
@@ -793,7 +800,7 @@
     });
   }
 
-  // ======================= PROCESSAMENTO EM LOTE (CORRIGIDO) =======================
+  // ======================= PROCESSAMENTO EM LOTE =======================
   async function startBatchProcess() {
     const btn = document.getElementById('startProcessBtn');
     btn.disabled = true;
@@ -825,26 +832,20 @@
       progressStatus.textContent = `📄 Processando ${processed+1} de ${total}: ${item.number} - ${item.name}`;
       log(`📦 [${item.number}] ${item.name} - extraindo ZIP...`, 'info');
       try {
-        // Extrair ZIP
         const extracted = await extractZip(item.file);
         item.extractedFiles = extracted;
         log(`   ✓ ${extracted.length} arquivos extraídos`, 'ok');
         
-        // Gerar tags
-        log(`   🤖 Gerando tags com IA...`, 'info');
         const tags = await generateTags(item.name);
         item.tags = tags;
         log(`   🏷️ Tags geradas: ${tags.substring(0, 60)}...`, 'ok');
         
-        // Upload para Drive se conectado
         if (gConnected && accessToken) {
           log(`   ☁️ Enviando para o Google Drive...`, 'info');
           const folderName = `${item.number} - Arquivo Digital ${item.name}`;
           const folderId = await createDriveFolder(folderName);
           item.driveFolderUrl = `https://drive.google.com/drive/folders/${folderId}`;
-          for (const f of extracted) {
-            await uploadFileToDrive(f.blob, f.name, folderId);
-          }
+          for (const f of extracted) await uploadFileToDrive(f.blob, f.name, folderId);
           await uploadFileToDrive(new Blob([tags], {type:'text/plain'}), 'tags_elo7.txt', folderId);
           log(`   ✅ Drive atualizado`, 'ok');
         } else {
@@ -931,16 +932,15 @@
 
   function resetApp() { localStorage.clear(); location.reload(); }
 
-  // Inicialização
+  // ======================= INICIALIZAÇÃO =======================
   loadApiFromLocal();
-  loadItemsMetadata(); // carrega os metadados (números, nomes) – se não houver, cria um slot vazio
+  loadItemsMetadata();
   document.getElementById('clientIdInput').addEventListener('input', (e) => { clientId = e.target.value; saveApiToLocal(); });
-  // Garantir que o botão "Processar" fique habilitado somente quando todos os arquivos estiverem configurados
+  // Atualiza o estado do botão "Processar" quando a lista mudar
   function checkProcessingReady() {
     const allValid = fileItems.length > 0 && fileItems.every(f => f.file && f.number && f.name);
     document.getElementById('s2next').disabled = !allValid;
   }
-  // Observador simples para atualizar o estado do botão sempre que a lista mudar
   const observer = new MutationObserver(() => checkProcessingReady());
   observer.observe(document.getElementById('filesContainer'), { childList: true, subtree: true, attributes: true });
   checkProcessingReady();
