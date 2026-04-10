@@ -3,11 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Elo7 Publisher - Multi (ZIP/RAR)</title>
+  <title>Elo7 Publisher Multi - Até 10 ZIPs</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/unrar-js@0.1.2/dist/unrar.min.js"></script>
   <style>
     :root {
       --bg:       #0c0c10;
@@ -362,7 +361,7 @@
 <header>
   <div class="brand">
     <h1>Elo7 Publisher Multi</h1>
-    <span>Até 10 arquivos (ZIP/RAR)</span>
+    <span>Até 10 arquivos ZIP</span>
   </div>
   <div id="gStatusArea"></div>
 </header>
@@ -412,13 +411,12 @@
   <!-- STEP 2: Lista de arquivos (até 10) -->
   <div class="sc" id="s2">
     <div class="panel">
-      <div class="panel-title">📦 Arquivos (ZIP ou RAR) - Máx 10</div>
-      <div class="panel-sub">Clique em "Adicionar arquivo" para criar um novo slot. A numeração é sequencial.</div>
-      <div id="filesContainer" class="files-list"></div>
-      <div style="margin-top: 1rem;">
-        <button class="btn btn-ghost btn-sm" onclick="addNewFileSlot()">+ Adicionar arquivo</button>
-        <span id="fileCounter" style="margin-left: 1rem; color: var(--muted); font-size: 0.8rem;"></span>
+      <div class="panel-title">📦 Arquivos ZIP - Máx 10</div>
+      <div class="panel-sub">Adicione arquivos individualmente. A numeração é sequencial automática.</div>
+      <div style="margin-bottom: 1rem;">
+        <button class="btn btn-ghost btn-sm" onclick="addNewFileSlot()">+ Adicionar novo arquivo</button>
       </div>
+      <div id="filesContainer" class="files-list"></div>
     </div>
     <div class="foot">
       <button class="btn btn-ghost" onclick="goTo(1)">← Voltar</button>
@@ -426,7 +424,7 @@
     </div>
   </div>
 
-  <!-- STEP 3: Processamento em lote -->
+  <!-- STEP 3: Processamento -->
   <div class="sc" id="s3">
     <div class="panel">
       <div class="progress"><div class="progress-fill" id="pFill"></div></div>
@@ -497,13 +495,12 @@
         <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
           <input class="input-small" placeholder="Nº" value="${item.number || ''}" onchange="updateFileNumber(${item.id}, this.value)" style="width:70px">
           <input class="input-small" placeholder="Nome" value="${item.name || ''}" style="width:120px" onchange="updateFileName(${item.id}, this.value)">
-          <button class="btn btn-ghost btn-sm" onclick="selectFileForItem(${item.id})">📁 Selecionar</button>
+          <button class="btn btn-ghost btn-sm" onclick="selectFileForItem(${item.id})">📁 ZIP</button>
           <button class="btn btn-ghost btn-sm" onclick="removeFileItem(${item.id})">✖</button>
         </div>
       `;
       container.appendChild(div);
     });
-    document.getElementById('fileCounter').innerText = `${fileItems.length} / 10 arquivos`;
     const allValid = fileItems.length > 0 && fileItems.every(f => f.file && f.number && f.name);
     document.getElementById('s2next').disabled = !allValid;
     saveItemsMetadata();
@@ -537,7 +534,7 @@
   function selectFileForItem(id) {
     const input = document.createElement('input');
     input.type = 'file';
-    input.accept = '.zip,.rar';
+    input.accept = '.zip';
     input.onchange = e => {
       const file = e.target.files[0];
       if (file) {
@@ -559,7 +556,7 @@
     renderFileList();
   }
 
-  // Salvar metadados (não salva blobs)
+  // Salvar metadados (número, nome, tags, driveFolderUrl, status) - não salva blobs
   function saveItemsMetadata() {
     const toSave = fileItems.map(item => ({
       id: item.id,
@@ -578,47 +575,29 @@
       const parsed = JSON.parse(saved);
       fileItems = parsed.map(item => ({
         ...item,
-        file: null,
+        file: null,         // arquivo precisa ser reselecionado após recarregar
         extractedFiles: [],
-        status: 'pending'
+        status: 'pending'   // força reprocessamento
       }));
       nextId = parseInt(localStorage.getItem('elo7_nextId')) || (fileItems.length ? Math.max(...fileItems.map(i=>i.id)) + 1 : 1);
     } else {
       fileItems = [];
       nextId = 1;
+      addNewFileSlot(); // cria um slot inicial
     }
     renderFileList();
   }
 
-  // ======================= EXTRAÇÃO DE ZIP/RAR =======================
-  async function extractArchive(file) {
-    const ext = file.name.split('.').pop().toLowerCase();
-    if (ext === 'zip') {
-      const zip = await JSZip.loadAsync(file);
-      const files = [];
-      for (const [path, entry] of Object.entries(zip.files)) {
-        if (entry.dir) continue;
-        const blob = await entry.async('blob');
-        files.push({ path, name: path.split('/').pop(), blob });
-      }
-      return files;
-    } else if (ext === 'rar') {
-      const arrayBuffer = await file.arrayBuffer();
-      const rarData = new Uint8Array(arrayBuffer);
-      const extractor = await unrarjs.createExtractorFromData(rarData);
-      const list = extractor.getFileList();
-      const files = [];
-      for (const item of list) {
-        if (item.directory) continue;
-        const data = extractor.extract(item);
-        const blob = new Blob([data], { type: 'application/octet-stream' });
-        files.push({ path: item.name, name: item.name.split('/').pop(), blob });
-      }
-      extractor.destroy();
-      return files;
-    } else {
-      throw new Error('Formato não suportado. Use .zip ou .rar');
+  // ======================= EXTRAÇÃO ZIP =======================
+  async function extractZip(file) {
+    const zip = await JSZip.loadAsync(file);
+    const files = [];
+    for (const [path, entry] of Object.entries(zip.files)) {
+      if (entry.dir) continue;
+      const blob = await entry.async('blob');
+      files.push({ path, name: path.split('/').pop(), blob });
     }
+    return files;
   }
 
   // ======================= CONFIGURAÇÃO DA API =======================
@@ -634,6 +613,8 @@
     localStorage.setItem('elo7_cusburl', customBaseUrl);
     localStorage.setItem('elo7_cusmod', customModel);
     localStorage.setItem('elo7_cid', clientId);
+    localStorage.setItem('elo7_accessToken', accessToken || '');
+    localStorage.setItem('elo7_gConnected', gConnected ? 'true' : 'false');
   }
   function loadApiFromLocal() {
     apiProvider = localStorage.getItem('elo7_provider') || 'anthropic';
@@ -647,6 +628,15 @@
     customBaseUrl = localStorage.getItem('elo7_cusburl') || '';
     customModel = localStorage.getItem('elo7_cusmod') || '';
     clientId = localStorage.getItem('elo7_cid') || '';
+    const savedToken = localStorage.getItem('elo7_accessToken');
+    if (savedToken) {
+      accessToken = savedToken;
+      gConnected = localStorage.getItem('elo7_gConnected') === 'true';
+      if (gConnected) {
+        document.getElementById('gBadge').classList.remove('hidden');
+        document.getElementById('gStatusArea').innerHTML = '<span class="badge-ok">✓ Drive conectado</span>';
+      }
+    }
     document.getElementById('clientIdInput').value = clientId;
     renderApiConfig();
     checkStep1Ready();
@@ -716,8 +706,11 @@
           if (r.access_token) {
             accessToken = r.access_token;
             gConnected = true;
+            saveApiToLocal();
             document.getElementById('gBadge').classList.remove('hidden');
             document.getElementById('gStatusArea').innerHTML = '<span class="badge-ok">✓ Drive conectado</span>';
+          } else {
+            alert('Falha na autenticação');
           }
         }
       });
@@ -800,7 +793,7 @@
     });
   }
 
-  // ======================= PROCESSAMENTO EM LOTE =======================
+  // ======================= PROCESSAMENTO EM LOTE (CORRIGIDO) =======================
   async function startBatchProcess() {
     const btn = document.getElementById('startProcessBtn');
     btn.disabled = true;
@@ -830,31 +823,41 @@
     for (let idx = 0; idx < pendingItems.length; idx++) {
       const item = pendingItems[idx];
       progressStatus.textContent = `📄 Processando ${processed+1} de ${total}: ${item.number} - ${item.name}`;
-      log(`📦 [${item.number}] ${item.name} - extraindo arquivo...`, 'info');
+      log(`📦 [${item.number}] ${item.name} - extraindo ZIP...`, 'info');
       try {
-        const extracted = await extractArchive(item.file);
+        // Extrair ZIP
+        const extracted = await extractZip(item.file);
         item.extractedFiles = extracted;
         log(`   ✓ ${extracted.length} arquivos extraídos`, 'ok');
+        
+        // Gerar tags
+        log(`   🤖 Gerando tags com IA...`, 'info');
         const tags = await generateTags(item.name);
         item.tags = tags;
-        log(`   🏷️ Tags geradas`, 'ok');
+        log(`   🏷️ Tags geradas: ${tags.substring(0, 60)}...`, 'ok');
+        
+        // Upload para Drive se conectado
         if (gConnected && accessToken) {
+          log(`   ☁️ Enviando para o Google Drive...`, 'info');
           const folderName = `${item.number} - Arquivo Digital ${item.name}`;
           const folderId = await createDriveFolder(folderName);
           item.driveFolderUrl = `https://drive.google.com/drive/folders/${folderId}`;
-          for (const f of extracted) await uploadFileToDrive(f.blob, f.name, folderId);
+          for (const f of extracted) {
+            await uploadFileToDrive(f.blob, f.name, folderId);
+          }
           await uploadFileToDrive(new Blob([tags], {type:'text/plain'}), 'tags_elo7.txt', folderId);
-          log(`   ☁️ Enviado para o Drive`, 'ok');
+          log(`   ✅ Drive atualizado`, 'ok');
         } else {
           log(`   💾 Drive não conectado – apenas local`, 'info');
         }
+        
         item.status = 'done';
         saveItemsMetadata();
         processed++;
         const percent = (processed / total) * 100;
         document.getElementById('pFill').style.width = `${percent}%`;
       } catch (err) {
-        log(`   ❌ Erro: ${err.message}`, 'err');
+        log(`   ❌ ERRO: ${err.message}`, 'err');
         item.status = 'error';
       }
     }
@@ -930,9 +933,17 @@
 
   // Inicialização
   loadApiFromLocal();
-  loadItemsMetadata();
+  loadItemsMetadata(); // carrega os metadados (números, nomes) – se não houver, cria um slot vazio
   document.getElementById('clientIdInput').addEventListener('input', (e) => { clientId = e.target.value; saveApiToLocal(); });
-  if (fileItems.length === 0) addNewFileSlot();
+  // Garantir que o botão "Processar" fique habilitado somente quando todos os arquivos estiverem configurados
+  function checkProcessingReady() {
+    const allValid = fileItems.length > 0 && fileItems.every(f => f.file && f.number && f.name);
+    document.getElementById('s2next').disabled = !allValid;
+  }
+  // Observador simples para atualizar o estado do botão sempre que a lista mudar
+  const observer = new MutationObserver(() => checkProcessingReady());
+  observer.observe(document.getElementById('filesContainer'), { childList: true, subtree: true, attributes: true });
+  checkProcessingReady();
 </script>
 </body>
 </html>
