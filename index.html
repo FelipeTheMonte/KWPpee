@@ -208,7 +208,7 @@
         <span>🛍️ Selo Oferta</span>
         <span class="badge-preview-selo">COMPRE 1 LEVE +11 GRÁTIS</span>
     </h1>
-    <div class="subtitle">Arraste até 5 imagens · O selo será aplicado no canto superior esquerdo</div>
+    <div class="subtitle">Arraste até 5 imagens · Máximo 9000x9000 px · Selo no canto superior esquerdo</div>
 
     <div class="upload-area" id="dropZone">
         <div class="upload-icon">📸</div>
@@ -233,7 +233,7 @@
         </div>
     </div>
     <div class="footer-note">
-        O selo é aplicado no canto superior esquerdo com tamanho proporcional à imagem.
+        As imagens serão redimensionadas para no máximo 9000×9000 pixels (proporcional).
     </div>
 </div>
 
@@ -243,13 +243,13 @@
 
         // ---------- CONFIGURAÇÃO ----------
         const MAX_IMAGES = 5;
-        const SELO_URL = 'https://i.imgur.com/WsHYByG.png'; // imagem do selo
+        const MAX_DIMENSION = 9000; // largura/altura máxima em pixels
+        const SELO_URL = 'https://i.imgur.com/WsHYByG.png';
         
-        // Estado
         let images = []; // { id, file, dataUrl, processedBlob, width, height }
-        let seloImage = null; // Será carregada uma vez
+        let seloImage = null;
 
-        // Elementos DOM
+        // DOM elements
         const dropZone = document.getElementById('dropZone');
         const fileInput = document.getElementById('fileInput');
         const previewGrid = document.getElementById('previewGrid');
@@ -258,7 +258,7 @@
         const downloadBtn = document.getElementById('downloadBtn');
         const processStatus = document.getElementById('processStatus');
 
-        // ---------- CARREGAR IMAGEM DO SELO (com CORS) ----------
+        // ---------- CARREGAR SELO ----------
         function carregarSelo() {
             return new Promise((resolve, reject) => {
                 if (seloImage && seloImage.complete && seloImage.naturalWidth > 0) {
@@ -266,12 +266,12 @@
                     return;
                 }
                 const img = new Image();
-                img.crossOrigin = 'anonymous'; // Permite usar em canvas sem contaminar
+                img.crossOrigin = 'anonymous';
                 img.onload = () => {
                     seloImage = img;
                     resolve(img);
                 };
-                img.onerror = () => reject(new Error('Não foi possível carregar o selo. Verifique a URL.'));
+                img.onerror = () => reject(new Error('Não foi possível carregar o selo.'));
                 img.src = SELO_URL;
             });
         }
@@ -285,19 +285,29 @@
             renderPreviewGrid();
         }
 
-        // Desenha o selo (imagem) no canvas
-        function desenharSelo(ctx, width, height, seloImg) {
-            const baseSize = Math.min(width * 0.22, height * 0.22);
+        // Redimensiona mantendo proporção até no máximo MAX_DIMENSION
+        function calcularNovasDimensoes(width, height) {
+            if (width <= MAX_DIMENSION && height <= MAX_DIMENSION) {
+                return { width, height };
+            }
+            const ratio = Math.min(MAX_DIMENSION / width, MAX_DIMENSION / height);
+            return {
+                width: Math.round(width * ratio),
+                height: Math.round(height * ratio)
+            };
+        }
+
+        // Desenha o selo no canvas (com dimensões já definidas)
+        function desenharSelo(ctx, canvasWidth, canvasHeight, seloImg) {
+            const baseSize = Math.min(canvasWidth * 0.22, canvasHeight * 0.22);
             const seloWidth = Math.max(100, Math.min(200, baseSize));
-            // Mantém proporção da imagem original
             const proporcao = seloImg.naturalHeight / seloImg.naturalWidth;
             const seloHeight = seloWidth * proporcao;
             
-            const padding = Math.max(12, Math.round(width * 0.025));
+            const padding = Math.max(12, Math.round(canvasWidth * 0.025));
             const x = padding;
             const y = padding;
             
-            // Sombra suave para destacar
             ctx.save();
             ctx.shadowColor = 'rgba(0,0,0,0.4)';
             ctx.shadowBlur = 12;
@@ -307,7 +317,7 @@
             ctx.restore();
         }
 
-        // Processa UMA imagem (carrega, aplica selo, gera blob)
+        // Processa UMA imagem: redimensiona se necessário, aplica selo
         async function processImage(file, seloImg) {
             return new Promise((resolve, reject) => {
                 const img = new Image();
@@ -317,19 +327,21 @@
                 
                 img.onload = () => {
                     try {
+                        // Calcular novas dimensões (máx 9000x9000)
+                        const dims = calcularNovasDimensoes(img.width, img.height);
+                        
                         const canvas = document.createElement('canvas');
+                        canvas.width = dims.width;
+                        canvas.height = dims.height;
                         const ctx = canvas.getContext('2d');
                         
-                        canvas.width = img.width;
-                        canvas.height = img.height;
+                        // Desenhar imagem redimensionada
+                        ctx.drawImage(img, 0, 0, dims.width, dims.height);
                         
-                        // Desenha a foto original
-                        ctx.drawImage(img, 0, 0);
-                        
-                        // Aplica o selo
+                        // Aplicar selo
                         desenharSelo(ctx, canvas.width, canvas.height, seloImg);
                         
-                        // Converte para blob JPEG
+                        // Converter para blob JPEG
                         canvas.toBlob((blob) => {
                             if (!blob) {
                                 reject(new Error('Falha ao gerar blob'));
@@ -378,7 +390,6 @@
             clearBtn.disabled = true;
             
             try {
-                // Garante que o selo está carregado
                 const seloImg = await carregarSelo();
                 
                 for (const file of filesToAdd) {
@@ -537,7 +548,7 @@
         document.body.addEventListener('dragover', (e) => e.preventDefault());
         document.body.addEventListener('drop', (e) => e.preventDefault());
         
-        // Pré-carregar o selo ao iniciar
+        // Pré-carregar selo
         carregarSelo().catch(err => console.warn('Selo não carregado antecipadamente:', err));
         
         updateUI();
