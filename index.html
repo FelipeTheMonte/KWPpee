@@ -208,7 +208,7 @@
         <span>🛍️ Selo Oferta</span>
         <span class="badge-preview-selo">COMPRE 1 LEVE +11 GRÁTIS</span>
     </h1>
-    <div class="subtitle">Arraste até 5 imagens · Máximo 9000x9000 px · Selo no canto superior esquerdo</div>
+    <div class="subtitle">Arraste até 5 imagens · Tamanho final entre 580px e 9000px · Selo no canto superior esquerdo</div>
 
     <div class="upload-area" id="dropZone">
         <div class="upload-icon">📸</div>
@@ -233,7 +233,7 @@
         </div>
     </div>
     <div class="footer-note">
-        As imagens serão redimensionadas para no máximo 9000×9000 pixels (proporcional).
+        As imagens serão ajustadas para o intervalo 580–9000 pixels (proporcional).
     </div>
 </div>
 
@@ -243,13 +243,13 @@
 
         // ---------- CONFIGURAÇÃO ----------
         const MAX_IMAGES = 5;
-        const MAX_DIMENSION = 9000; // largura/altura máxima em pixels
+        const MIN_DIMENSION = 580;
+        const MAX_DIMENSION = 9000;
         const SELO_URL = 'https://i.imgur.com/WsHYByG.png';
         
-        let images = []; // { id, file, dataUrl, processedBlob, width, height }
+        let images = [];
         let seloImage = null;
 
-        // DOM elements
         const dropZone = document.getElementById('dropZone');
         const fileInput = document.getElementById('fileInput');
         const previewGrid = document.getElementById('previewGrid');
@@ -285,19 +285,32 @@
             renderPreviewGrid();
         }
 
-        // Redimensiona mantendo proporção até no máximo MAX_DIMENSION
-        function calcularNovasDimensoes(width, height) {
-            if (width <= MAX_DIMENSION && height <= MAX_DIMENSION) {
-                return { width, height };
+        // Calcula dimensões dentro do intervalo [MIN, MAX] mantendo proporção
+        function calcularDimensoesValidas(width, height) {
+            let w = width;
+            let h = height;
+            
+            // Se pelo menos uma dimensão for menor que o mínimo, faz upscale
+            if (w < MIN_DIMENSION || h < MIN_DIMENSION) {
+                const ratio = Math.max(MIN_DIMENSION / w, MIN_DIMENSION / h);
+                w = Math.round(w * ratio);
+                h = Math.round(h * ratio);
             }
-            const ratio = Math.min(MAX_DIMENSION / width, MAX_DIMENSION / height);
-            return {
-                width: Math.round(width * ratio),
-                height: Math.round(height * ratio)
-            };
+            
+            // Se alguma dimensão exceder o máximo, faz downscale
+            if (w > MAX_DIMENSION || h > MAX_DIMENSION) {
+                const ratio = Math.min(MAX_DIMENSION / w, MAX_DIMENSION / h);
+                w = Math.round(w * ratio);
+                h = Math.round(h * ratio);
+            }
+            
+            // Garantir que não ultrapasse os limites por arredondamento
+            w = Math.min(MAX_DIMENSION, Math.max(MIN_DIMENSION, w));
+            h = Math.min(MAX_DIMENSION, Math.max(MIN_DIMENSION, h));
+            
+            return { width: w, height: h };
         }
 
-        // Desenha o selo no canvas (com dimensões já definidas)
         function desenharSelo(ctx, canvasWidth, canvasHeight, seloImg) {
             const baseSize = Math.min(canvasWidth * 0.22, canvasHeight * 0.22);
             const seloWidth = Math.max(100, Math.min(200, baseSize));
@@ -317,7 +330,6 @@
             ctx.restore();
         }
 
-        // Processa UMA imagem: redimensiona se necessário, aplica selo
         async function processImage(file, seloImg) {
             return new Promise((resolve, reject) => {
                 const img = new Image();
@@ -327,21 +339,20 @@
                 
                 img.onload = () => {
                     try {
-                        // Calcular novas dimensões (máx 9000x9000)
-                        const dims = calcularNovasDimensoes(img.width, img.height);
+                        const dims = calcularDimensoesValidas(img.width, img.height);
                         
                         const canvas = document.createElement('canvas');
                         canvas.width = dims.width;
                         canvas.height = dims.height;
                         const ctx = canvas.getContext('2d');
                         
-                        // Desenhar imagem redimensionada
-                        ctx.drawImage(img, 0, 0, dims.width, dims.height);
+                        // Configuração de alta qualidade
+                        ctx.imageSmoothingEnabled = true;
+                        ctx.imageSmoothingQuality = 'high';
                         
-                        // Aplicar selo
+                        ctx.drawImage(img, 0, 0, dims.width, dims.height);
                         desenharSelo(ctx, canvas.width, canvas.height, seloImg);
                         
-                        // Converter para blob JPEG
                         canvas.toBlob((blob) => {
                             if (!blob) {
                                 reject(new Error('Falha ao gerar blob'));
@@ -367,7 +378,6 @@
             });
         }
 
-        // Adiciona novas imagens
         async function addImages(files) {
             if (!files || files.length === 0) return;
             
@@ -548,7 +558,6 @@
         document.body.addEventListener('dragover', (e) => e.preventDefault());
         document.body.addEventListener('drop', (e) => e.preventDefault());
         
-        // Pré-carregar selo
         carregarSelo().catch(err => console.warn('Selo não carregado antecipadamente:', err));
         
         updateUI();
