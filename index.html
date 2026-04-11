@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Elo7 Publisher Multi - Até 10 ZIPs</title>
+  <title>Elo7 Publisher</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -21,387 +21,236 @@
       --err:      #f87171;
       --radius:   14px;
     }
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.5}
+
+    /* ---- HEADER ---- */
+    header{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:1.4rem 2.5rem;border-bottom:1px solid var(--border);
     }
-    body {
-      font-family: 'Outfit', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
+    .brand{display:flex;align-items:baseline;gap:.6rem}
+    .brand h1{
+      font-family:'Cormorant Garamond',serif;font-size:1.9rem;font-weight:700;
+      background:linear-gradient(120deg,var(--accent),var(--accent2));
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent
     }
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1.4rem 2.5rem;
-      border-bottom: 1px solid var(--border);
+    .brand span{color:var(--muted);font-size:.82rem;letter-spacing:.05em}
+
+    /* ---- STEP NAV ---- */
+    .steps{
+      display:flex;align-items:center;justify-content:center;gap:0;
+      padding:1.5rem 2rem;border-bottom:1px solid var(--border);
+      overflow-x:auto;
     }
-    .brand h1 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.9rem;
-      font-weight: 700;
-      background: linear-gradient(120deg, var(--accent), var(--accent2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+    .sn{display:flex;align-items:center;gap:.6rem;white-space:nowrap}
+    .sn-dot{
+      width:30px;height:30px;border-radius:50%;
+      border:2px solid var(--border);display:flex;align-items:center;
+      justify-content:center;font-size:.78rem;font-weight:600;color:var(--muted);
+      transition:all .25s;flex-shrink:0
     }
-    .brand span {
-      color: var(--muted);
-      font-size: 0.82rem;
-      letter-spacing: 0.05em;
+    .sn-label{font-size:.82rem;color:var(--muted);font-weight:500;transition:color .25s}
+    .sn.active .sn-dot{border-color:var(--accent);background:var(--accent);color:#000}
+    .sn.active .sn-label{color:var(--text)}
+    .sn.done .sn-dot{border-color:var(--ok);background:var(--ok);color:#000}
+    .sn-line{width:48px;height:2px;background:var(--border);flex-shrink:0;margin:0 .25rem}
+
+    /* ---- MAIN ---- */
+    main{max-width:740px;margin:0 auto;padding:2.5rem 1.5rem}
+
+    /* ---- PANEL ---- */
+    .panel{
+      background:var(--s1);border:1px solid var(--border);
+      border-radius:var(--radius);padding:1.8rem;margin-bottom:1.4rem
     }
-    .steps {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0;
-      padding: 1.5rem 2rem;
-      border-bottom: 1px solid var(--border);
-      overflow-x: auto;
+    .panel-title{font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:600;margin-bottom:.25rem}
+    .panel-sub{color:var(--muted);font-size:.88rem;margin-bottom:1.4rem}
+
+    /* ---- FORM ---- */
+    label{display:block;font-size:.75rem;font-weight:600;color:var(--muted);
+      text-transform:uppercase;letter-spacing:.07em;margin-bottom:.35rem}
+    input[type=text],input[type=password]{
+      width:100%;background:var(--s2);border:1px solid var(--border);
+      border-radius:8px;padding:.7rem 1rem;color:var(--text);
+      font-family:'Outfit',sans-serif;font-size:.93rem;outline:none;
+      transition:border-color .2s;margin-bottom:1rem
     }
-    .sn {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      white-space: nowrap;
+    input[type=text]:focus,input[type=password]:focus{border-color:var(--accent)}
+    .row2{display:grid;grid-template-columns:1fr 2fr;gap:1rem}
+
+    /* ---- UPLOAD ZONE ---- */
+    .uzone{
+      border:2px dashed var(--border);border-radius:10px;padding:1.6rem;
+      text-align:center;cursor:pointer;transition:all .2s;margin-bottom:1rem
     }
-    .sn-dot {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      border: 2px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.78rem;
-      font-weight: 600;
-      color: var(--muted);
-      transition: all 0.25s;
+    .uzone:hover,.uzone.drag{border-color:var(--accent);background:rgba(255,184,48,.04)}
+    .uzone.filled{border-color:var(--ok);background:rgba(52,211,153,.04)}
+    .uzone-icon{font-size:1.8rem;margin-bottom:.4rem}
+    .uzone p{color:var(--muted);font-size:.88rem}
+    .uzone .fname{color:var(--ok);font-weight:500;font-size:.93rem}
+    .uzone .fsize{color:var(--muted);font-size:.78rem;margin-top:.15rem}
+
+    /* ---- BUTTONS ---- */
+    .btn{display:inline-flex;align-items:center;gap:.45rem;padding:.65rem 1.35rem;
+      border-radius:8px;border:none;cursor:pointer;font-family:'Outfit',sans-serif;
+      font-size:.88rem;font-weight:600;transition:all .2s;text-decoration:none}
+    .btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#000}
+    .btn-primary:hover{opacity:.9;transform:translateY(-1px)}
+    .btn-primary:disabled{opacity:.35;cursor:not-allowed;transform:none}
+    .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text)}
+    .btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
+    .btn-ok{background:var(--ok);color:#000}
+    .btn-full{width:100%;justify-content:center}
+
+    /* ---- ALERTS ---- */
+    .alert{padding:.7rem 1rem;border-radius:8px;font-size:.84rem;margin-bottom:1rem;line-height:1.5}
+    .alert a{color:inherit;font-weight:600}
+    .alert-warn{background:rgba(255,184,48,.1);border:1px solid rgba(255,184,48,.25);color:var(--accent)}
+    .alert-ok{background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.25);color:var(--ok)}
+    .alert-err{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.25);color:var(--err)}
+
+    /* ---- BADGES ---- */
+    .badge{display:inline-flex;align-items:center;gap:.35rem;border-radius:20px;
+      padding:.22rem .7rem;font-size:.78rem;font-weight:600}
+    .badge-ok{background:rgba(52,211,153,.15);border:1px solid rgba(52,211,153,.3);color:var(--ok)}
+
+    /* ---- PROGRESS ---- */
+    .progress{width:100%;height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin:.5rem 0}
+    .progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .3s;border-radius:3px}
+
+    /* ---- LOG ---- */
+    .logbox{
+      background:var(--s2);border-radius:8px;padding:.85rem 1rem;
+      max-height:180px;overflow-y:auto;font-size:.78rem;font-family:'Courier New',monospace;
     }
-    .sn.active .sn-dot {
-      border-color: var(--accent);
-      background: var(--accent);
-      color: #000;
+    .lentry{padding:.18rem 0;border-bottom:1px solid rgba(255,255,255,.04)}
+    .lentry.ok{color:var(--ok)}.lentry.err{color:var(--err)}.lentry.info{color:var(--muted)}
+
+    /* ---- TAGS ---- */
+    .tagsbox{
+      background:var(--s2);border:1px solid var(--border);border-radius:8px;
+      padding:1rem;font-size:.88rem;line-height:1.9;min-height:70px;white-space:pre-wrap;word-break:break-word
     }
-    .sn.done .sn-dot {
-      border-color: var(--ok);
-      background: var(--ok);
-      color: #000;
+    .tags-wrap{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.6rem}
+    .tag-chip{
+      background:rgba(255,184,48,.12);border:1px solid rgba(255,184,48,.25);
+      color:var(--accent);border-radius:20px;padding:.2rem .65rem;font-size:.78rem;font-weight:500
     }
-    .sn-line {
-      width: 48px;
-      height: 2px;
-      background: var(--border);
-      margin: 0 0.25rem;
+
+    /* ---- MOCKUP GRID (agora apenas lista de arquivos) ---- */
+    .mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:.65rem;margin-top:.8rem}
+    .file-item{
+      background:var(--s2);border:1px solid var(--border);border-radius:8px;
+      padding:.5rem;font-size:.75rem;word-break:break-all;color:var(--text);
+      display:flex;flex-direction:column;align-items:center;text-align:center;
     }
-    main {
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 2rem 1.5rem;
+    .file-icon{font-size:1.5rem;margin-bottom:.25rem}
+
+    /* ---- DIVIDER ---- */
+    hr{border:none;border-top:1px solid var(--border);margin:1.4rem 0}
+
+    /* ---- SPINNER ---- */
+    .spin{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.2);
+      border-top-color:currentColor;border-radius:50%;animation:sp .55s linear infinite}
+    @keyframes sp{to{transform:rotate(360deg)}}
+
+    /* ---- STEP SECTIONS ---- */
+    .sc{display:none}.sc.on{display:block}
+    .hidden{display:none!important}
+    .foot{display:flex;justify-content:space-between;align-items:center;margin-top:1.4rem;gap:1rem}
+    .foot-right{display:flex;gap:.75rem;margin-left:auto}
+
+    /* ---- COVER PREVIEW (removido, mantido apenas por compatibilidade) ---- */
+    #coverPrev{display:none}
+
+    /* ---- GOOGLE BTN ---- */
+    .gbtn{
+      display:inline-flex;align-items:center;gap:.6rem;padding:.6rem 1.1rem;
+      background:#fff;color:#333;border:none;border-radius:8px;cursor:pointer;
+      font-family:'Outfit',sans-serif;font-size:.88rem;font-weight:500;transition:background .15s
     }
-    .panel {
-      background: var(--s1);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.8rem;
-      margin-bottom: 1.4rem;
-    }
-    .panel-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.35rem;
-      font-weight: 600;
-      margin-bottom: 0.25rem;
-    }
-    .panel-sub {
-      color: var(--muted);
-      font-size: 0.88rem;
-      margin-bottom: 1.4rem;
-    }
-    label {
-      display: block;
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      margin-bottom: 0.35rem;
-    }
-    input, .input-small {
-      background: var(--s2);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 0.7rem 1rem;
-      color: var(--text);
-      font-family: 'Outfit', sans-serif;
-      font-size: 0.93rem;
-      outline: none;
-      width: 100%;
-    }
-    input:focus {
-      border-color: var(--accent);
-    }
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.45rem;
-      padding: 0.65rem 1.35rem;
-      border-radius: 8px;
-      border: none;
-      cursor: pointer;
-      font-family: 'Outfit', sans-serif;
-      font-size: 0.88rem;
-      font-weight: 600;
-      transition: all 0.2s;
-    }
-    .btn-primary {
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      color: #000;
-    }
-    .btn-primary:hover {
-      opacity: 0.9;
-      transform: translateY(-1px);
-    }
-    .btn-primary:disabled {
-      opacity: 0.35;
-      cursor: not-allowed;
-      transform: none;
-    }
-    .btn-ghost {
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--text);
-    }
-    .btn-ghost:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-    .btn-sm {
-      padding: 0.35rem 0.9rem;
-      font-size: 0.8rem;
-    }
-    .files-list {
-      background: var(--s2);
-      border-radius: 10px;
-      margin-top: 1rem;
-      border: 1px solid var(--border);
-      max-height: 400px;
-      overflow-y: auto;
-    }
-    .file-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.9rem 1rem;
-      border-bottom: 1px solid var(--border);
-      gap: 0.8rem;
-      flex-wrap: wrap;
-    }
-    .file-item:last-child {
-      border-bottom: none;
-    }
-    .alert {
-      padding: 0.7rem 1rem;
-      border-radius: 8px;
-      font-size: 0.84rem;
-      margin-bottom: 1rem;
-    }
-    .alert-warn {
-      background: rgba(255, 184, 48, 0.1);
-      border: 1px solid rgba(255, 184, 48, 0.25);
-      color: var(--accent);
-    }
-    .alert-ok {
-      background: rgba(52, 211, 153, 0.1);
-      border: 1px solid rgba(52, 211, 153, 0.25);
-      color: var(--ok);
-    }
-    .badge-ok {
-      background: rgba(52, 211, 153, 0.15);
-      border: 1px solid rgba(52, 211, 153, 0.3);
-      color: var(--ok);
-      padding: 0.22rem 0.7rem;
-      border-radius: 20px;
-      font-size: 0.78rem;
-      font-weight: 600;
-    }
-    .progress {
-      width: 100%;
-      height: 6px;
-      background: var(--border);
-      border-radius: 3px;
-      overflow: hidden;
-      margin: 0.5rem 0;
-    }
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      transition: width 0.3s;
-    }
-    .logbox {
-      background: var(--s2);
-      border-radius: 8px;
-      padding: 0.85rem 1rem;
-      max-height: 200px;
-      overflow-y: auto;
-      font-size: 0.78rem;
-      font-family: monospace;
-    }
-    .lentry {
-      padding: 0.18rem 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-    }
-    .lentry.ok { color: var(--ok); }
-    .lentry.err { color: var(--err); }
-    .lentry.info { color: var(--muted); }
-    .tags-wrap {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-      margin-top: 0.6rem;
-    }
-    .tag-chip {
-      background: rgba(255, 184, 48, 0.12);
-      border: 1px solid rgba(255, 184, 48, 0.25);
-      color: var(--accent);
-      border-radius: 20px;
-      padding: 0.2rem 0.65rem;
-      font-size: 0.78rem;
-      font-weight: 500;
-    }
-    hr {
-      margin: 1rem 0;
-      border-color: var(--border);
-    }
-    .hidden {
-      display: none !important;
-    }
-    .sc {
-      display: none;
-    }
-    .sc.on {
-      display: block;
-    }
-    .foot {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 1.4rem;
-    }
-    .foot-right {
-      margin-left: auto;
-    }
-    .spin {
-      display: inline-block;
-      width: 14px;
-      height: 14px;
-      border: 2px solid rgba(255,255,255,0.2);
-      border-top-color: currentColor;
-      border-radius: 50%;
-      animation: spin 0.55s linear infinite;
-    }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-    .api-tab {
-      flex: 1;
-      padding: 0.55rem 0.8rem;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      background: var(--s2);
-      color: var(--muted);
-      font-family: 'Outfit', sans-serif;
-      font-size: 0.85rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s;
-      text-align: center;
-    }
-    .api-tab.active {
-      background: rgba(255, 184, 48, 0.12);
-      border-color: rgba(255, 184, 48, 0.4);
-      color: var(--accent);
-    }
-    .gbtn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.6rem;
-      padding: 0.6rem 1.1rem;
-      background: #fff;
-      color: #333;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-family: 'Outfit', sans-serif;
-      font-size: 0.88rem;
-      font-weight: 500;
-    }
-    .gbtn:hover {
-      background: #f1f1f1;
-    }
-    .drive-link {
-      color: var(--ok);
-      font-weight: 600;
-      text-decoration: none;
-    }
-    .drive-link:hover {
-      text-decoration: underline;
-    }
-    .result-card {
-      background: var(--s2);
-      padding: 1rem;
-      border-radius: 8px;
-      margin-bottom: 1rem;
-    }
+    .gbtn:hover{background:#f1f1f1}
+    .gbtn img{width:18px;height:18px}
+
+    /* scrollbar */
+    ::-webkit-scrollbar{width:5px;height:5px}
+    ::-webkit-scrollbar-track{background:var(--s1)}
+    ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
   </style>
 </head>
 <body>
 
 <header>
   <div class="brand">
-    <h1>Elo7 Publisher Multi</h1>
-    <span>Até 10 arquivos ZIP</span>
+    <h1>Elo7 Publisher</h1>
+    <span>Publicação de Arquivos Digitais</span>
   </div>
   <div id="gStatusArea"></div>
 </header>
 
 <nav class="steps" id="stepNav">
-  <div class="sn active" id="sn1"><div class="sn-dot">1</div><div class="sn-label">Configuração</div></div>
+  <div class="sn active" id="sn1">
+    <div class="sn-dot">1</div>
+    <div class="sn-label">Configuração</div>
+  </div>
   <div class="sn-line"></div>
-  <div class="sn" id="sn2"><div class="sn-dot">2</div><div class="sn-label">Arquivos</div></div>
+  <div class="sn" id="sn2">
+    <div class="sn-dot">2</div>
+    <div class="sn-label">Produto</div>
+  </div>
   <div class="sn-line"></div>
-  <div class="sn" id="sn3"><div class="sn-dot">3</div><div class="sn-label">Processar</div></div>
+  <div class="sn" id="sn3">
+    <div class="sn-dot">3</div>
+    <div class="sn-label">Arquivo ZIP</div>
+  </div>
   <div class="sn-line"></div>
-  <div class="sn" id="sn4"><div class="sn-dot">4</div><div class="sn-label">Resultado</div></div>
+  <div class="sn" id="sn4">
+    <div class="sn-dot">4</div>
+    <div class="sn-label">Resultado</div>
+  </div>
 </nav>
 
 <main>
-  <!-- STEP 1: Configuração -->
+
+  <!-- ======== STEP 1 ======== -->
   <div class="sc on" id="s1">
     <div class="panel">
       <div class="panel-title">Chaves de API</div>
-      <div class="panel-sub">Configure a IA para gerar tags automaticamente. As informações são salvas no navegador.</div>
-      <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem">
-        <button class="api-tab active" data-provider="anthropic">🤖 Claude</button>
-        <button class="api-tab" data-provider="openai">✨ OpenAI</button>
-        <button class="api-tab" data-provider="gemini">💎 Gemini</button>
-        <button class="api-tab" data-provider="groq">⚡ Groq</button>
-        <button class="api-tab" data-provider="custom">🔧 Custom</button>
+      <div class="panel-sub">Configure as chaves necessárias. Elas ficam salvas localmente no seu navegador.</div>
+
+      <!-- Fixado para Groq -->
+      <div>
+        <label>Chave da API Groq</label>
+        <input type="password" id="groqKey" placeholder="gsk_..." />
+        <label>Modelo</label>
+        <input type="text" id="groqModel" placeholder="llama-3.3-70b-versatile" value="llama-3.3-70b-versatile" />
+        <div class="alert alert-warn" style="margin-top:-.5rem;margin-bottom:1rem">
+          🔑 Obtenha sua chave em <a href="https://console.groq.com/keys" target="_blank">console.groq.com</a>
+        </div>
       </div>
-      <div id="apiConfigArea"></div>
+
       <hr>
-      <div class="panel-title">Google Drive <span style="font-size:.8rem;color:var(--muted)">(opcional)</span></div>
-      <label>Client ID OAuth</label>
+
+      <div class="panel-title" style="font-size:1.15rem;margin-bottom:.2rem">Google Drive <span style="font-size:.8rem;color:var(--muted);font-weight:400">(opcional)</span></div>
+      <p style="color:var(--muted);font-size:.85rem;margin-bottom:1rem">Se não configurar, os arquivos serão disponibilizados para download manual.</p>
+
+      <label>Google OAuth Client ID</label>
       <input type="text" id="clientIdInput" placeholder="xxxxx.apps.googleusercontent.com" />
-      <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap; margin-top:0.5rem">
-        <button class="gbtn" onclick="connectGoogle()">🔑 Conectar Google</button>
-        <span id="gBadge" class="badge-ok hidden">✓ Drive conectado</span>
+
+      <div class="alert alert-warn">
+        ⚙️ Como configurar: Acesse o <a href="https://console.cloud.google.com/" target="_blank">Google Cloud Console</a> → Crie um projeto → Ative a <strong>Google Drive API</strong> → Crie credenciais OAuth 2.0 (Aplicativo da Web) → Adicione <strong id="originShow"></strong> como origem autorizada.
       </div>
-      <div class="alert-warn" style="margin-top: 1rem; font-size:0.75rem">
-        💡 As configurações (chaves e Client ID) são salvas automaticamente. O login do Google também persiste entre sessões.
+
+      <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
+        <button class="gbtn" onclick="connectGoogle()">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath fill='%234285F4' d='M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z'/%3E%3Cpath fill='%2334A853' d='M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z'/%3E%3Cpath fill='%23FBBC05' d='M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34C2.85 17.09 2 20.45 2 24c0 3.55.85 6.91 2.34 9.88l7.35-5.7z'/%3E%3Cpath fill='%23EA4335' d='M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z'/%3E%3C/svg%3E" alt="G">
+          Conectar com Google
+        </button>
+        <span id="gBadge" class="badge badge-ok hidden">✓ Google conectado</span>
       </div>
     </div>
+
     <div class="foot">
       <span style="font-size:.82rem;color:var(--muted)">Sem Google Drive? Você poderá baixar os arquivos manualmente.</span>
       <div class="foot-right">
@@ -411,539 +260,548 @@
     </div>
   </div>
 
-  <!-- STEP 2: Lista de arquivos (até 10) -->
+  <!-- ======== STEP 2 ======== -->
   <div class="sc" id="s2">
     <div class="panel">
-      <div class="panel-title">📦 Arquivos ZIP - Máx 10</div>
-      <div class="panel-sub">Adicione arquivos individualmente. A numeração é sequencial automática.</div>
-      <div style="margin-bottom: 1rem;">
-        <button class="btn btn-ghost btn-sm" onclick="addNewFileSlot()">+ Adicionar novo arquivo</button>
+      <div class="panel-title">Informações do Produto</div>
+      <div class="panel-sub">Preencha os dados para nomear a pasta no Drive e gerar as tags.</div>
+
+      <div class="row2">
+        <div>
+          <label>Nº da Pasta</label>
+          <input type="text" id="fnum" placeholder="01" maxlength="6" oninput="updatePreview()" />
+        </div>
+        <div>
+          <label>Nome do Arquivo Digital</label>
+          <input type="text" id="fname" placeholder="Ex.: Topo de Bolo Borboleta" oninput="updatePreview()" />
+        </div>
       </div>
-      <div id="filesContainer" class="files-list"></div>
+
+      <div id="previewAlert" class="alert alert-warn hidden">
+        📁 <strong id="previewName"></strong>
+      </div>
+
+      <!-- REMOVIDA a seção de upload de capa -->
     </div>
+
     <div class="foot">
       <button class="btn btn-ghost" onclick="goTo(1)">← Voltar</button>
-      <button class="btn btn-primary" id="s2next" onclick="goTo(3)" disabled>Processar Todos →</button>
+      <button class="btn btn-primary" id="s2next" onclick="goTo(3)" disabled>Próximo →</button>
     </div>
   </div>
 
-  <!-- STEP 3: Processamento -->
+  <!-- ======== STEP 3 ======== -->
   <div class="sc" id="s3">
     <div class="panel">
-      <div class="progress"><div class="progress-fill" id="pFill"></div></div>
-      <div id="progressStatus" style="font-size:0.85rem; margin:0.5rem 0; color:var(--accent)"></div>
-      <div class="logbox" id="logBox"></div>
-      <button class="btn btn-primary" id="startProcessBtn" onclick="startBatchProcess()">▶ Iniciar Processamento</button>
+      <div class="panel-title">Upload do Arquivo ZIP</div>
+      <div class="panel-sub">Envie o ZIP com todos os arquivos do produto. Os arquivos serão enviados sem modificações.</div>
+
+      <div class="uzone" id="zipZone"
+        onclick="document.getElementById('zipInput').click()"
+        ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
+        <div class="uzone-icon">📦</div>
+        <p id="zipZoneLabel">Clique ou arraste o arquivo ZIP aqui</p>
+      </div>
+      <input type="file" id="zipInput" accept=".zip" hidden onchange="loadZip(event)" />
+
+      <div id="processWrap" class="hidden">
+        <button class="btn btn-primary btn-full" id="processBtn" onclick="runAll()">
+          ⚡ Processar e Publicar
+        </button>
+      </div>
     </div>
+
+    <div class="panel hidden" id="progressPanel">
+      <div class="panel-title" style="font-size:1.1rem">Processando</div>
+      <div class="progress"><div class="progress-fill" id="pFill" style="width:0%"></div></div>
+      <p id="pLabel" style="font-size:.82rem;color:var(--muted);margin-bottom:.75rem"></p>
+      <div class="logbox" id="logBox"></div>
+    </div>
+
     <div class="foot">
       <button class="btn btn-ghost" onclick="goTo(2)">← Voltar</button>
     </div>
   </div>
 
-  <!-- STEP 4: Resultados -->
+  <!-- ======== STEP 4 ======== -->
   <div class="sc" id="s4">
     <div class="panel">
-      <div id="resultsList"></div>
-      <button class="btn btn-primary" onclick="downloadGlobalZip()">⬇ Baixar TODOS os arquivos</button>
-      <button class="btn btn-ghost" onclick="resetApp()">🔄 Novo lote</button>
+      <div class="panel-title">🎉 Concluído!</div>
+      <div class="panel-sub" id="s4sub">Arquivos processados com sucesso.</div>
+
+      <div id="driveBanner" class="alert alert-ok hidden">
+        ☁️ Pasta criada no Google Drive: <a id="driveUrl" href="#" target="_blank" class="drive-link">Abrir no Drive →</a>
+      </div>
+
+      <hr>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem">
+        <strong style="font-size:.95rem">20 Tags para o Elo7 <span id="tagCount" style="font-size:.8rem;font-weight:400;color:var(--muted)"></span></strong>
+        <div style="display:flex;gap:.5rem">
+          <button class="btn btn-ghost" id="regenBtn" style="padding:.35rem .75rem;font-size:.78rem" onclick="regenTags()">🔄 Regenerar</button>
+          <button class="btn btn-ghost" style="padding:.35rem .75rem;font-size:.78rem" onclick="copyTags()">📋 Copiar</button>
+        </div>
+      </div>
+      <div class="tagsbox" id="tagsRaw" style="display:none"></div>
+      <div class="tags-wrap" id="tagsChips"></div>
+
+      <hr>
+
+      <div id="filesSec">
+        <strong style="font-size:.95rem">Arquivos do ZIP</strong>
+        <div class="mgrid" id="filesGrid"></div>
+      </div>
+
+      <hr>
+
+      <div style="display:flex;gap:.75rem;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="downloadZip()">⬇ Baixar tudo em ZIP</button>
+        <button class="btn btn-ghost" onclick="newProduct()">➕ Novo Produto</button>
+        <button class="btn btn-ghost" onclick="resetApp()">🔄 Resetar tudo</button>
+      </div>
     </div>
   </div>
+
 </main>
 
 <script>
-  // ======================= ESTADO GLOBAL =======================
-  let step = 1;
-  let apiProvider = 'anthropic';
-  let anthropicKey = '', openaiKey = '', geminiKey = '', geminiModel = 'gemini-2.0-flash';
-  let groqKey = '', groqModel = 'llama-3.3-70b-versatile';
-  let customKey = '', customBaseUrl = '', customModel = '';
-  let clientId = '', accessToken = null, gConnected = false;
+/* ============================================================
+   STATE
+   ============================================================ */
+const S = {
+  step: 1,
+  groqKey: '',
+  groqModel: 'llama-3.3-70b-versatile',
+  clientId: '',
+  accessToken: null,
+  gConnected: false,
+  folderNumber: '',
+  productName: '',
+  zipFile: null,
+  extracted: [],   // {path, name, blob}
+  tags: '',
+  driveFolderId: null,
+  driveFolderUrl: null,
+};
 
-  let fileItems = [];
-  let nextId = 1;
+/* ---- INIT ---- */
+document.getElementById('originShow').textContent = window.location.origin || 'file://';
+const saved = k => localStorage.getItem('elo7_' + k) || '';
+document.getElementById('groqKey').value = saved('grqk');
+document.getElementById('groqModel').value = saved('grqmod') || 'llama-3.3-70b-versatile';
+document.getElementById('clientIdInput').value = saved('cid');
 
-  // ======================= FUNÇÕES DE UI =======================
-  function goTo(n) {
-    document.getElementById(`s${step}`).classList.remove('on');
-    document.getElementById(`sn${step}`).classList.remove('active');
-    if (step !== 4) document.getElementById(`sn${step}`).classList.add('done');
-    step = n;
-    document.getElementById(`s${n}`).classList.add('on');
-    document.getElementById(`sn${n}`).classList.remove('done');
-    document.getElementById(`sn${n}`).classList.add('active');
-    window.scrollTo({ top: 0 });
-    if (n === 2) renderFileList();
-    if (n === 4) renderGlobalResults();
-  }
-  function skipDrive() { gConnected = false; goTo(2); }
+// Carregar estado do Groq
+S.groqKey = document.getElementById('groqKey').value.trim();
+S.groqModel = document.getElementById('groqModel').value.trim();
 
-  // ======================= GERENCIAR ARQUIVOS =======================
-  function getNextNumber() {
-    const numbers = fileItems.map(item => parseInt(item.number, 10)).filter(n => !isNaN(n));
-    if (numbers.length === 0) return 1;
-    return Math.max(...numbers) + 1;
-  }
+document.getElementById('groqKey').addEventListener('input', e => {
+  localStorage.setItem('elo7_grqk', e.target.value.trim());
+  S.groqKey = e.target.value.trim();
+  checkStep1Ready();
+});
+document.getElementById('groqModel').addEventListener('input', e => {
+  localStorage.setItem('elo7_grqmod', e.target.value.trim());
+  S.groqModel = e.target.value.trim();
+});
+document.getElementById('clientIdInput').addEventListener('input', e => {
+  localStorage.setItem('elo7_cid', e.target.value.trim());
+  S.clientId = e.target.value.trim();
+});
 
-  function renderFileList() {
-    const container = document.getElementById('filesContainer');
-    container.innerHTML = '';
-    fileItems.forEach((item) => {
-      const div = document.createElement('div');
-      div.className = 'file-item';
-      div.innerHTML = `
-        <div style="flex:2">
-          <strong>#${item.number || '?'}</strong> ${item.name || '—'}<br>
-          <small>${item.file ? item.file.name : 'Nenhum arquivo selecionado'}</small>
-        </div>
-        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-          <input class="input-small" placeholder="Nº" value="${item.number || ''}" onchange="updateFileNumber(${item.id}, this.value)" style="width:70px">
-          <input class="input-small" placeholder="Nome" value="${item.name || ''}" style="width:120px" onchange="updateFileName(${item.id}, this.value)">
-          <button class="btn btn-ghost btn-sm" onclick="selectFileForItem(${item.id})">📁 ZIP</button>
-          <button class="btn btn-ghost btn-sm" onclick="removeFileItem(${item.id})">✖</button>
-        </div>
-      `;
-      container.appendChild(div);
-    });
-    const allValid = fileItems.length > 0 && fileItems.every(f => f.file && f.number && f.name);
-    document.getElementById('s2next').disabled = !allValid;
-    saveItemsMetadata();
-  }
+function checkStep1Ready() {
+  const ok = !!S.groqKey;
+  document.getElementById('s1next').disabled = !ok;
+}
 
-  function addNewFileSlot() {
-    if (fileItems.length >= 10) { alert('Máximo de 10 arquivos atingido.'); return; }
-    const nextNumber = getNextNumber();
-    const formattedNumber = nextNumber.toString().padStart(2, '0');
-    fileItems.push({
-      id: nextId++,
-      number: formattedNumber,
-      name: '',
-      file: null,
-      extractedFiles: [],
-      tags: '',
-      driveFolderUrl: null,
-      status: 'pending'
-    });
-    renderFileList();
-  }
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
+function goTo(n) {
+  const prev = S.step;
+  document.getElementById('s' + prev).classList.remove('on');
+  document.getElementById('sn' + prev).classList.remove('active');
+  document.getElementById('sn' + prev).classList.add('done');
+  S.step = n;
+  document.getElementById('s' + n).classList.add('on');
+  document.getElementById('sn' + n).classList.remove('done');
+  document.getElementById('sn' + n).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 
-  function updateFileNumber(id, val) {
-    const item = fileItems.find(f => f.id === id);
-    if (item) { item.number = val; renderFileList(); }
-  }
-  function updateFileName(id, val) {
-    const item = fileItems.find(f => f.id === id);
-    if (item) { item.name = val; renderFileList(); }
-  }
-  function selectFileForItem(id) {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = '.zip';
-    input.onchange = e => {
-      const file = e.target.files[0];
-      if (file) {
-        const item = fileItems.find(f => f.id === id);
-        if (item) {
-          item.file = file;
-          item.status = 'pending';
-          item.extractedFiles = [];
-          item.tags = '';
-          item.driveFolderUrl = null;
-          renderFileList();
+function skipDrive() {
+  S.gConnected = false;
+  S.accessToken = null;
+  goTo(2);
+}
+
+/* ============================================================
+   GOOGLE DRIVE AUTH
+   ============================================================ */
+function connectGoogle() {
+  const cid = document.getElementById('clientIdInput').value.trim();
+  if (!cid) { alert('Informe o Client ID do Google.'); return; }
+  S.clientId = cid;
+  localStorage.setItem('elo7_cid', cid);
+
+  const load = () => {
+    const client = google.accounts.oauth2.initTokenClient({
+      client_id: cid,
+      scope: 'https://www.googleapis.com/auth/drive.file',
+      callback: r => {
+        if (r.access_token) {
+          S.accessToken = r.access_token;
+          S.gConnected = true;
+          document.getElementById('gBadge').classList.remove('hidden');
+          document.getElementById('gStatusArea').innerHTML =
+            '<span class="badge badge-ok">✓ Drive conectado</span>';
+          checkStep1Ready();
         }
       }
-    };
-    input.click();
-  }
-  function removeFileItem(id) {
-    fileItems = fileItems.filter(f => f.id !== id);
-    renderFileList();
-  }
+    });
+    client.requestAccessToken();
+  };
 
-  // Salvar metadados (número, nome, tags, driveFolderUrl, status)
-  function saveItemsMetadata() {
-    const toSave = fileItems.map(item => ({
-      id: item.id,
-      number: item.number,
-      name: item.name,
-      status: item.status,
-      tags: item.tags,
-      driveFolderUrl: item.driveFolderUrl
-    }));
-    localStorage.setItem('elo7_fileItems', JSON.stringify(toSave));
-    localStorage.setItem('elo7_nextId', nextId);
+  if (window.google?.accounts?.oauth2) { load(); return; }
+  const sc = document.createElement('script');
+  sc.src = 'https://accounts.google.com/gsi/client';
+  sc.onload = load;
+  document.head.appendChild(sc);
+}
+
+/* ============================================================
+   STEP 2 — PRODUCT INFO
+   ============================================================ */
+function updatePreview() {
+  const n = document.getElementById('fnum').value.trim();
+  const nm = document.getElementById('fname').value.trim();
+  const alert = document.getElementById('previewAlert');
+  if (n && nm) {
+    const padded = n.padStart(2, '0');
+    S.folderNumber = padded;
+    S.productName = nm;
+    document.getElementById('previewName').textContent = `${padded} - Arquivo Digital ${nm}`;
+    alert.classList.remove('hidden');
+    document.getElementById('s2next').disabled = false;
+  } else {
+    alert.classList.add('hidden');
+    document.getElementById('s2next').disabled = true;
   }
-  function loadItemsMetadata() {
-    const saved = localStorage.getItem('elo7_fileItems');
-    if (saved) {
-      const parsed = JSON.parse(saved);
-      fileItems = parsed.map(item => ({
-        ...item,
-        file: null,         // arquivo precisa ser reselecionado após recarregar
-        extractedFiles: [],
-        status: 'pending'
-      }));
-      nextId = parseInt(localStorage.getItem('elo7_nextId')) || (fileItems.length ? Math.max(...fileItems.map(i=>i.id)) + 1 : 1);
+}
+
+/* ============================================================
+   STEP 3 — ZIP + DRAG DROP
+   ============================================================ */
+function onDragOver(e) { e.preventDefault(); document.getElementById('zipZone').classList.add('drag'); }
+function onDragLeave() { document.getElementById('zipZone').classList.remove('drag'); }
+function onDrop(e) {
+  e.preventDefault();
+  document.getElementById('zipZone').classList.remove('drag');
+  const f = e.dataTransfer.files[0];
+  if (f?.name.toLowerCase().endsWith('.zip')) setZip(f);
+}
+function loadZip(e) { if (e.target.files[0]) setZip(e.target.files[0]); }
+function setZip(file) {
+  S.zipFile = file;
+  const z = document.getElementById('zipZone');
+  const mb = (file.size / 1024 / 1024).toFixed(2);
+  z.innerHTML = `<div class="uzone-icon">✅</div><p class="fname">${file.name}</p><p class="fsize">${mb} MB</p>`;
+  z.classList.add('filled');
+  document.getElementById('processWrap').classList.remove('hidden');
+}
+
+/* ============================================================
+   MAIN PIPELINE (sem edição de imagens)
+   ============================================================ */
+async function runAll() {
+  const btn = document.getElementById('processBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin"></span> Processando...';
+  document.getElementById('progressPanel').classList.remove('hidden');
+
+  try {
+    // 1. Extract ZIP
+    log('📦 Extraindo ZIP...', 'info');
+    setP(5, 'Extraindo ZIP...');
+    await extractZip();
+    log(`✓ ${S.extracted.length} arquivos extraídos`, 'ok');
+
+    // 2. Generate tags (direto, sem mockups)
+    setP(45, 'Gerando tags com IA...');
+    log('🏷️ Gerando 20 tags com Groq...', 'info');
+    S.tags = await generateTags();
+    log('✓ Tags geradas!', 'ok');
+
+    // 3. Google Drive
+    if (S.gConnected && S.accessToken) {
+      setP(60, 'Criando pasta no Google Drive...');
+      log('☁️ Enviando para o Google Drive...', 'info');
+      await uploadToDrive();
     } else {
-      fileItems = [];
-      nextId = 1;
-      addNewFileSlot();
+      log('ℹ️ Drive não configurado — use o download manual', 'info');
     }
-    renderFileList();
+
+    setP(100, 'Concluído! 🎉');
+    log('🎉 Tudo pronto!', 'ok');
+    setTimeout(() => { renderResults(); goTo(4); }, 700);
+
+  } catch (err) {
+    log('❌ Erro: ' + err.message, 'err');
+    console.error(err);
+    btn.disabled = false;
+    btn.innerHTML = '⚡ Tentar Novamente';
+  }
+}
+
+/* ---- EXTRACT ZIP ---- */
+async function extractZip() {
+  const zip = await JSZip.loadAsync(S.zipFile);
+  S.extracted = [];
+  const tasks = [];
+  zip.forEach((path, entry) => {
+    if (entry.dir) return;
+    tasks.push(entry.async('blob').then(blob => {
+      const name = path.split('/').pop();
+      S.extracted.push({ path, name, blob });
+    }));
+  });
+  await Promise.all(tasks);
+}
+
+/* ---- GENERATE TAGS (apenas Groq) ---- */
+const TAG_PROMPT = (name) =>
+  `Crie exatamente 20 tags para um arquivo digital chamado "${name}" para venda na plataforma Elo7.\nAs tags devem incluir: nome do produto, variações de busca, usos, temas e sinônimos que compradores digitariam.\nRetorne APENAS as 20 tags separadas por vírgula, sem numeração, sem explicação, sem ponto final. Em português brasileiro.\nExemplo de formato: arquivo digital borboleta, topo de bolo borboleta, kit festa borboleta`;
+
+async function generateTags() {
+  const r = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${S.groqKey}`
+    },
+    body: JSON.stringify({
+      model: S.groqModel || 'llama-3.3-70b-versatile',
+      max_tokens: 600,
+      messages: [{ role: 'user', content: TAG_PROMPT(S.productName) }]
+    })
+  });
+  const d = await r.json();
+  if (d.error) throw new Error(d.error.message || JSON.stringify(d.error));
+  return d.choices?.[0]?.message?.content?.trim() || '';
+}
+
+/* ---- GOOGLE DRIVE UPLOAD ---- */
+async function uploadToDrive() {
+  const folderName = `${S.folderNumber} - Arquivo Digital ${S.productName}`;
+  const rootId = await mkFolder(folderName, null);
+  S.driveFolderId = rootId;
+  S.driveFolderUrl = `https://drive.google.com/drive/folders/${rootId}`;
+  log(`✓ Pasta: ${folderName}`, 'ok');
+
+  // Build folder map
+  const fm = { '': rootId };
+  const subdirs = new Set();
+  for (const f of S.extracted) {
+    const parts = f.path.split('/');
+    for (let i = 1; i < parts.length; i++) subdirs.add(parts.slice(0, i).join('/'));
+  }
+  for (const d of [...subdirs].sort()) {
+    const parts = d.split('/');
+    const parentPath = parts.slice(0, -1).join('/');
+    const pid = fm[parentPath] ?? rootId;
+    fm[d] = await mkFolder(parts[parts.length - 1], pid);
+    log('  📁 ' + d, 'info');
   }
 
-  // ======================= EXTRAÇÃO ZIP =======================
-  async function extractZip(file) {
-    const zip = await JSZip.loadAsync(file);
-    const files = [];
-    for (const [path, entry] of Object.entries(zip.files)) {
-      if (entry.dir) continue;
-      const blob = await entry.async('blob');
-      files.push({ path, name: path.split('/').pop(), blob });
-    }
-    return files;
+  // Upload files (sem modificações)
+  let done = 0;
+  for (const f of S.extracted) {
+    const parts = f.path.split('/');
+    const parentPath = parts.slice(0, -1).join('/');
+    const pid = fm[parentPath] ?? rootId;
+    await uploadFile(f.blob, f.name, pid);
+    done++;
+    setP(60 + (done / S.extracted.length) * 37, `Enviando: ${f.name}`);
+    log('  ↑ ' + f.name, 'info');
   }
 
-  // ======================= PERSISTÊNCIA DAS CONFIGURAÇÕES =======================
-  function saveApiToLocal() {
-    localStorage.setItem('elo7_provider', apiProvider);
-    localStorage.setItem('elo7_ak', anthropicKey);
-    localStorage.setItem('elo7_oaik', openaiKey);
-    localStorage.setItem('elo7_gak', geminiKey);
-    localStorage.setItem('elo7_gmod', geminiModel);
-    localStorage.setItem('elo7_grqk', groqKey);
-    localStorage.setItem('elo7_grqmod', groqModel);
-    localStorage.setItem('elo7_cusk', customKey);
-    localStorage.setItem('elo7_cusburl', customBaseUrl);
-    localStorage.setItem('elo7_cusmod', customModel);
-    localStorage.setItem('elo7_cid', clientId);
-    localStorage.setItem('elo7_accessToken', accessToken || '');
-    localStorage.setItem('elo7_gConnected', gConnected ? 'true' : 'false');
+  // Upload tags as txt
+  const tagsBlob = new Blob([S.tags.replace(/, /g, '\n')], { type: 'text/plain' });
+  await uploadFile(tagsBlob, 'tags_elo7.txt', rootId);
+  log('  ↑ tags_elo7.txt', 'ok');
+}
+
+async function mkFolder(name, parentId) {
+  const body = { name, mimeType: 'application/vnd.google-apps.folder' };
+  if (parentId) body.parents = [parentId];
+  const r = await fetch('https://www.googleapis.com/drive/v3/files', {
+    method: 'POST',
+    headers: { 'Authorization': `Bearer ${S.accessToken}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  const d = await r.json();
+  if (!d.id) throw new Error('Falha ao criar pasta: ' + JSON.stringify(d));
+  return d.id;
+}
+
+async function uploadFile(blob, name, parentId) {
+  const meta = { name, parents: [parentId] };
+  const form = new FormData();
+  form.append('metadata', new Blob([JSON.stringify(meta)], { type: 'application/json' }));
+  form.append('file', blob, name);
+  await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
+    method: 'POST',
+    headers: { 'Authorization': `Bearer ${S.accessToken}` },
+    body: form
+  });
+}
+
+/* ---- RENDER RESULTS ---- */
+function renderResults() {
+  document.getElementById('s4sub').textContent =
+    `Pasta: ${S.folderNumber} - Arquivo Digital ${S.productName}`;
+
+  // Drive
+  if (S.driveFolderUrl) {
+    document.getElementById('driveBanner').classList.remove('hidden');
+    document.getElementById('driveUrl').href = S.driveFolderUrl;
+    document.getElementById('driveUrl').textContent = S.driveFolderUrl;
   }
 
-  function loadApiFromLocal() {
-    apiProvider = localStorage.getItem('elo7_provider') || 'anthropic';
-    anthropicKey = localStorage.getItem('elo7_ak') || '';
-    openaiKey = localStorage.getItem('elo7_oaik') || '';
-    geminiKey = localStorage.getItem('elo7_gak') || '';
-    geminiModel = localStorage.getItem('elo7_gmod') || 'gemini-2.0-flash';
-    groqKey = localStorage.getItem('elo7_grqk') || '';
-    groqModel = localStorage.getItem('elo7_grqmod') || 'llama-3.3-70b-versatile';
-    customKey = localStorage.getItem('elo7_cusk') || '';
-    customBaseUrl = localStorage.getItem('elo7_cusburl') || '';
-    customModel = localStorage.getItem('elo7_cusmod') || '';
-    clientId = localStorage.getItem('elo7_cid') || '';
-    const savedToken = localStorage.getItem('elo7_accessToken');
-    if (savedToken) {
-      accessToken = savedToken;
-      gConnected = localStorage.getItem('elo7_gConnected') === 'true';
-      if (gConnected) {
-        document.getElementById('gBadge').classList.remove('hidden');
-        document.getElementById('gStatusArea').innerHTML = '<span class="badge-ok">✓ Drive conectado</span>';
-      }
-    }
-    document.getElementById('clientIdInput').value = clientId;
-    renderApiConfig();
-    checkStep1Ready();
-  }
-
-  function renderApiConfig() {
-    const container = document.getElementById('apiConfigArea');
-    document.querySelectorAll('.api-tab').forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.provider === apiProvider);
-    });
-    let html = '';
-    if (apiProvider === 'anthropic') html = `<label>Chave Anthropic</label><input type="password" id="apiKeyInput" placeholder="sk-ant-..." value="${anthropicKey}">`;
-    else if (apiProvider === 'openai') html = `<label>Chave OpenAI</label><input type="password" id="apiKeyInput" placeholder="sk-..." value="${openaiKey}">`;
-    else if (apiProvider === 'gemini') html = `<label>Chave Gemini</label><input type="password" id="apiKeyInput" placeholder="AIza..." value="${geminiKey}"><label>Modelo</label><input type="text" id="geminiModelInput" value="${geminiModel}">`;
-    else if (apiProvider === 'groq') html = `<label>Chave Groq</label><input type="password" id="apiKeyInput" placeholder="gsk_..." value="${groqKey}"><label>Modelo</label><input type="text" id="groqModelInput" value="${groqModel}">`;
-    else if (apiProvider === 'custom') html = `<label>URL Base</label><input type="text" id="customBaseUrlInput" value="${customBaseUrl}"><label>Chave (opcional)</label><input type="password" id="customKeyInput" value="${customKey}"><label>Modelo</label><input type="text" id="customModelInput" value="${customModel}">`;
-    container.innerHTML = html;
-    if (apiProvider === 'anthropic' || apiProvider === 'openai' || apiProvider === 'gemini' || apiProvider === 'groq') {
-      document.getElementById('apiKeyInput')?.addEventListener('input', (e) => {
-        if (apiProvider === 'anthropic') anthropicKey = e.target.value;
-        else if (apiProvider === 'openai') openaiKey = e.target.value;
-        else if (apiProvider === 'gemini') geminiKey = e.target.value;
-        else if (apiProvider === 'groq') groqKey = e.target.value;
-        saveApiToLocal();
-        checkStep1Ready();
-      });
-      if (apiProvider === 'gemini') {
-        document.getElementById('geminiModelInput')?.addEventListener('input', (e) => { geminiModel = e.target.value; saveApiToLocal(); });
-      }
-      if (apiProvider === 'groq') {
-        document.getElementById('groqModelInput')?.addEventListener('input', (e) => { groqModel = e.target.value; saveApiToLocal(); });
-      }
-    } else if (apiProvider === 'custom') {
-      document.getElementById('customBaseUrlInput')?.addEventListener('input', (e) => { customBaseUrl = e.target.value; saveApiToLocal(); checkStep1Ready(); });
-      document.getElementById('customKeyInput')?.addEventListener('input', (e) => { customKey = e.target.value; saveApiToLocal(); });
-      document.getElementById('customModelInput')?.addEventListener('input', (e) => { customModel = e.target.value; saveApiToLocal(); checkStep1Ready(); });
-    }
-  }
-
-  function checkStep1Ready() {
-    let ok = false;
-    if (apiProvider === 'anthropic') ok = !!anthropicKey;
-    else if (apiProvider === 'openai') ok = !!openaiKey;
-    else if (apiProvider === 'gemini') ok = !!geminiKey;
-    else if (apiProvider === 'groq') ok = !!groqKey;
-    else if (apiProvider === 'custom') ok = !!(customBaseUrl && customModel);
-    document.getElementById('s1next').disabled = !ok;
-  }
-
-  document.querySelectorAll('.api-tab').forEach(btn => {
-    btn.addEventListener('click', () => {
-      apiProvider = btn.dataset.provider;
-      saveApiToLocal();
-      renderApiConfig();
-      checkStep1Ready();
-    });
+  // Tags
+  const raw = document.getElementById('tagsRaw');
+  raw.textContent = S.tags;
+  const chips = document.getElementById('tagsChips');
+  chips.innerHTML = '';
+  const tagList = S.tags.split(',').map(t => t.trim()).filter(Boolean);
+  document.getElementById('tagCount').textContent = `(${tagList.length})`;
+  tagList.forEach(t => {
+    const el = document.createElement('span');
+    el.className = 'tag-chip';
+    el.textContent = t;
+    chips.appendChild(el);
   });
 
-  // ======================= GOOGLE DRIVE =======================
-  function connectGoogle() {
-    const cid = document.getElementById('clientIdInput').value.trim();
-    if (!cid) { alert('Informe o Client ID'); return; }
-    clientId = cid;
-    saveApiToLocal();
-    const loadAuth = () => {
-      const client = google.accounts.oauth2.initTokenClient({
-        client_id: cid,
-        scope: 'https://www.googleapis.com/auth/drive.file',
-        callback: (r) => {
-          if (r.access_token) {
-            accessToken = r.access_token;
-            gConnected = true;
-            saveApiToLocal();
-            document.getElementById('gBadge').classList.remove('hidden');
-            document.getElementById('gStatusArea').innerHTML = '<span class="badge-ok">✓ Drive conectado</span>';
-          } else {
-            alert('Falha na autenticação');
-          }
-        }
-      });
-      client.requestAccessToken();
-    };
-    if (window.google?.accounts?.oauth2) loadAuth();
-    else {
-      const script = document.createElement('script');
-      script.src = 'https://accounts.google.com/gsi/client';
-      script.onload = loadAuth;
-      document.head.appendChild(script);
-    }
-  }
-
-  // ======================= GERAÇÃO DE TAGS =======================
-  async function generateTags(productName) {
-    const prompt = `Crie exatamente 20 tags para um arquivo digital chamado "${productName}" para venda no Elo7. Retorne apenas as tags separadas por vírgula, em português.`;
-    const call = async (url, options) => { const r = await fetch(url, options); const d = await r.json(); if (d.error) throw new Error(d.error.message); return d; };
-    try {
-      if (apiProvider === 'anthropic') {
-        const res = await call('https://api.anthropic.com/v1/messages', {
-          method:'POST',
-          headers:{'Content-Type':'application/json', 'x-api-key':anthropicKey, 'anthropic-version':'2023-06-01'},
-          body:JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:600, messages:[{ role:'user', content:prompt }] })
-        });
-        return res.content[0].text.trim();
-      }
-      if (apiProvider === 'openai') {
-        const res = await call('https://api.openai.com/v1/chat/completions', {
-          method:'POST',
-          headers:{'Content-Type':'application/json', 'Authorization':`Bearer ${openaiKey}`},
-          body:JSON.stringify({ model:'gpt-4o-mini', max_tokens:600, messages:[{ role:'user', content:prompt }] })
-        });
-        return res.choices[0].message.content.trim();
-      }
-      if (apiProvider === 'gemini') {
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent?key=${geminiKey}`;
-        const res = await call(url, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ contents:[{ parts:[{ text:prompt }] }] }) });
-        return res.candidates[0].content.parts[0].text.trim();
-      }
-      if (apiProvider === 'groq') {
-        const res = await call('https://api.groq.com/openai/v1/chat/completions', {
-          method:'POST',
-          headers:{'Content-Type':'application/json', 'Authorization':`Bearer ${groqKey}`},
-          body:JSON.stringify({ model:groqModel, max_tokens:600, messages:[{ role:'user', content:prompt }] })
-        });
-        return res.choices[0].message.content.trim();
-      }
-      if (apiProvider === 'custom') {
-        const res = await call(customBaseUrl+'/chat/completions', {
-          method:'POST',
-          headers:{'Content-Type':'application/json', ...(customKey?{'Authorization':`Bearer ${customKey}`}:{})},
-          body:JSON.stringify({ model:customModel, max_tokens:600, messages:[{ role:'user', content:prompt }] })
-        });
-        return res.choices[0].message.content.trim();
-      }
-      return '';
-    } catch(e) { throw new Error(`Falha na IA: ${e.message}`); }
-  }
-
-  // ======================= UPLOAD PARA DRIVE =======================
-  async function createDriveFolder(name) {
-    const res = await fetch('https://www.googleapis.com/drive/v3/files', {
-      method:'POST',
-      headers:{'Authorization':`Bearer ${accessToken}`, 'Content-Type':'application/json'},
-      body:JSON.stringify({ name, mimeType:'application/vnd.google-apps.folder' })
-    });
-    const data = await res.json();
-    if (!data.id) throw new Error('Falha ao criar pasta');
-    return data.id;
-  }
-  async function uploadFileToDrive(blob, name, parentId) {
-    const form = new FormData();
-    form.append('metadata', new Blob([JSON.stringify({ name, parents:[parentId] })], {type:'application/json'}));
-    form.append('file', blob, name);
-    await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
-      method:'POST',
-      headers:{'Authorization':`Bearer ${accessToken}`},
-      body:form
+  // Lista de arquivos (sem mockups)
+  const grid = document.getElementById('filesGrid');
+  grid.innerHTML = '';
+  if (S.extracted.length === 0) {
+    grid.innerHTML = '<p style="color:var(--muted);font-size:.88rem">Nenhum arquivo.</p>';
+  } else {
+    S.extracted.forEach(f => {
+      const div = document.createElement('div');
+      div.className = 'file-item';
+      div.innerHTML = `<span class="file-icon">📄</span><span>${f.name}</span>`;
+      grid.appendChild(div);
     });
   }
+}
 
-  // ======================= PROCESSAMENTO EM LOTE =======================
-  async function startBatchProcess() {
-    const btn = document.getElementById('startProcessBtn');
-    btn.disabled = true;
-    btn.innerHTML = '<span class="spin"></span> Processando...';
-    const logBox = document.getElementById('logBox');
-    logBox.innerHTML = '';
-    const progressStatus = document.getElementById('progressStatus');
-    function log(msg, type='info') {
-      const e = document.createElement('div');
-      e.className = `lentry ${type}`;
-      e.textContent = msg;
-      logBox.appendChild(e);
-      e.scrollIntoView();
-    }
-
-    const pendingItems = fileItems.filter(i => i.file && i.status !== 'done');
-    if (pendingItems.length === 0) {
-      log('✅ Todos os arquivos já foram processados!', 'ok');
-      btn.disabled = false;
-      btn.innerHTML = '▶ Iniciar Processamento';
-      goTo(4);
-      return;
-    }
-
-    let processed = 0;
-    const total = pendingItems.length;
-    for (let idx = 0; idx < pendingItems.length; idx++) {
-      const item = pendingItems[idx];
-      progressStatus.textContent = `📄 Processando ${processed+1} de ${total}: ${item.number} - ${item.name}`;
-      log(`📦 [${item.number}] ${item.name} - extraindo ZIP...`, 'info');
-      try {
-        const extracted = await extractZip(item.file);
-        item.extractedFiles = extracted;
-        log(`   ✓ ${extracted.length} arquivos extraídos`, 'ok');
-        
-        const tags = await generateTags(item.name);
-        item.tags = tags;
-        log(`   🏷️ Tags geradas: ${tags.substring(0, 60)}...`, 'ok');
-        
-        if (gConnected && accessToken) {
-          log(`   ☁️ Enviando para o Google Drive...`, 'info');
-          const folderName = `${item.number} - Arquivo Digital ${item.name}`;
-          const folderId = await createDriveFolder(folderName);
-          item.driveFolderUrl = `https://drive.google.com/drive/folders/${folderId}`;
-          for (const f of extracted) await uploadFileToDrive(f.blob, f.name, folderId);
-          await uploadFileToDrive(new Blob([tags], {type:'text/plain'}), 'tags_elo7.txt', folderId);
-          log(`   ✅ Drive atualizado`, 'ok');
-        } else {
-          log(`   💾 Drive não conectado – apenas local`, 'info');
-        }
-        
-        item.status = 'done';
-        saveItemsMetadata();
-        processed++;
-        const percent = (processed / total) * 100;
-        document.getElementById('pFill').style.width = `${percent}%`;
-      } catch (err) {
-        log(`   ❌ ERRO: ${err.message}`, 'err');
-        item.status = 'error';
-      }
-    }
-    progressStatus.textContent = '✅ Processamento finalizado!';
-    log('🎉 Todos os arquivos foram processados!', 'ok');
+async function regenTags() {
+  const btn = document.getElementById('regenBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin"></span>';
+  try {
+    S.tags = await generateTags();
+    renderResults();
+  } catch (err) {
+    alert('Erro ao regenerar tags: ' + err.message);
+  } finally {
     btn.disabled = false;
-    btn.innerHTML = '▶ Iniciar Processamento';
-    goTo(4);
+    btn.innerHTML = '🔄 Regenerar';
   }
+}
 
-  // ======================= RESULTADOS =======================
-  function renderGlobalResults() {
-    const div = document.getElementById('resultsList');
-    div.innerHTML = '';
-    for (const item of fileItems.filter(f => f.status === 'done')) {
-      const card = document.createElement('div');
-      card.className = 'result-card';
-      card.innerHTML = `
-        <strong>${item.number} - ${item.name}</strong><br>
-        ${item.driveFolderUrl ? `<a href="${item.driveFolderUrl}" target="_blank">📁 Pasta no Drive</a>` : '💾 Apenas local'}
-        <button class="btn btn-ghost btn-sm" onclick="downloadSingleZip(${item.id})">⬇ Baixar arquivos</button>
-        <div style="margin-top: 0.8rem;">
-          <label>✏️ Tags geradas:</label>
-          <div class="tags-wrap" id="tags-${item.id}"></div>
-        </div>
-      `;
-      div.appendChild(card);
-      const chipsDiv = card.querySelector(`.tags-wrap`);
-      const tagList = (item.tags || '').split(',').map(t => t.trim()).filter(Boolean);
-      tagList.forEach(t => {
-        const chip = document.createElement('span');
-        chip.className = 'tag-chip';
-        chip.textContent = t;
-        chipsDiv.appendChild(chip);
-      });
-    }
+function copyTags() {
+  const text = document.getElementById('tagsRaw').textContent || S.tags;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = event.target;
+    btn.textContent = '✓ Copiado!';
+    setTimeout(() => btn.innerHTML = '📋 Copiar', 1800);
+  });
+}
+
+async function downloadZip() {
+  const btn = event.target;
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin"></span> Preparando...';
+  const zip = new JSZip();
+  const folder = zip.folder(`${S.folderNumber} - Arquivo Digital ${S.productName}`);
+  for (const f of S.extracted) {
+    folder.file(f.path, f.blob);
   }
+  folder.file('tags_elo7.txt', S.tags.replace(/, /g, '\n'));
+  const blob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `${S.folderNumber} - Arquivo Digital ${S.productName}.zip`;
+  a.click();
+  URL.revokeObjectURL(url);
+  btn.disabled = false;
+  btn.innerHTML = '⬇ Baixar tudo em ZIP';
+}
 
-  async function downloadSingleZip(itemId) {
-    const item = fileItems.find(f => f.id === itemId);
-    if (!item || !item.extractedFiles.length) {
-      alert('Nenhum arquivo extraído para este produto. Processe novamente.');
-      return;
-    }
-    const zip = new JSZip();
-    const folder = zip.folder(`${item.number} - Arquivo Digital ${item.name}`);
-    for (const f of item.extractedFiles) folder.file(f.path, f.blob);
-    folder.file('tags_elo7.txt', item.tags);
-    const blob = await zip.generateAsync({ type: 'blob' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = `${item.number} - ${item.name}.zip`;
-    a.click();
-    URL.revokeObjectURL(blob);
+function resetApp() { location.reload(); }
+
+/* ---- NOVO PRODUTO: limpa dados do produto e volta ao Step 2 ---- */
+function newProduct() {
+  // Limpar estado relacionado ao produto
+  S.folderNumber = '';
+  S.productName = '';
+  S.zipFile = null;
+  S.extracted = [];
+  S.tags = '';
+  S.driveFolderId = null;
+  S.driveFolderUrl = null;
+
+  // Resetar campos do Step 2
+  document.getElementById('fnum').value = '';
+  document.getElementById('fname').value = '';
+  document.getElementById('previewAlert').classList.add('hidden');
+  document.getElementById('s2next').disabled = true;
+
+  // Resetar zona de upload do Step 3
+  const z = document.getElementById('zipZone');
+  z.innerHTML = `<div class="uzone-icon">📦</div><p id="zipZoneLabel">Clique ou arraste o arquivo ZIP aqui</p>`;
+  z.classList.remove('filled');
+  document.getElementById('processWrap').classList.add('hidden');
+  document.getElementById('progressPanel').classList.add('hidden');
+  document.getElementById('logBox').innerHTML = '';
+
+  // Resetar indicadores de progresso
+  setP(0, '');
+
+  // Voltar ao Step 2
+  // Primeiro resetar os steps visuais
+  for (let i = 1; i <= 4; i++) {
+    const sn = document.getElementById('sn' + i);
+    sn.classList.remove('active', 'done');
   }
+  document.getElementById('sn1').classList.add('done');
+  document.getElementById('sn2').classList.add('active');
+  document.querySelectorAll('.sc').forEach(el => el.classList.remove('on'));
+  document.getElementById('s2').classList.add('on');
+  S.step = 2;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 
-  async function downloadGlobalZip() {
-    const zip = new JSZip();
-    for (const item of fileItems.filter(f => f.status === 'done' && f.extractedFiles.length)) {
-      const folder = zip.folder(`${item.number} - Arquivo Digital ${item.name}`);
-      for (const f of item.extractedFiles) folder.file(f.path, f.blob);
-      folder.file('tags_elo7.txt', item.tags);
-    }
-    const blob = await zip.generateAsync({ type: 'blob' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = 'todos_produtos.zip';
-    a.click();
-    URL.revokeObjectURL(blob);
-  }
+/* ---- HELPERS ---- */
+function setP(pct, label) {
+  document.getElementById('pFill').style.width = pct + '%';
+  document.getElementById('pLabel').textContent = label;
+}
+function log(msg, type = 'info') {
+  const box = document.getElementById('logBox');
+  const e = document.createElement('div');
+  e.className = 'lentry ' + type;
+  e.textContent = msg;
+  box.appendChild(e);
+  box.scrollTop = box.scrollHeight;
+}
 
-  function resetApp() { localStorage.clear(); location.reload(); }
-
-  // ======================= INICIALIZAÇÃO =======================
-  loadApiFromLocal();
-  loadItemsMetadata();
-  document.getElementById('clientIdInput').addEventListener('input', (e) => { clientId = e.target.value; saveApiToLocal(); });
-  // Atualiza o estado do botão "Processar" quando a lista mudar
-  function checkProcessingReady() {
-    const allValid = fileItems.length > 0 && fileItems.every(f => f.file && f.number && f.name);
-    document.getElementById('s2next').disabled = !allValid;
-  }
-  const observer = new MutationObserver(() => checkProcessingReady());
-  observer.observe(document.getElementById('filesContainer'), { childList: true, subtree: true, attributes: true });
-  checkProcessingReady();
+// Inicializar verificação do Step 1
+checkStep1Ready();
 </script>
 </body>
 </html>
